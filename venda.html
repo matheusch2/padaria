@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>lançar venda - padaria gestão</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="venda.css" />
+  </head>
+
+  <body>
+    <header class="topo-venda">
+      <a class="voltar" href="index.html" aria-label="Voltar">←</a>
+      <h1>Lançar Venda</h1>
+    </header>
+
+    <div class="painel-venda">
+      <p class="secao-titulo">Produtos</p>
+      <input
+        type="text"
+        id="buscaProduto"
+        class="busca-produto"
+        placeholder="Buscar produto..."
+      />
+      <div class="lista-produtos" id="listaProdutos"></div>
+
+      <div class="carrinho">
+        <p class="secao-titulo" style="margin-bottom: 12px">Carrinho</p>
+        <div id="carrinhoItens">
+          <p class="carrinho-vazio">Nenhum item adicionado ainda.</p>
+        </div>
+      </div>
+
+      <p class="secao-titulo" style="margin-top: 20px">Forma de pagamento</p>
+      <div class="pagamento-split">
+        <div class="pagamento-linha">
+          <label for="valorDinheiro">Dinheiro</label>
+          <div class="campo-valor">
+            <span>R$</span>
+            <input type="number" id="valorDinheiro" step="0.01" min="0" placeholder="0,00" />
+          </div>
+        </div>
+        <div class="pagamento-linha">
+          <label for="valorCartao">Cartão</label>
+          <div class="campo-valor">
+            <span>R$</span>
+            <input type="number" id="valorCartao" step="0.01" min="0" placeholder="0,00" />
+          </div>
+        </div>
+        <div class="pagamento-linha">
+          <label for="valorPix">Pix</label>
+          <div class="campo-valor">
+            <span>R$</span>
+            <input type="number" id="valorPix" step="0.01" min="0" placeholder="0,00" />
+          </div>
+        </div>
+        <div class="pagamento-resumo">
+          <span>Total informado</span>
+          <b id="totalInformado">R$ 0,00</b>
+        </div>
+      </div>
+
+      <div class="total-row">
+        <span>Total da venda</span>
+        <b id="totalVenda">R$ 0,00</b>
+      </div>
+    </div>
+
+    <div class="rodape-fixo">
+      <p id="avisoFinalizar" class="aviso-finalizar" hidden></p>
+      <button class="btn-finalizar" id="btnFinalizar" type="button">
+        Finalizar Venda
+      </button>
+    </div>
+
+    <script src="venda.js"></script>
+  </body>
+</html>

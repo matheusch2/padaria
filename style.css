@@ -109,7 +109,7 @@ main {
   gap: 14px;
 }
 
-.menu2 button.botao {
+.menu2 .botao {
   background: linear-gradient(160deg, #8c4527 0%, #74381f 100%);
   color: white;
   border: none;
@@ -118,6 +118,7 @@ main {
   font-size: 15px;
   font-weight: 700;
   text-transform: capitalize;
+  text-decoration: none;
   cursor: pointer;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 
@@ -130,12 +131,12 @@ main {
   box-shadow: 0 4px 10px rgba(140, 69, 39, 0.25);
 }
 
-.menu2 button.botao:hover {
+.menu2 .botao:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 16px rgba(140, 69, 39, 0.32);
 }
 
-.menu2 button.botao:active {
+.menu2 .botao:active {
   transform: translateY(0);
 }
 
