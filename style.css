@@ -1,0 +1,48 @@
+.topo1 {
+  background-color: #8c4527;
+  color: white;
+  padding: 12px 16px;      
+
+  display: flex;           
+  align-items: center;     
+  gap: 12px;              
+}
+
+.topo-texto h1 {
+  margin: 0;               
+  font-size: 20px;
+}
+
+.topo-texto p {
+  margin: 0;               
+  font-size: 13px;
+}
+
+.menu2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+main {
+  padding: 20px;
+}
+
+.menu2 button {
+  background-color: #8c4527;
+  color: white;
+  border: none;
+  border-radius: 14px;
+  padding: 24px 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-height: 90px;
+  text-align: center;
+}
+
