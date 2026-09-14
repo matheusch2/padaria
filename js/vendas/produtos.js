@@ -1,4 +1,4 @@
-import { CHAVE_PRODUTOS, lerLista, salvarLista } from "./armazenamento.js";
+import { CHAVE_PRODUTOS, salvarLista } from "./armazenamento.js";
 
 const PRODUTOS_EXEMPLO = [
   { id: "p1", nome: "Pão Francês", preco: 0.8 },
@@ -8,8 +8,8 @@ const PRODUTOS_EXEMPLO = [
 ];
 
 export function carregarProdutos() {
-  const salvos = lerLista(CHAVE_PRODUTOS);
-  if (salvos.length > 0) return salvos;
+  const salvos = localStorage.getItem(CHAVE_PRODUTOS);
+  if (salvos) return JSON.parse(salvos);
 
   salvarLista(CHAVE_PRODUTOS, PRODUTOS_EXEMPLO);
   return PRODUTOS_EXEMPLO;
