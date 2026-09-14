@@ -3,6 +3,7 @@ import { carregarProdutos, filtrarProdutos } from "./produtos.js";
 import {
   adicionarAoCarrinho,
   alterarQuantidade,
+  definirQuantidade,
   limparCarrinho,
   obterCarrinho,
   obterTotalVenda,
@@ -26,7 +27,7 @@ function renderizarProdutos() {
   const produtos = filtrarProdutos(termo);
 
   if (produtos.length === 0) {
-    lista.innerHTML = '<p class="sem-produtos">Nenhum produto encontrado.</p>';
+    lista.innerHTML = '<p class="sem-produtos">Nenhum produto cadastrado.</p>';
     return;
   }
 
@@ -71,7 +72,17 @@ function renderizarCarrinho() {
           <span class="nome-item">${produto.nome}</span>
           <div class="qtd-stepper">
             <button type="button" data-id="${id}" data-delta="-1">−</button>
-            <b>${quantidade}</b>
+            <input
+              type="number"
+              class="qtd-input"
+              data-id="${id}"
+              min="1"
+              step="1"
+              inputmode="numeric"
+              value="${quantidade}"
+              aria-label="Quantidade de ${produto.nome}"
+              style="width:48px;height:32px;border:0;outline:0;background:transparent;text-align:center;font-weight:800;color:#35231a;font-size:14px;-moz-appearance:textfield;"
+            />
             <button type="button" data-id="${id}" data-delta="1">+</button>
           </div>
           <span class="subtotal-item">${formatarMoeda(subtotal)}</span>
@@ -84,6 +95,16 @@ function renderizarCarrinho() {
         alterarQuantidade(botao.dataset.id, Number(botao.dataset.delta));
         renderizarCarrinho();
       });
+    });
+
+    container.querySelectorAll(".qtd-input").forEach((campo) => {
+      const atualizarQuantidadeDigitada = () => {
+        definirQuantidade(campo.dataset.id, campo.value);
+        renderizarCarrinho();
+      };
+
+      campo.addEventListener("change", atualizarQuantidadeDigitada);
+      campo.addEventListener("blur", atualizarQuantidadeDigitada);
     });
   }
 
