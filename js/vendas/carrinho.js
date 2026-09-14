@@ -21,6 +21,17 @@ export function alterarQuantidade(id, delta) {
   carrinho[id] = novaQuantidade;
 }
 
+export function definirQuantidade(id, quantidade) {
+  const novaQuantidade = Math.floor(Number(quantidade));
+
+  if (!Number.isFinite(novaQuantidade) || novaQuantidade <= 0) {
+    delete carrinho[id];
+    return;
+  }
+
+  carrinho[id] = novaQuantidade;
+}
+
 export function limparCarrinho() {
   Object.keys(carrinho).forEach((id) => delete carrinho[id]);
 }
