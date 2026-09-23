@@ -257,6 +257,84 @@
   cursor: not-allowed;
 }
 
+.btn-perigo {
+  width: 100%;
+  height: 52px;
+  border-radius: 16px;
+  background: transparent;
+  border: 2px solid rgb(var(--erro));
+  color: rgb(var(--erro));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.btn-perigo:active {
+  transform: scale(0.98);
+  background: rgba(var(--erro), 0.08);
+}
+
+/* Badges de status */
+.badge-sucesso,
+.badge-erro,
+.badge-aviso {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.badge-sucesso {
+  background: rgba(var(--sucesso), 0.14);
+  color: rgb(var(--sucesso));
+}
+
+.badge-erro {
+  background: rgba(var(--erro), 0.12);
+  color: rgb(var(--erro));
+}
+
+.badge-aviso {
+  background: rgba(var(--aviso), 0.14);
+  color: rgb(var(--aviso));
+}
+
+/* Alertas "semáforo" */
+.alerta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 12px;
+  padding: 12px 13px;
+  border: 1px solid transparent;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.alerta.urgente {
+  background: #fdecec;
+  border-color: #f5cfcf;
+  color: #8a2a24;
+}
+
+.alerta.aviso {
+  background: #fdf6e6;
+  border-color: #f0e0b8;
+  color: #6b5220;
+}
+
+.alerta.bom {
+  background: #eefaf3;
+  border-color: #cee9da;
+  color: #215a38;
+}
+
 /* Campo de formulário simples (texto/select) */
 .campo-form {
   margin-bottom: 14px;

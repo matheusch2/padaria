@@ -14,6 +14,8 @@ const campoCategoria = document.getElementById("campoCategoria");
 const campoCusto = document.getElementById("campoCusto");
 const campoPreco = document.getElementById("campoPreco");
 const campoUnidade = document.getElementById("campoUnidade");
+const campoEstoque = document.getElementById("campoEstoque");
+const rotuloEstoque = document.getElementById("rotuloEstoque");
 const aviso = document.getElementById("avisoFormulario");
 const btnSalvar = document.getElementById("btnSalvar");
 const btnExcluir = document.getElementById("btnExcluir");
@@ -24,6 +26,8 @@ function preencherFormulario(produto) {
   campoCusto.value = produto.custo ?? "";
   campoPreco.value = produto.preco;
   campoUnidade.value = produto.unidade || "un";
+  campoEstoque.value = produto.estoque ?? 0;
+  rotuloEstoque.textContent = "Estoque atual";
 }
 
 function mostrarAviso(texto, sucesso) {
@@ -71,6 +75,7 @@ btnSalvar.addEventListener("click", () => {
     custo,
     preco,
     unidade: campoUnidade.value,
+    estoque: Math.max(0, Number(campoEstoque.value) || 0),
   };
 
   if (produtoEmEdicao) {
@@ -86,6 +91,7 @@ btnSalvar.addEventListener("click", () => {
   campoPreco.value = "";
   campoCategoria.value = "Pães";
   campoUnidade.value = "un";
+  campoEstoque.value = "";
   campoNome.focus();
 });
 

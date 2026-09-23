@@ -25,7 +25,7 @@ export function buscarProdutoPorId(id) {
 
 export function salvarProduto(dados) {
   const produtos = carregarProdutos();
-  const novo = { id: Date.now().toString(), ...dados };
+  const novo = { id: Date.now().toString(), estoque: 0, ...dados };
   produtos.push(novo);
   salvarLista(CHAVE_PRODUTOS, produtos);
   return novo;
@@ -44,4 +44,15 @@ export function atualizarProduto(id, dados) {
 export function excluirProduto(id) {
   const produtos = carregarProdutos().filter((produto) => produto.id !== id);
   salvarLista(CHAVE_PRODUTOS, produtos);
+}
+
+export function ajustarEstoque(id, delta) {
+  const produtos = carregarProdutos();
+  const indice = produtos.findIndex((produto) => produto.id === id);
+  if (indice === -1) return null;
+
+  const atual = Number(produtos[indice].estoque) || 0;
+  produtos[indice].estoque = Math.max(0, atual + delta);
+  salvarLista(CHAVE_PRODUTOS, produtos);
+  return produtos[indice];
 }

@@ -76,15 +76,28 @@
             </div>
           </div>
 
-          <div class="campo-form">
-            <label for="campoUnidade">Vendido por</label>
-            <select id="campoUnidade">
-              <option value="un">Unidade (un)</option>
-              <option value="kg">Quilo (kg)</option>
-              <option value="fatia">Fatia</option>
-              <option value="pacote">Pacote</option>
-              <option value="cento">Cento</option>
-            </select>
+          <div class="campo-form campo-form-dupla">
+            <div>
+              <label for="campoUnidade">Vendido por</label>
+              <select id="campoUnidade">
+                <option value="un">Unidade (un)</option>
+                <option value="kg">Quilo (kg)</option>
+                <option value="fatia">Fatia</option>
+                <option value="pacote">Pacote</option>
+                <option value="cento">Cento</option>
+              </select>
+            </div>
+            <div>
+              <label for="campoEstoque" id="rotuloEstoque">Estoque inicial</label>
+              <input
+                type="number"
+                id="campoEstoque"
+                min="0"
+                step="1"
+                inputmode="numeric"
+                placeholder="0"
+              />
+            </div>
           </div>
         </section>
       </div>
@@ -98,7 +111,7 @@
             Salvar Produto
           </button>
           <button
-            class="btn-excluir-produto"
+            class="btn-perigo"
             id="btnExcluir"
             type="button"
             hidden

@@ -1,0 +1,144 @@
+.item-estoque {
+  padding: 14px 2px;
+  border-bottom: 1px solid #f0ece9;
+}
+
+.item-estoque:last-child {
+  border-bottom: none;
+}
+
+.item-estoque-topo {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.item-estoque-info {
+  min-width: 0;
+}
+
+.item-estoque-info b {
+  display: block;
+  color: #3a2418;
+  font-size: 15px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.item-estoque-info span {
+  display: block;
+  margin-top: 2px;
+  color: #8a7a70;
+  font-size: 13px;
+}
+
+.item-estoque-quantidade {
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.item-estoque-quantidade b {
+  display: block;
+  font-size: 20px;
+  font-weight: 800;
+  color: #2e7d32;
+  font-variant-numeric: tabular-nums;
+}
+
+.item-estoque-quantidade.baixo b {
+  color: #c77700;
+}
+
+.item-estoque-quantidade.zerado b {
+  color: #b3261e;
+}
+
+.item-estoque-quantidade span {
+  font-size: 11px;
+  color: #8a7a70;
+}
+
+.item-estoque-movimento {
+  display: flex;
+  gap: 8px;
+}
+
+.item-estoque-movimento input {
+  width: 80px;
+  flex-shrink: 0;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #e4dbd5;
+  background: #faf6f3;
+  color: #3a2418;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  -moz-appearance: textfield;
+}
+
+.item-estoque-movimento input::-webkit-outer-spin-button,
+.item-estoque-movimento input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.item-estoque-movimento input:focus {
+  outline: none;
+  border-color: rgb(var(--marca));
+  box-shadow: 0 0 0 4px rgba(var(--marca), 0.1);
+}
+
+.item-estoque-movimento button {
+  flex: 1;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 6px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.item-estoque-movimento .btn-entrada {
+  background: linear-gradient(160deg, rgb(var(--sucesso-viva)) 0%, rgb(var(--sucesso)) 100%);
+  color: white;
+}
+
+.item-estoque-movimento .btn-saida {
+  background: transparent;
+  border: 1.5px solid #b3261e;
+  color: #b3261e;
+}
+
+.item-estoque-movimento button:active {
+  transform: scale(0.97);
+}
+
+.sem-produtos {
+  margin: 0;
+  padding: 24px 4px;
+  color: #8a7a70;
+  text-align: center;
+  font-size: 14px;
+}
+
+.btn-ver-mais {
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #e4dbd5;
+  background: #faf6f3;
+  color: rgb(var(--marca));
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-ver-mais:active {
+  background: rgba(var(--marca), 0.08);
+}

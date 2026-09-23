@@ -12,6 +12,8 @@
   /* cores de estado (universais, não seguem a marca) */
   --sucesso: 22, 130, 61;
   --sucesso-viva: 38, 166, 91;
+  --aviso: 239, 144, 0;
+  --erro: 179, 38, 30;
 }
 
 body {
@@ -19,6 +21,19 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
   background-color: #f4f3f1;
   color: #3a2418;
+}
+
+/* Feedback ao tocar — vale como padrão pra qualquer botão/link que não defina o próprio :active */
+button,
+.botao,
+a[class*="btn"] {
+  transition: transform 0.12s ease;
+}
+
+button:active:not(:disabled),
+.botao:active,
+a[class*="btn"]:active {
+  transform: scale(0.97);
 }
 
 .topo1 {
@@ -131,7 +146,7 @@ main {
   color: white;
   border: none;
   border-radius: 16px;
-  padding: 20px 12px;
+  padding: 14px 12px;
   font-size: 15px;
   font-weight: 700;
   text-transform: capitalize;
@@ -143,8 +158,8 @@ main {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  height: 128px;
+  gap: 8px;
+  height: 106px;
   text-align: center;
   box-shadow: 0 4px 10px rgba(var(--marca), 0.25);
 }

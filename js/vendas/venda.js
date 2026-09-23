@@ -1,5 +1,5 @@
 import { CHAVE_VENDAS, lerLista, salvarLista } from "../armazenamento.js";
-import { carregarProdutos, filtrarProdutos } from "../produtos.js";
+import { carregarProdutos, filtrarProdutos, ajustarEstoque } from "../produtos.js";
 import {
   adicionarAoCarrinho,
   alterarQuantidade,
@@ -159,6 +159,8 @@ function finalizarVenda() {
   const vendas = lerLista(CHAVE_VENDAS);
   vendas.push(venda);
   salvarLista(CHAVE_VENDAS, vendas);
+
+  itens.forEach(([id, quantidade]) => ajustarEstoque(id, -quantidade));
 
   limparCarrinho();
   limparCamposPagamento();

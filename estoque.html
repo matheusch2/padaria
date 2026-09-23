@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta name="theme-color" content="#8c4527" />
+    <title>Estoque - Padaria Gestão</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="pagina.css" />
+    <link rel="stylesheet" href="estoque.css" />
+  </head>
+
+  <body class="pagina-app">
+    <header class="topo-pagina">
+      <a class="voltar" href="index.html" aria-label="Voltar para o início">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
+      </a>
+      <h1>Estoque</h1>
+    </header>
+
+    <main class="conteudo-pagina">
+      <div class="painel-pagina">
+        <section class="bloco">
+          <label class="busca-wrapper" for="buscaProduto">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3.6-3.6" />
+            </svg>
+            <input
+              type="search"
+              id="buscaProduto"
+              class="busca-produto"
+              placeholder="Buscar produto..."
+              autocomplete="off"
+            />
+          </label>
+
+          <div id="listaEstoque"></div>
+
+          <button class="btn-ver-mais" id="btnVerMais" type="button" hidden>
+            Ver mais
+          </button>
+        </section>
+      </div>
+    </main>
+
+    <div class="rodape">
+      <div class="rodape-conteudo">
+        <div class="rodape-acoes">
+          <a class="btn-voltar-rodape" href="index.html">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+            <span>Voltar</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="js/estoque.js"></script>
+  </body>
+</html>
