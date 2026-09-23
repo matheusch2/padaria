@@ -1,10 +1,18 @@
+html,
+body.pagina-venda {
+  height: 100%;
+  overflow: hidden;
+}
+
 .pagina-venda {
-  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
   background-color: #f4f3f1;
-  padding-bottom: 150px;
 }
 
 .topo-venda {
+  flex-shrink: 0;
   background: linear-gradient(
     135deg,
     rgb(var(--marca-escura)) 0%,
@@ -58,14 +66,18 @@
   letter-spacing: 0.5px;
 }
 
-.venda-main {
+.venda-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   padding: 0 16px;
 }
 
 .painel-venda {
   width: 100%;
   max-width: 560px;
-  margin: 16px auto 0;
+  margin: 16px auto;
   display: grid;
   gap: 18px;
 }
@@ -409,12 +421,10 @@
 }
 
 .rodape-fixo {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 20px 16px max(20px, env(safe-area-inset-bottom));
-  background: linear-gradient(180deg, rgba(244, 243, 241, 0) 0%, #f4f3f1 32%);
+  flex-shrink: 0;
+  padding: 16px 16px max(16px, env(safe-area-inset-bottom));
+  background: #f4f3f1;
+  box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.05);
 }
 
 .rodape-conteudo {
