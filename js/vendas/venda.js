@@ -81,7 +81,6 @@ function renderizarCarrinho() {
               inputmode="numeric"
               value="${quantidade}"
               aria-label="Quantidade de ${produto.nome}"
-              style="width:48px;height:32px;border:0;outline:0;background:transparent;text-align:center;font-weight:800;color:#35231a;font-size:14px;-moz-appearance:textfield;"
             />
             <button type="button" data-id="${id}" data-delta="1">+</button>
           </div>

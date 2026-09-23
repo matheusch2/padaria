@@ -7,6 +7,10 @@
   --marca: 140, 69, 39;
   --marca-viva: 179, 98, 47;
   --marca-ativa: 116, 56, 31;
+
+  /* cores de estado (universais, não seguem a marca) */
+  --sucesso: 22, 130, 61;
+  --sucesso-viva: 38, 166, 91;
 }
 
 body {
