@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta name="theme-color" content="#8c4527" />
+    <title>Cadastrar produto - Padaria Gestão</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="pagina.css" />
+    <link rel="stylesheet" href="cadastrar-produto.css" />
+  </head>
+
+  <body class="pagina-app">
+    <header class="topo-pagina">
+      <a class="voltar" href="index.html" aria-label="Voltar para o início">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
+      </a>
+      <h1 id="tituloTela">Cadastrar Produto</h1>
+    </header>
+
+    <main class="conteudo-pagina">
+      <div class="painel-pagina">
+        <section class="bloco">
+          <h2 class="bloco-titulo">Dados do produto</h2>
+
+          <div class="campo-form">
+            <label for="campoNome">Nome do produto</label>
+            <input type="text" id="campoNome" placeholder="Ex: Pão Francês" autocomplete="off" />
+          </div>
+
+          <div class="campo-form">
+            <label for="campoCategoria">Categoria</label>
+            <select id="campoCategoria">
+              <option value="Pães">Pães</option>
+              <option value="Bolos e Tortas">Bolos e Tortas</option>
+              <option value="Salgados">Salgados</option>
+              <option value="Doces">Doces</option>
+              <option value="Bebidas">Bebidas</option>
+              <option value="Outros">Outros</option>
+            </select>
+          </div>
+
+          <div class="campo-form campo-form-dupla">
+            <div>
+              <label for="campoCusto">Preço de custo</label>
+              <div class="campo-valor">
+                <span>R$</span>
+                <input
+                  type="number"
+                  id="campoCusto"
+                  step="0.01"
+                  min="0"
+                  inputmode="decimal"
+                  placeholder="0,00"
+                />
+              </div>
+            </div>
+            <div>
+              <label for="campoPreco">Preço de venda</label>
+              <div class="campo-valor">
+                <span>R$</span>
+                <input
+                  type="number"
+                  id="campoPreco"
+                  step="0.01"
+                  min="0"
+                  inputmode="decimal"
+                  placeholder="0,00"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="campo-form">
+            <label for="campoUnidade">Vendido por</label>
+            <select id="campoUnidade">
+              <option value="un">Unidade (un)</option>
+              <option value="kg">Quilo (kg)</option>
+              <option value="fatia">Fatia</option>
+              <option value="pacote">Pacote</option>
+              <option value="cento">Cento</option>
+            </select>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <div class="rodape">
+      <div class="rodape-conteudo">
+        <p id="avisoFormulario" class="aviso-finalizar" hidden></p>
+        <div class="rodape-acoes">
+          <button class="btn-primario" id="btnSalvar" type="button">
+            Salvar Produto
+          </button>
+          <button
+            class="btn-excluir-produto"
+            id="btnExcluir"
+            type="button"
+            hidden
+          >
+            Excluir produto
+          </button>
+          <p class="rodape-divisor">ou</p>
+          <a class="btn-voltar-rodape" href="index.html">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+            <span>Voltar</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="js/cadastrar-produto.js"></script>
+  </body>
+</html>

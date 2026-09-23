@@ -1,4 +1,4 @@
-import { carregarProdutos } from "./produtos.js";
+import { carregarProdutos } from "../produtos.js";
 
 const carrinho = {};
 

@@ -1,0 +1,115 @@
+.btn-primario-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+.produto-cadastro-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 2px;
+  border-bottom: 1px solid #f0ece9;
+}
+
+.produto-cadastro-item:last-child {
+  border-bottom: none;
+}
+
+.produto-cadastro-info {
+  min-width: 0;
+}
+
+.produto-cadastro-info b {
+  display: block;
+  color: #3a2418;
+  font-size: 15px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.produto-cadastro-info span {
+  display: block;
+  margin-top: 2px;
+  color: #8a7a70;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.produto-cadastro-lucro {
+  color: #2e7d32 !important;
+  font-size: 12px !important;
+  font-weight: 600;
+}
+
+.produto-cadastro-lucro.prejuizo {
+  color: #b3261e !important;
+}
+
+.produto-cadastro-acoes {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.produto-cadastro-acoes button {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid #e4dbd5;
+  background: #faf6f3;
+  color: rgb(var(--marca));
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.produto-cadastro-acoes button.excluir {
+  color: #b3261e;
+}
+
+.produto-cadastro-acoes button:active {
+  transform: scale(0.94);
+}
+
+.produto-cadastro-acoes svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sem-produtos {
+  margin: 0;
+  padding: 24px 4px;
+  color: #8a7a70;
+  text-align: center;
+  font-size: 14px;
+}
+
+.btn-ver-mais {
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #e4dbd5;
+  background: #faf6f3;
+  color: rgb(var(--marca));
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-ver-mais:active {
+  background: rgba(var(--marca), 0.08);
+}

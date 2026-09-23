@@ -9,11 +9,12 @@
     <meta name="theme-color" content="#8c4527" />
     <title>Lançar venda - Padaria Gestão</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="pagina.css" />
     <link rel="stylesheet" href="venda.css" />
   </head>
 
-  <body class="pagina-venda">
-    <header class="topo-venda">
+  <body class="pagina-app">
+    <header class="topo-pagina">
       <a class="voltar" href="index.html" aria-label="Voltar para o início">
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M15 18l-6-6 6-6" />
@@ -22,9 +23,9 @@
       <h1>Lançar Venda</h1>
     </header>
 
-    <main class="venda-scroll">
-      <div class="painel-venda">
-        <section class="bloco-venda">
+    <main class="conteudo-pagina">
+      <div class="painel-pagina">
+        <section class="bloco">
           <h2 class="bloco-titulo">Produtos</h2>
 
           <label class="busca-wrapper" for="buscaProduto">
@@ -44,14 +45,14 @@
           <div class="lista-produtos" id="listaProdutos"></div>
         </section>
 
-        <section class="bloco-venda">
+        <section class="bloco">
           <h2 class="bloco-titulo">Carrinho</h2>
           <div id="carrinhoItens">
             <p class="carrinho-vazio">Nenhum item adicionado ainda.</p>
           </div>
         </section>
 
-        <section class="bloco-venda">
+        <section class="bloco">
           <h2 class="bloco-titulo">Pagamento</h2>
 
           <div class="pagamento-split">
@@ -112,9 +113,9 @@
       </div>
     </main>
 
-    <div class="rodape-fixo">
+    <div class="rodape">
       <div class="rodape-conteudo">
-        <div class="total-row">
+        <div class="bloco total-row">
           <div>
             <span>Total da venda</span>
             <small>Valor a receber</small>
@@ -122,8 +123,8 @@
           <b id="totalVenda">R$ 0,00</b>
         </div>
         <p id="avisoFinalizar" class="aviso-finalizar" hidden></p>
-        <div class="rodape-botoes">
-          <button class="btn-finalizar" id="btnFinalizar" type="button">
+        <div class="rodape-acoes">
+          <button class="btn-primario" id="btnFinalizar" type="button">
             Finalizar Venda
           </button>
           <p class="rodape-divisor">ou</p>

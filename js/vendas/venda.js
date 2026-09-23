@@ -1,5 +1,5 @@
-import { CHAVE_VENDAS, lerLista, salvarLista } from "./armazenamento.js";
-import { carregarProdutos, filtrarProdutos } from "./produtos.js";
+import { CHAVE_VENDAS, lerLista, salvarLista } from "../armazenamento.js";
+import { carregarProdutos, filtrarProdutos } from "../produtos.js";
 import {
   adicionarAoCarrinho,
   alterarQuantidade,
