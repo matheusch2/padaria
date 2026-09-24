@@ -51,10 +51,8 @@
               <div class="campo-valor">
                 <span>R$</span>
                 <input
-                  type="number"
+                  type="text"
                   id="campoCusto"
-                  step="0.01"
-                  min="0"
                   inputmode="decimal"
                   placeholder="0,00"
                 />
@@ -65,10 +63,8 @@
               <div class="campo-valor">
                 <span>R$</span>
                 <input
-                  type="number"
+                  type="text"
                   id="campoPreco"
-                  step="0.01"
-                  min="0"
                   inputmode="decimal"
                   placeholder="0,00"
                 />
@@ -90,10 +86,9 @@
             <div>
               <label for="campoEstoque" id="rotuloEstoque">Estoque inicial</label>
               <input
-                type="number"
+                type="text"
                 id="campoEstoque"
-                min="0"
-                step="1"
+                class="milhar"
                 inputmode="numeric"
                 placeholder="0"
               />
@@ -129,6 +124,7 @@
       </div>
     </div>
 
+    <script src="js/numeros.js"></script>
     <script type="module" src="js/cadastrar-produto.js"></script>
   </body>
 </html>

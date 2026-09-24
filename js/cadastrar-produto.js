@@ -20,13 +20,20 @@ const aviso = document.getElementById("avisoFormulario");
 const btnSalvar = document.getElementById("btnSalvar");
 const btnExcluir = document.getElementById("btnExcluir");
 
+function formatarComoMoeda(valor) {
+  return Number(valor).toLocaleString("pt-BR", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+}
+
 function preencherFormulario(produto) {
   campoNome.value = produto.nome;
   campoCategoria.value = produto.categoria || "Outros";
-  campoCusto.value = produto.custo ?? "";
-  campoPreco.value = produto.preco;
+  campoCusto.value = produto.custo != null ? formatarComoMoeda(produto.custo) : "";
+  campoPreco.value = formatarComoMoeda(produto.preco);
   campoUnidade.value = produto.unidade || "un";
-  campoEstoque.value = produto.estoque ?? 0;
+  campoEstoque.value = Number(produto.estoque || 0).toLocaleString("pt-BR");
   rotuloEstoque.textContent = "Estoque atual";
 }
 
@@ -48,8 +55,8 @@ if (produtoEmEdicao) {
 
 btnSalvar.addEventListener("click", () => {
   const nome = campoNome.value.trim();
-  const custo = Number(campoCusto.value);
-  const preco = Number(campoPreco.value);
+  const custo = parseMoedaBR(campoCusto.value);
+  const preco = parseMoedaBR(campoPreco.value);
 
   if (!nome) {
     mostrarAviso("Digite o nome do produto.", false);
@@ -75,7 +82,7 @@ btnSalvar.addEventListener("click", () => {
     custo,
     preco,
     unidade: campoUnidade.value,
-    estoque: Math.max(0, Number(campoEstoque.value) || 0),
+    estoque: Math.max(0, parseInteiroBR(campoEstoque.value)),
   };
 
   if (produtoEmEdicao) {

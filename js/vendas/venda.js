@@ -73,13 +73,11 @@ function renderizarCarrinho() {
           <div class="qtd-stepper">
             <button type="button" data-id="${id}" data-delta="-1">−</button>
             <input
-              type="number"
-              class="qtd-input"
+              type="text"
+              class="qtd-input milhar"
               data-id="${id}"
-              min="1"
-              step="1"
               inputmode="numeric"
-              value="${quantidade}"
+              value="${quantidade.toLocaleString("pt-BR")}"
               aria-label="Quantidade de ${produto.nome}"
             />
             <button type="button" data-id="${id}" data-delta="1">+</button>

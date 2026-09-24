@@ -1,9 +1,9 @@
 import { obterTotalVenda } from "./carrinho.js";
 
 export function valoresPagamento() {
-  const dinheiro = Number(document.getElementById("valorDinheiro").value) || 0;
-  const cartao = Number(document.getElementById("valorCartao").value) || 0;
-  const pix = Number(document.getElementById("valorPix").value) || 0;
+  const dinheiro = parseMoedaBR(document.getElementById("valorDinheiro").value);
+  const cartao = parseMoedaBR(document.getElementById("valorCartao").value);
+  const pix = parseMoedaBR(document.getElementById("valorPix").value);
 
   return {
     dinheiro,

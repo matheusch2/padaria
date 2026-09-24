@@ -22,7 +22,7 @@ export function alterarQuantidade(id, delta) {
 }
 
 export function definirQuantidade(id, quantidade) {
-  const novaQuantidade = Math.floor(Number(quantidade));
+  const novaQuantidade = parseInteiroBR(quantidade);
 
   if (!Number.isFinite(novaQuantidade) || novaQuantidade <= 0) {
     delete carrinho[id];

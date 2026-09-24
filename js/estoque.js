@@ -46,17 +46,15 @@ function renderizar() {
             <span>${produto.categoria || "Outros"}</span>
           </div>
           <div class="item-estoque-quantidade ${classeQuantidade(estoque)}">
-            <b>${estoque}</b>
+            <b>${estoque.toLocaleString("pt-BR")}</b>
             <span>${unidade} em estoque</span>
           </div>
         </div>
         <div class="item-estoque-movimento">
           <input
-            type="number"
-            class="campo-movimento"
+            type="text"
+            class="campo-movimento milhar"
             data-id="${produto.id}"
-            min="0"
-            step="1"
             inputmode="numeric"
             placeholder="Qtd"
           />
@@ -71,7 +69,7 @@ function renderizar() {
     botao.addEventListener("click", () => {
       const id = botao.dataset.id;
       const campo = listaEl.querySelector(`.campo-movimento[data-id="${id}"]`);
-      const quantidade = Number(campo.value);
+      const quantidade = parseInteiroBR(campo.value);
 
       if (!(quantidade > 0)) {
         campo.focus();
