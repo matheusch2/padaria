@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#8c4527" />
+    <title>Fechamento do caixa - Padaria Gestão</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="pagina.css" />
+    <link rel="stylesheet" href="fechamento-caixa.css" />
+  </head>
+  <body class="pagina-app">
+    <header class="topo-pagina">
+      <a class="voltar" href="index.html" aria-label="Voltar para o início">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
+      </a>
+      <h1>Fechamento do Caixa</h1>
+    </header>
+
+    <main class="conteudo-pagina">
+      <div class="painel-pagina">
+        <section class="bloco">
+          <div class="cabecalho-fechamento">
+            <div>
+              <h2 class="bloco-titulo">Resumo do dia</h2>
+              <p class="texto-apoio">As vendas e perdas são puxadas automaticamente.</p>
+            </div>
+            <input id="dataFechamento" class="campo-data" type="date" />
+          </div>
+
+          <div class="grade-resumo">
+            <div class="card-resumo destaque">
+              <span>Faturamento</span>
+              <b id="resumoFaturamento">R$ 0,00</b>
+              <small id="resumoQtdVendas">0 vendas</small>
+            </div>
+            <div class="card-resumo">
+              <span>Dinheiro</span>
+              <b id="resumoDinheiro">R$ 0,00</b>
+            </div>
+            <div class="card-resumo">
+              <span>Cartão</span>
+              <b id="resumoCartao">R$ 0,00</b>
+            </div>
+            <div class="card-resumo">
+              <span>Pix</span>
+              <b id="resumoPix">R$ 0,00</b>
+            </div>
+          </div>
+        </section>
+
+        <section class="bloco">
+          <h2 class="bloco-titulo">Conferência do dinheiro</h2>
+          <p class="texto-apoio">Informe o valor que iniciou no caixa, retiradas feitas durante o dia e o dinheiro contado no final.</p>
+
+          <div class="campo-form">
+            <label for="fundoInicial">Fundo inicial / troco</label>
+            <div class="campo-valor">
+              <span>R$</span>
+              <input id="fundoInicial" type="text" inputmode="decimal" placeholder="0,00" />
+            </div>
+          </div>
+
+          <div class="campo-form">
+            <label for="retiradasCaixa">Retiradas / sangrias</label>
+            <div class="campo-valor">
+              <span>R$</span>
+              <input id="retiradasCaixa" type="text" inputmode="decimal" placeholder="0,00" />
+            </div>
+          </div>
+
+          <div class="campo-form">
+            <label for="dinheiroContado">Dinheiro contado no caixa</label>
+            <div class="campo-valor campo-destaque">
+              <span>R$</span>
+              <input id="dinheiroContado" type="text" inputmode="decimal" placeholder="0,00" />
+            </div>
+          </div>
+
+          <div class="conferencia-caixa">
+            <div>
+              <span>Dinheiro esperado</span>
+              <b id="dinheiroEsperado">R$ 0,00</b>
+            </div>
+            <div id="diferencaBox" class="diferenca neutra">
+              <span>Diferença</span>
+              <b id="diferencaCaixa">Informe a contagem</b>
+            </div>
+          </div>
+        </section>
+
+        <section class="bloco">
+          <h2 class="bloco-titulo">Resultado bruto estimado</h2>
+          <div class="linha-financeira">
+            <span>Faturamento</span><b id="resultadoFaturamento">R$ 0,00</b>
+          </div>
+          <div class="linha-financeira">
+            <span>Custo dos produtos vendidos</span><b id="resultadoCustoVendido">− R$ 0,00</b>
+          </div>
+          <div class="linha-financeira perda">
+            <span>Perdas e sobras</span><b id="resultadoPerdas">− R$ 0,00</b>
+          </div>
+          <div class="linha-financeira total">
+            <span>Resultado bruto</span><b id="resultadoBruto">R$ 0,00</b>
+          </div>
+          <p class="nota-resultado">Resultado bruto = vendas − custo dos produtos vendidos − perdas/sobras. Não inclui outras despesas da padaria.</p>
+        </section>
+
+        <section class="bloco">
+          <h2 class="bloco-titulo">Observações</h2>
+          <textarea id="observacaoFechamento" rows="3" placeholder="Ex.: retirada para pagamento de fornecedor"></textarea>
+          <p id="avisoFechamento" class="aviso-finalizar" hidden></p>
+          <button class="btn-primario" id="btnFecharCaixa" type="button">Salvar fechamento</button>
+          <p id="statusFechamento" class="status-fechamento" hidden></p>
+        </section>
+      </div>
+    </main>
+
+    <script src="js/numeros.js"></script>
+    <script type="module" src="js/fechamento-caixa.js"></script>
+  </body>
+</html>
