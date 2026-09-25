@@ -42,7 +42,7 @@ function atualizarLegenda(tipo) {
     }
     avisoImpressao.textContent = documentoAtual
       ? "Pronto para gerar com os dados reais do período selecionado."
-      : "Selecione um relatório para preparar a visualização.";
+      : "Toque em um relatório para abrir a visualização.";
   } catch (erro) {
     periodoLegenda.textContent = erro?.message || "Escolha as datas do período";
     avisoImpressao.textContent = erro?.message || "Período inválido.";
@@ -60,6 +60,22 @@ function atualizarBotao() {
     btnPrepararRelatorio.disabled = false;
   } catch {
     btnPrepararRelatorio.disabled = true;
+  }
+}
+
+function abrirRelatorio(tipo = documentoAtual) {
+  if (!tipo) return;
+
+  try {
+    const intervalo = intervaloPorTipo(periodoAtual, dataInicial.value, dataFinal.value);
+    const query = new URLSearchParams({
+      tipo: tipo.slug,
+      inicio: intervalo.inicioData,
+      fim: intervalo.fimData,
+    });
+    window.location.href = `relatorio-gerado.html?${query.toString()}`;
+  } catch (erro) {
+    avisoImpressao.textContent = erro?.message || "Não foi possível preparar o relatório.";
   }
 }
 
@@ -86,27 +102,15 @@ documentos.forEach((card) => {
     documentoAtual = TIPOS[card.dataset.documento] || null;
     documentoSelecionado.textContent = documentoAtual?.nome || "Nenhum";
     atualizarBotao();
-    avisoImpressao.textContent = documentoAtual
-      ? "Pronto para gerar com os dados reais do período selecionado."
-      : "Selecione um relatório para preparar a visualização.";
+
+    if (documentoAtual) {
+      avisoImpressao.textContent = "Abrindo relatório com os dados do período selecionado...";
+      abrirRelatorio(documentoAtual);
+    }
   });
 });
 
-btnPrepararRelatorio.addEventListener("click", () => {
-  if (!documentoAtual) return;
-
-  try {
-    const intervalo = intervaloPorTipo(periodoAtual, dataInicial.value, dataFinal.value);
-    const query = new URLSearchParams({
-      tipo: documentoAtual.slug,
-      inicio: intervalo.inicioData,
-      fim: intervalo.fimData,
-    });
-    window.location.href = `relatorio-gerado.html?${query.toString()}`;
-  } catch (erro) {
-    avisoImpressao.textContent = erro?.message || "Não foi possível preparar o relatório.";
-  }
-});
+btnPrepararRelatorio.addEventListener("click", () => abrirRelatorio());
 
 const hoje = new Date();
 const haTrintaDias = new Date(hoje);
