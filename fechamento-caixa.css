@@ -21,6 +21,22 @@
   margin-bottom: 14px;
 }
 
+.data-fechamento-wrap label {
+  display: block;
+  margin: 0 0 6px;
+  color: #3a2418;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.data-fechamento-wrap small {
+  display: block;
+  margin-top: 6px;
+  color: #9a887d;
+  font-size: 11px;
+  line-height: 1.35;
+}
+
 .campo-data {
   display: block;
   justify-self: stretch;
@@ -46,6 +62,155 @@
   border-color: rgb(var(--marca));
   box-shadow: 0 0 0 4px rgba(var(--marca), 0.1);
   background: #fff;
+}
+
+.estado-caixa {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+  margin: 0 0 14px;
+  padding: 12px 13px;
+  border: 1px solid #e9dfd9;
+  border-radius: 15px;
+  background: #faf7f5;
+}
+
+.estado-caixa-icone {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  border-radius: 11px;
+  background: #eee7e2;
+  color: #806d62;
+}
+
+.estado-caixa-icone svg {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.estado-caixa-texto {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.estado-caixa-legenda {
+  color: #9a887d;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.estado-caixa-texto strong {
+  color: #3a2418;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.estado-caixa-texto small {
+  color: #806f65;
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.badge-caixa {
+  flex: 0 0 auto;
+  padding: 5px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.btn-proximo-caixa {
+  flex: 0 0 auto;
+  min-height: 32px;
+  padding: 6px 9px;
+  border: 1px solid #d8b9a6;
+  border-radius: 9px;
+  background: #fff;
+  color: rgb(var(--marca));
+  font: inherit;
+  font-size: 10px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.btn-proximo-caixa:active {
+  transform: translateY(1px);
+  background: #fff8f2;
+}
+
+.link-historico-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 13px;
+  color: rgb(var(--marca));
+  font-size: 11px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.link-historico-inline:hover {
+  text-decoration: underline;
+}
+
+.link-historico-inline svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.badge-neutro {
+  background: #eee8e4;
+  color: #77665d;
+}
+
+.badge-aberto {
+  background: #e7f6ed;
+  color: #267047;
+}
+
+.badge-fechado {
+  background: #f2e7df;
+  color: rgb(var(--marca));
+}
+
+.estado-caixa[data-estado="aberto"] {
+  border-color: #cfe8d8;
+  background: #f4fbf6;
+}
+
+.estado-caixa[data-estado="aberto"] .estado-caixa-icone {
+  background: #dff2e6;
+  color: #267047;
+}
+
+.estado-caixa[data-estado="fechado"] {
+  border-color: #ead8cb;
+  background: #fcf8f5;
+}
+
+.estado-caixa[data-estado="fechado"] .estado-caixa-icone {
+  background: #f2e5dc;
+  color: rgb(var(--marca));
 }
 
 .grade-resumo {
@@ -99,9 +264,37 @@
   font-size: 16px;
 }
 
+.campo-valor:has(input:disabled),
+.bloco textarea:disabled {
+  opacity: .62;
+  cursor: not-allowed;
+}
+
 .campo-destaque {
   border-color: rgba(var(--marca), 0.35);
   background: rgba(var(--marca), 0.05);
+}
+
+.acao-abertura-caixa {
+  margin: -2px 0 16px;
+  padding: 12px;
+  border-radius: 14px;
+  background: #fff8f2;
+  border: 1px solid #f0dfd2;
+}
+
+.acao-abertura-caixa p {
+  margin: 8px 2px 0;
+  color: #8c786c;
+  font-size: 11px;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.btn-abrir-caixa {
+  padding: 13px 16px;
+  background: linear-gradient(160deg, rgb(var(--marca-viva)) 0%, rgb(var(--marca)) 100%);
+  box-shadow: 0 6px 16px rgba(var(--marca), 0.25);
 }
 
 .conferencia-caixa {
@@ -237,6 +430,42 @@
   font-weight: 700;
 }
 
+.btn-fechar-caixa {
+  position: relative;
+  background: linear-gradient(160deg, rgb(var(--marca-viva)) 0%, rgb(var(--marca)) 100%);
+  box-shadow: 0 6px 16px rgba(var(--marca), 0.28);
+}
+
+.link-historico-fechamento {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 38px;
+  margin: 0 0 12px;
+  border-radius: 11px;
+  color: rgb(var(--marca));
+  font-size: 12px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: background .15s ease;
+}
+
+.link-historico-fechamento:active,
+.link-historico-fechamento:hover {
+  background: rgba(var(--marca), .07);
+}
+
+.link-historico-fechamento svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .acoes-fechamento {
   margin-top: 13px;
 }
@@ -267,5 +496,17 @@
 
   .linha-financeira span {
     max-width: 62%;
+  }
+
+  .estado-caixa {
+    align-items: flex-start;
+  }
+
+  .badge-caixa {
+    margin-top: 2px;
+  }
+
+  .btn-proximo-caixa {
+    margin-top: 1px;
   }
 }
