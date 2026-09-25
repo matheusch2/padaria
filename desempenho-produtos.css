@@ -58,6 +58,82 @@
   font-weight: 400;
 }
 
+.grafico-svg-relatorio {
+  display: block;
+  width: 100%;
+  height: 220px;
+}
+
+.grafico-svg-relatorio .grafico-eixo {
+  stroke: #ddd4ce;
+  stroke-width: 1.2;
+  vector-effect: non-scaling-stroke;
+}
+
+.grafico-svg-relatorio .grafico-linha-path {
+  fill: none;
+  stroke: rgb(var(--marca));
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.grafico-svg-relatorio circle {
+  fill: #fff;
+  stroke: rgb(var(--marca));
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+.grafico-svg-relatorio .grafico-rotulos text {
+  fill: #9b887d;
+  font-size: 10px;
+  font-family: inherit;
+}
+
+.venda-relatorio-detalhe {
+  min-width: 0;
+  border: 1px solid #eee4de;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.venda-relatorio-detalhe .venda-relatorio-item {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  list-style: none;
+}
+
+.venda-relatorio-detalhe .venda-relatorio-item::-webkit-details-marker {
+  display: none;
+}
+
+.venda-relatorio-detalhe[open] .venda-relatorio-item {
+  border-bottom: 1px solid #f0e8e3;
+}
+
+.venda-relatorio-conteudo {
+  padding: 11px 13px 13px;
+  background: #fcfaf8;
+}
+
+.venda-relatorio-conteudo p,
+.venda-relatorio-conteudo small {
+  margin: 0;
+  color: #756156;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.venda-relatorio-conteudo small {
+  display: block;
+  margin-top: 6px;
+  color: #968278;
+}
+
 @media (max-width: 430px) {
   .produtos-bloco .secao-cabecalho-com-controle {
     gap: 10px;
@@ -71,5 +147,9 @@
   .segmentado-produtos .segmentado-btn {
     min-height: 34px;
     padding-inline: 11px;
+  }
+
+  .grafico-svg-relatorio {
+    height: 205px;
   }
 }
