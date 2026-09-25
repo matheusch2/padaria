@@ -25,7 +25,7 @@ const conteudo = document.getElementById("conteudoRelatorio");
 const btnImprimir = document.getElementById("btnImprimir");
 
 const TITULOS = {
-  vendas: "Relatório de vendas",
+  vendas: "Relatório de Vendas",
   perdas: "Relatório de perdas e sobras",
   estoque: "Relatório de estoque",
   fechamento: "Relatório de fechamento do caixa",
@@ -63,17 +63,20 @@ function formatarDataISO(valor) {
 }
 
 function formasPagamento(venda) {
-  const formas = [];
-  if (numero(venda.dinheiro) > 0) formas.push(`Dinheiro ${formatarMoeda(venda.dinheiro)}`);
-  if (numero(venda.pix) > 0) formas.push(`Pix ${formatarMoeda(venda.pix)}`);
-  if (numero(venda.cartao) > 0) formas.push(`Cartão ${formatarMoeda(venda.cartao)}`);
-  return formas.join(" + ") || "—";
+  const formas = [["Dinheiro", venda.dinheiro], ["Pix", venda.pix], ["Cartão", venda.cartao]]
+    .filter(([, valor]) => numero(valor) > 0);
+  if (!formas.length) return "—";
+  return `<ul class="venda-lista">${formas.map(([rotulo, valor]) => `
+    <li class="venda-pagamento"><span>${escaparHTML(rotulo)}</span><span>${escaparHTML(formatarMoeda(valor))}</span></li>
+  `).join("")}</ul>`;
 }
 
 function itensVenda(venda) {
-  return (venda.itens_venda || [])
-    .map((item) => `${formatarQuantidade(item.quantidade)}× ${item.nome_produto || "Produto"}`)
-    .join("; ") || "—";
+  const itens = venda.itens_venda || [];
+  if (!itens.length) return "—";
+  return `<ul class="venda-lista">${itens.map((item) =>
+    `<li>${escaparHTML(formatarQuantidade(item.quantidade))}× ${escaparHTML(item.nome_produto || "Produto")}</li>`
+  ).join("")}</ul>`;
 }
 
 function cardsResumo(itens) {
@@ -85,15 +88,15 @@ function cardsResumo(itens) {
   `).join("")}</div>`;
 }
 
-function tabela(cabecalhos, linhas, colspan = cabecalhos.length) {
+function tabela(cabecalhos, linhas, colspan = cabecalhos.length, classe = "") {
   const thead = cabecalhos.map((item) => {
     const config = typeof item === "string" ? { texto: item } : item;
-    return `<th class="${config.numero ? "numero" : ""}">${escaparHTML(config.texto)}</th>`;
+    return `<th scope="col" class="${config.numero ? "numero" : ""}">${escaparHTML(config.texto)}</th>`;
   }).join("");
 
   return `
     <div class="tabela-documento-wrap">
-      <table class="tabela-documento">
+      <table class="tabela-documento ${escaparHTML(classe)}">
         <thead><tr>${thead}</tr></thead>
         <tbody>${linhas || `<tr><td class="sem-registros" colspan="${colspan}">Nenhum registro encontrado.</td></tr>`}</tbody>
       </table>
@@ -110,12 +113,12 @@ async function renderVendas(intervalo) {
     const custo = custoItensVenda(venda);
     const lucro = numero(venda.total) - custo;
     return `<tr>
-      <td>${escaparHTML(formatarData(venda.realizada_em, true))}</td>
-      <td>${escaparHTML(itensVenda(venda))}</td>
-      <td>${escaparHTML(formasPagamento(venda))}</td>
-      <td class="numero">${escaparHTML(formatarMoeda(venda.total))}</td>
-      <td class="numero">${escaparHTML(formatarMoeda(custo))}</td>
-      <td class="numero">${escaparHTML(formatarMoeda(lucro))}</td>
+      <td data-rotulo="Data / hora">${escaparHTML(formatarData(venda.realizada_em, true))}</td>
+      <td data-rotulo="Itens">${itensVenda(venda)}</td>
+      <td data-rotulo="Pagamento">${formasPagamento(venda)}</td>
+      <td data-rotulo="Total" class="numero">${escaparHTML(formatarMoeda(venda.total))}</td>
+      <td data-rotulo="Custo" class="numero">${escaparHTML(formatarMoeda(custo))}</td>
+      <td data-rotulo="Lucro bruto" class="numero">${escaparHTML(formatarMoeda(lucro))}</td>
     </tr>`;
   }).join("");
 
@@ -139,7 +142,7 @@ async function renderVendas(intervalo) {
         { texto: "Total", numero: true },
         { texto: "Custo", numero: true },
         { texto: "Lucro bruto", numero: true },
-      ], linhas, 6)}
+      ], linhas, 6, "tabela-vendas")}
     </section>
   `;
 }
@@ -311,7 +314,7 @@ async function carregar() {
   }
 
   titulo.textContent = TITULOS[tipo];
-  document.title = `${TITULOS[tipo]} - Padaria Gestão`;
+  document.title = TITULOS[tipo];
   geradoEm.textContent = new Date().toLocaleString("pt-BR", {
     day: "2-digit",
     month: "2-digit",
@@ -321,7 +324,7 @@ async function carregar() {
   });
   periodoEl.textContent = tipo === "estoque"
     ? `Posição atual · ${new Date().toLocaleDateString("pt-BR")}`
-    : `${formatarDataISO(intervalo.inicioData)} a ${formatarDataISO(intervalo.fimData)}`;
+    : `Período: ${formatarDataISO(intervalo.inicioData)}${intervalo.inicioData === intervalo.fimData ? "" : ` a ${formatarDataISO(intervalo.fimData)}`}`;
 
   try {
     let html = "";
