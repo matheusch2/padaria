@@ -142,7 +142,8 @@ function finalizarVenda() {
       return {
         produtoId: id,
         nome: produto.nome,
-        preco: produto.preco,
+        preco: Number(produto.preco) || 0,
+        custo: Number(produto.custo) || 0,
         quantidade,
       };
     }),
