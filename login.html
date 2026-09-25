@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#5c2e18" />
+    <title>Entrar - Padaria Gestão</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="login.css" />
+  </head>
+  <body class="login-body">
+    <main class="login-shell">
+      <section class="login-card" aria-labelledby="tituloLogin">
+        <div class="login-marca">
+          <img src="imagens/logo.png" alt="Padaria Gestão" />
+          <div>
+            <h1 id="tituloLogin">Padaria Gestão</h1>
+            <p>Entre para acessar os dados da sua padaria.</p>
+          </div>
+        </div>
+
+        <div class="login-form">
+          <label for="emailLogin">E-mail</label>
+          <input id="emailLogin" type="email" autocomplete="email" placeholder="seu@email.com" />
+
+          <label for="senhaLogin">Senha</label>
+          <input id="senhaLogin" type="password" autocomplete="current-password" placeholder="Sua senha" minlength="6" />
+
+          <p id="avisoLogin" class="login-aviso" hidden></p>
+
+          <button id="btnEntrar" class="login-primario" type="button">Entrar</button>
+          <button id="btnCriarConta" class="login-secundario" type="button">Criar conta</button>
+        </div>
+
+        <p class="login-nota">Os dados ficam protegidos por usuário no Supabase.</p>
+      </section>
+    </main>
+
+    <script type="module" src="js/login.js"></script>
+  </body>
+</html>
