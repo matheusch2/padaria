@@ -87,6 +87,9 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
   margin-top: 12px;
 }
 
@@ -95,7 +98,11 @@
 }
 
 .periodo-personalizado label {
+  display: block;
+  width: 100%;
   min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .periodo-personalizado label > span {
@@ -109,8 +116,11 @@
 .periodo-personalizado input {
   display: block;
   width: 100%;
+  inline-size: 100%;
   min-width: 0;
+  min-inline-size: 0;
   max-width: 100%;
+  max-inline-size: 100%;
   box-sizing: border-box;
   min-height: 44px;
   border: 1px solid #e4dbd5;
