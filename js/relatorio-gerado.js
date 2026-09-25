@@ -2,7 +2,7 @@ import { exigirUsuario } from "./auth.js";
 import { listarVendasPeriodo } from "./vendas-api.js";
 import { listarPerdasPeriodo } from "./perdas-api.js";
 import { carregarProdutos } from "./produtos.js";
-import { listarFechamentosPeriodo } from "./fechamentos-api.js";
+import { listarFechamentosPeriodo } from "./fechamentos-api.js?v=20260925-2";
 import { agruparVendasPorDia, periodoDeVendas } from "./relatorio-vendas-organizacao.js?v=20260925-2";
 import {
   agruparProdutos,
