@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#8c4527" />
+    <title>Relatórios para impressão - Padaria Gestão</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="pagina.css" />
+    <link rel="stylesheet" href="relatorios-impressao.css?v=20260925-1" />
+  </head>
+  <body class="pagina-app impressao-body">
+    <header class="topo-pagina">
+      <a class="voltar" href="relatorio.html" aria-label="Voltar para relatórios">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
+      </a>
+      <h1>Relatórios para impressão</h1>
+    </header>
+
+    <main class="conteudo-pagina impressao-conteudo">
+      <div class="painel-pagina impressao-painel">
+        <section class="bloco impressao-intro">
+          <h2 class="bloco-titulo">Escolha o documento</h2>
+          <p>Selecione o período e o tipo de relatório que deseja preparar para visualização, impressão ou PDF.</p>
+        </section>
+
+        <section class="bloco" aria-labelledby="tituloPeriodoImpressao">
+          <h2 id="tituloPeriodoImpressao" class="bloco-titulo" style="text-align:center">Período</h2>
+
+          <div class="periodo-impressao-opcoes" role="group" aria-label="Selecionar período">
+            <button class="periodo-impressao-btn ativo" type="button" data-periodo-impressao="hoje">Hoje</button>
+            <button class="periodo-impressao-btn" type="button" data-periodo-impressao="ontem">Ontem</button>
+            <button class="periodo-impressao-btn" type="button" data-periodo-impressao="7">7 dias</button>
+            <button class="periodo-impressao-btn" type="button" data-periodo-impressao="30">30 dias</button>
+            <button class="periodo-impressao-btn" type="button" data-periodo-impressao="personalizado">Personalizado</button>
+          </div>
+
+          <div id="periodoImpressaoPersonalizado" class="periodo-impressao-personalizado" hidden>
+            <label>
+              <span>Data inicial</span>
+              <input id="dataInicialImpressao" type="date" />
+            </label>
+            <label>
+              <span>Data final</span>
+              <input id="dataFinalImpressao" type="date" />
+            </label>
+          </div>
+
+          <p id="periodoImpressaoLegenda" class="periodo-impressao-legenda">Hoje</p>
+        </section>
+
+        <section class="documentos-lista" aria-label="Relatórios disponíveis">
+          <button class="documento-card" type="button" data-documento="Vendas">
+            <span class="documento-icone" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 3h16v18H4z" /><path d="M8 7h8M8 11h8M8 15h5" /></svg>
+            </span>
+            <span class="documento-texto">
+              <b>Relatório de vendas</b>
+              <span>Vendas do período, totais, formas de pagamento e itens vendidos.</span>
+            </span>
+            <span class="documento-status" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" /></svg></span>
+          </button>
+
+          <button class="documento-card" type="button" data-documento="Perdas e sobras">
+            <span class="documento-icone" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M3 6h18" /><path d="M8 6V4h8v2" /><path d="m6 6 1 14h10l1-14" /><path d="M10 10v6M14 10v6" /></svg>
+            </span>
+            <span class="documento-texto">
+              <b>Relatório de perdas e sobras</b>
+              <span>Produtos, quantidades, custo das perdas e registros do período.</span>
+            </span>
+            <span class="documento-status" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" /></svg></span>
+          </button>
+
+          <button class="documento-card" type="button" data-documento="Estoque">
+            <span class="documento-icone" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M21 16V8l-9-5-9 5v8l9 5 9-5z" /><path d="M3.5 7.7 12 12l8.5-4.3" /><path d="M12 21v-9" /></svg>
+            </span>
+            <span class="documento-texto">
+              <b>Relatório de estoque</b>
+              <span>Posição atual dos produtos, quantidades e valor estimado em estoque.</span>
+            </span>
+            <span class="documento-status" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" /></svg></span>
+          </button>
+
+          <button class="documento-card" type="button" data-documento="Fechamento do caixa">
+            <span class="documento-icone" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2" /><path d="M8 6h8M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M16 14h.01" /></svg>
+            </span>
+            <span class="documento-texto">
+              <b>Relatório de fechamento do caixa</b>
+              <span>Faturamento, pagamentos, conferência de dinheiro e diferenças de caixa.</span>
+            </span>
+            <span class="documento-status" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" /></svg></span>
+          </button>
+
+          <button class="documento-card" type="button" data-documento="Produtos e lucratividade">
+            <span class="documento-icone" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M3 20h18" /><path d="M6 17v-5M12 17V7M18 17V3" /></svg>
+            </span>
+            <span class="documento-texto">
+              <b>Produtos e lucratividade</b>
+              <span>Quantidade vendida, faturamento, custo e lucro bruto de cada produto.</span>
+            </span>
+            <span class="documento-status" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" /></svg></span>
+          </button>
+        </section>
+
+        <section class="bloco preparar-relatorio">
+          <div class="preparar-resumo">
+            <span>Relatório selecionado</span>
+            <b id="documentoSelecionado">Nenhum</b>
+          </div>
+          <button id="btnPrepararRelatorio" class="btn-preparar-relatorio" type="button" disabled>Preparar relatório</button>
+          <p id="avisoImpressao" class="aviso-estrutura">A estrutura de geração e impressão será conectada aos dados reais na próxima etapa.</p>
+        </section>
+
+        <a class="btn-voltar-rodape impressao-voltar" href="relatorio.html">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
+          <span>Voltar para Relatórios</span>
+        </a>
+      </div>
+    </main>
+
+    <script type="module" src="js/relatorios-impressao.js?v=20260925-1"></script>
+  </body>
+</html>
