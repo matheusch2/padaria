@@ -19,10 +19,15 @@ export async function buscarFechamento(dataReferencia) {
 }
 
 export async function salvarFechamento(payload) {
+  const { data: authData, error: authError } = await supabase.auth.getUser();
+  tratarErro(authError, "Sessão inválida.");
+  if (!authData.user) throw new Error("Usuário não autenticado.");
+
   const { data, error } = await supabase
     .from("fechamentos_caixa")
     .upsert(
       {
+        usuario_id: authData.user.id,
         data_referencia: payload.dataReferencia,
         quantidade_vendas: payload.quantidadeVendas,
         faturamento: payload.faturamento,
