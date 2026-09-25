@@ -20,15 +20,6 @@ export async function registrarPerdaSobra({ produtoId, tipo, quantidade, motivo,
   return data;
 }
 
-export async function estornarPerdaSobra(id) {
-  const { data, error } = await supabase.rpc("estornar_perda_sobra", {
-    p_registro_id: id,
-  });
-
-  tratarErro(error, "Não foi possível estornar a movimentação.");
-  return Number(data) || 0;
-}
-
 export async function listarPerdasPeriodo(inicioISO, fimISO) {
   const { data, error } = await supabase
     .from("perdas_sobras")
