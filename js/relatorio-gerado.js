@@ -3,6 +3,7 @@ import { listarVendasPeriodo } from "./vendas-api.js";
 import { listarPerdasPeriodo } from "./perdas-api.js";
 import { carregarProdutos } from "./produtos.js";
 import { listarFechamentosPeriodo } from "./fechamentos-api.js";
+import { agruparVendasPorDia, periodoDeVendas } from "./relatorio-vendas-organizacao.js";
 import {
   agruparProdutos,
   custoItensVenda,
@@ -109,7 +110,7 @@ async function renderVendas(intervalo) {
   const resumo = resumirPeriodo(vendas, []);
   const lucroVendas = resumo.faturamento - resumo.custoVendido;
 
-  const linhas = vendas.map((venda) => {
+  const linhasDeVendas = (registros) => registros.map((venda) => {
     const custo = custoItensVenda(venda);
     const lucro = numero(venda.total) - custo;
     return `<tr>
@@ -120,6 +121,23 @@ async function renderVendas(intervalo) {
       <td data-rotulo="Custo" class="numero">${escaparHTML(formatarMoeda(custo))}</td>
       <td data-rotulo="Lucro bruto" class="numero">${escaparHTML(formatarMoeda(lucro))}</td>
     </tr>`;
+  }).join("");
+
+  const produtos = agruparProdutos(vendas).sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
+  const produtosHTML = produtos.map((produto) => `<article class="produto-resumo">
+    <header><h3>${escaparHTML(produto.nome)}</h3><span>Quantidade: <b>${escaparHTML(formatarQuantidade(produto.quantidade))}</b></span></header>
+    <dl>
+      <div><dt>Faturamento</dt><dd>${escaparHTML(formatarMoeda(produto.faturamento))}</dd></div>
+      <div><dt>Custo</dt><dd>${escaparHTML(formatarMoeda(produto.custo))}</dd></div>
+      <div><dt>Lucro bruto</dt><dd>${escaparHTML(formatarMoeda(produto.lucro))}</dd></div>
+    </dl>
+  </article>`).join("");
+  const diasHTML = agruparVendasPorDia(vendas).map(([dia, registros]) => {
+    const totalDia = registros.reduce((soma, venda) => soma + numero(venda.total), 0);
+    return `<details class="vendas-dia">
+      <summary><span>${escaparHTML(dia ? formatarDataISO(dia) : "Data não informada")}</span><span>${registros.length} ${registros.length === 1 ? "venda" : "vendas"} · ${escaparHTML(formatarMoeda(totalDia))}</span></summary>
+      ${tabela(["Data / hora", "Itens", "Pagamento", { texto: "Total", numero: true }, { texto: "Custo", numero: true }, { texto: "Lucro bruto", numero: true }], linhasDeVendas(registros), 6, "tabela-vendas")}
+    </details>`;
   }).join("");
 
   return `
@@ -134,15 +152,13 @@ async function renderVendas(intervalo) {
       ["Cartão", formatarMoeda(resumo.cartao)],
     ])}
     <section class="relatorio-secao">
-      <h2>Vendas do período</h2>
-      ${tabela([
-        "Data / hora",
-        "Itens",
-        "Pagamento",
-        { texto: "Total", numero: true },
-        { texto: "Custo", numero: true },
-        { texto: "Lucro bruto", numero: true },
-      ], linhas, 6, "tabela-vendas")}
+      <h2>Produtos vendidos no período</h2>
+      ${produtosHTML || '<p class="sem-registros">Nenhum produto vendido no período.</p>'}
+    </section>
+    <section class="relatorio-secao vendas-detalhadas">
+      <h2>Vendas por dia</h2>
+      <p class="instrucao-dias no-print">Toque em uma data para consultar as vendas. O resumo acima soma todos os dias do período.</p>
+      ${diasHTML || '<p class="sem-registros">Nenhuma venda no período.</p>'}
     </section>
   `;
 }
@@ -344,5 +360,55 @@ async function carregar() {
   }
 }
 
+function configurarFiltroVendas() {
+  if (tipo !== "vendas") return;
+  const form = document.getElementById("filtroVendas");
+  const modo = document.getElementById("modoVendas");
+  const data = document.getElementById("dataVendas");
+  const dataFim = document.getElementById("fimVendas");
+  const campoFim = document.getElementById("campoFimVendas");
+  const erro = document.getElementById("erroFiltroVendas");
+  const rotulos = { diario: "Dia", semanal: "Dia da semana desejada", mensal: "Dia do mês desejado", personalizado: "Data inicial" };
+  const selecionado = params.get("periodo");
+  modo.value = Object.hasOwn(rotulos, selecionado) ? selecionado : inicio === fim ? "diario" : "personalizado";
+  data.value = inicio;
+  dataFim.value = fim;
+  const atualizarCampos = () => {
+    campoFim.hidden = modo.value !== "personalizado";
+    dataFim.required = !campoFim.hidden;
+    document.getElementById("rotuloDataVendas").textContent = rotulos[modo.value];
+    erro.hidden = true;
+  };
+  modo.addEventListener("change", atualizarCampos);
+  atualizarCampos();
+  form.hidden = false;
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    try {
+      const intervalo = periodoDeVendas(modo.value, data.value, dataFim.value);
+      const query = new URLSearchParams({ tipo: "vendas", inicio: intervalo.inicioData, fim: intervalo.fimData, periodo: modo.value });
+      window.location.href = `relatorio-gerado.html?${query}`;
+    } catch (falha) {
+      erro.textContent = falha.message;
+      erro.hidden = false;
+    }
+  });
+}
+
+let estadoAntesImpressao = null;
+window.addEventListener("beforeprint", () => {
+  if (tipo !== "vendas" || estadoAntesImpressao) return;
+  const incluir = document.getElementById("imprimirDetalhesVendas").checked;
+  document.body.classList.toggle("imprimir-vendas-detalhadas", incluir);
+  estadoAntesImpressao = [...document.querySelectorAll(".vendas-dia")].map((elemento) => [elemento, elemento.open]);
+  if (incluir) estadoAntesImpressao.forEach(([elemento]) => { elemento.open = true; });
+});
+window.addEventListener("afterprint", () => {
+  estadoAntesImpressao?.forEach(([elemento, aberto]) => { elemento.open = aberto; });
+  estadoAntesImpressao = null;
+  document.body.classList.remove("imprimir-vendas-detalhadas");
+});
+
+configurarFiltroVendas();
 btnImprimir.addEventListener("click", () => window.print());
 await carregar();
