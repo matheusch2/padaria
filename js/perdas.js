@@ -1,5 +1,6 @@
-import { CHAVE_PERDAS, lerLista, salvarLista } from "./armazenamento.js";
-import { carregarProdutos, ajustarEstoque } from "./produtos.js";
+import { carregarProdutos } from "./produtos.js";
+import { registrarPerdaSobra, estornarPerdaSobra, listarPerdasPeriodo } from "./perdas-api.js";
+import { exigirUsuario } from "./auth.js";
 
 const produtoSelect = document.getElementById("produtoPerda");
 const tipoSelect = document.getElementById("tipoSaida");
@@ -10,6 +11,8 @@ const aviso = document.getElementById("avisoPerda");
 const btnRegistrar = document.getElementById("btnRegistrarPerda");
 const semProdutos = document.getElementById("semProdutos");
 const camposSaida = document.getElementById("camposSaida");
+
+let produtos = [];
 
 function formatarMoeda(valor) {
   return Number(valor || 0).toLocaleString("pt-BR", {
@@ -27,19 +30,7 @@ function lerQuantidade() {
 }
 
 function produtoSelecionado() {
-  return carregarProdutos().find((produto) => produto.id === produtoSelect.value) || null;
-}
-
-function hojeLocal(data = new Date()) {
-  const ano = data.getFullYear();
-  const mes = String(data.getMonth() + 1).padStart(2, "0");
-  const dia = String(data.getDate()).padStart(2, "0");
-  return `${ano}-${mes}-${dia}`;
-}
-
-function dataLocalDoISO(valor) {
-  const data = new Date(valor);
-  return Number.isNaN(data.getTime()) ? "" : hojeLocal(data);
+  return produtos.find((produto) => produto.id === produtoSelect.value) || null;
 }
 
 function escaparHTML(valor) {
@@ -49,6 +40,14 @@ function escaparHTML(valor) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+function intervaloHoje() {
+  const inicio = new Date();
+  inicio.setHours(0, 0, 0, 0);
+  const fim = new Date(inicio);
+  fim.setDate(fim.getDate() + 1);
+  return { inicioISO: inicio.toISOString(), fimISO: fim.toISOString() };
 }
 
 function mostrarAviso(texto, sucesso = false) {
@@ -73,8 +72,10 @@ function definirEstadoSemProdutos(semCadastro) {
   });
 }
 
-function carregarSelectProdutos() {
-  const produtos = carregarProdutos().sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
+async function carregarSelectProdutos(manterSelecao = true) {
+  const selecao = manterSelecao ? produtoSelect.value : "";
+  produtos = await carregarProdutos();
+  produtos.sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
 
   if (!produtos.length) {
     produtoSelect.innerHTML = '<option value="">Nenhum produto cadastrado</option>';
@@ -87,6 +88,9 @@ function carregarSelectProdutos() {
   produtoSelect.innerHTML = '<option value="">Selecione um produto</option>' + produtos
     .map((produto) => `<option value="${produto.id}">${escaparHTML(produto.nome)}</option>`)
     .join("");
+
+  if (selecao && produtos.some((produto) => produto.id === selecao)) produtoSelect.value = selecao;
+  atualizarResumoProduto();
 }
 
 function atualizarResumoProduto() {
@@ -106,7 +110,7 @@ function atualizarResumoProduto() {
   document.getElementById("impactoPerda").textContent = formatarMoeda((Number(produto.custo) || 0) * quantidade);
 }
 
-function registrarSaida() {
+async function registrarSaida() {
   esconderAviso();
   const produto = produtoSelecionado();
   const quantidade = lerQuantidade();
@@ -130,89 +134,88 @@ function registrarSaida() {
     return;
   }
 
-  const custoUnitario = Number(produto.custo) || 0;
-  const registro = {
-    id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
-    data: new Date().toISOString(),
-    produtoId: produto.id,
-    nome: produto.nome,
-    unidade: produto.unidade || "un",
-    tipo: tipoSelect.value,
-    quantidade,
-    custoUnitario,
-    custoTotal: custoUnitario * quantidade,
-    motivo: motivoSelect.value,
-    observacao: observacaoInput.value.trim(),
-  };
+  btnRegistrar.disabled = true;
+  try {
+    await registrarPerdaSobra({
+      produtoId: produto.id,
+      tipo: tipoSelect.value,
+      quantidade,
+      motivo: motivoSelect.value,
+      observacao: observacaoInput.value.trim(),
+    });
 
-  const perdas = lerLista(CHAVE_PERDAS);
-  perdas.push(registro);
-  salvarLista(CHAVE_PERDAS, perdas);
-  ajustarEstoque(produto.id, -quantidade);
-
-  quantidadeInput.value = "";
-  observacaoInput.value = "";
-  mostrarAviso("Saída registrada. O estoque e o resultado foram atualizados.", true);
-  atualizarResumoProduto();
-  renderizarHistorico();
+    quantidadeInput.value = "";
+    observacaoInput.value = "";
+    mostrarAviso("Saída registrada. O estoque e o resultado foram atualizados.", true);
+    await carregarSelectProdutos(true);
+    await renderizarHistorico();
+  } catch (erro) {
+    mostrarAviso(erro?.message || "Não foi possível registrar a saída.");
+  } finally {
+    btnRegistrar.disabled = false;
+  }
 }
 
-function estornarRegistro(id) {
-  const perdas = lerLista(CHAVE_PERDAS);
-  const registro = perdas.find((item) => item.id === id);
+async function estornarRegistro(id) {
+  const { inicioISO, fimISO } = intervaloHoje();
+  const registros = await listarPerdasPeriodo(inicioISO, fimISO);
+  const registro = registros.find((item) => item.id === id);
   if (!registro) return;
 
-  if (!window.confirm(`Estornar a saída de ${registro.quantidade} ${registro.unidade || "un"} de "${registro.nome}"?`)) return;
+  if (!window.confirm(`Estornar a saída de ${registro.quantidade} de "${registro.nome_produto}"?`)) return;
 
-  const produtoAtualizado = ajustarEstoque(registro.produtoId, Number(registro.quantidade) || 0);
-  if (!produtoAtualizado) {
-    mostrarAviso("Não foi possível estornar porque o produto não existe mais no cadastro.");
-    return;
+  try {
+    await estornarPerdaSobra(id);
+    mostrarAviso("Movimentação estornada e estoque devolvido.", true);
+    await carregarSelectProdutos(true);
+    await renderizarHistorico();
+  } catch (erro) {
+    mostrarAviso(erro?.message || "Não foi possível estornar a movimentação.");
   }
-
-  salvarLista(CHAVE_PERDAS, perdas.filter((item) => item.id !== id));
-  mostrarAviso("Movimentação estornada e estoque devolvido.", true);
-  atualizarResumoProduto();
-  renderizarHistorico();
 }
 
-function renderizarHistorico() {
-  const dataHoje = hojeLocal();
-  const registros = lerLista(CHAVE_PERDAS)
-    .filter((registro) => dataLocalDoISO(registro.data) === dataHoje)
-    .sort((a, b) => new Date(b.data) - new Date(a.data));
-
-  const total = registros.reduce((soma, item) => soma + (Number(item.custoTotal) || 0), 0);
-  document.getElementById("totalPerdasHoje").textContent = formatarMoeda(total);
-
+async function renderizarHistorico() {
   const lista = document.getElementById("listaPerdas");
-  if (!registros.length) {
-    lista.innerHTML = '<p class="sem-registros">Nenhuma perda ou sobra registrada hoje.</p>';
-    return;
+  lista.innerHTML = '<p class="sem-registros">Carregando movimentações...</p>';
+
+  try {
+    const { inicioISO, fimISO } = intervaloHoje();
+    const registros = await listarPerdasPeriodo(inicioISO, fimISO);
+    const total = registros.reduce((soma, item) => soma + (Number(item.custo_total) || 0), 0);
+    document.getElementById("totalPerdasHoje").textContent = formatarMoeda(total);
+
+    if (!registros.length) {
+      lista.innerHTML = '<p class="sem-registros">Nenhuma perda ou sobra registrada hoje.</p>';
+      return;
+    }
+
+    lista.innerHTML = registros.map((registro) => {
+      const hora = new Date(registro.registrada_em).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+      const tipo = registro.tipo === "sobra" ? "Sobra" : "Perda";
+      const observacao = registro.observacao ? ` · ${escaparHTML(registro.observacao)}` : "";
+      const produto = produtos.find((item) => item.id === registro.produto_id);
+      const unidade = produto?.unidade || "un";
+
+      return `
+        <div class="perda-item">
+          <div class="perda-principal">
+            <b>${escaparHTML(registro.nome_produto)}</b>
+            <span>${tipo} · ${formatarQuantidade(registro.quantidade)} ${escaparHTML(unidade)} · ${escaparHTML(registro.motivo || "Sem motivo")}${observacao}</span>
+          </div>
+          <div class="perda-valor">
+            <b>− ${formatarMoeda(registro.custo_total)}</b>
+            <small>${hora}</small>
+          </div>
+          <button class="btn-estornar" type="button" data-estornar="${registro.id}">Estornar</button>
+        </div>`;
+    }).join("");
+
+    lista.querySelectorAll("[data-estornar]").forEach((botao) => {
+      botao.addEventListener("click", () => estornarRegistro(botao.dataset.estornar));
+    });
+  } catch (erro) {
+    lista.innerHTML = `<p class="sem-registros">${escaparHTML(erro?.message || "Não foi possível carregar as movimentações.")}</p>`;
   }
-
-  lista.innerHTML = registros.map((registro) => {
-    const hora = new Date(registro.data).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
-    const tipo = registro.tipo === "sobra" ? "Sobra" : "Perda";
-    const observacao = registro.observacao ? ` · ${escaparHTML(registro.observacao)}` : "";
-
-    return `
-      <div class="perda-item">
-        <div class="perda-principal">
-          <b>${escaparHTML(registro.nome)}</b>
-          <span>${tipo} · ${formatarQuantidade(registro.quantidade)} ${escaparHTML(registro.unidade || "un")} · ${escaparHTML(registro.motivo || "Sem motivo")}${observacao}</span>
-        </div>
-        <div class="perda-valor">
-          <b>− ${formatarMoeda(registro.custoTotal)}</b>
-          <small>${hora}</small>
-        </div>
-        <button class="btn-estornar" type="button" data-estornar="${registro.id}">Estornar</button>
-      </div>`;
-  }).join("");
-
-  lista.querySelectorAll("[data-estornar]").forEach((botao) => {
-    botao.addEventListener("click", () => estornarRegistro(botao.dataset.estornar));
-  });
 }
 
 produtoSelect.addEventListener("change", () => {
@@ -222,6 +225,12 @@ produtoSelect.addEventListener("change", () => {
 quantidadeInput.addEventListener("input", atualizarResumoProduto);
 btnRegistrar.addEventListener("click", registrarSaida);
 
-carregarSelectProdutos();
-atualizarResumoProduto();
-renderizarHistorico();
+const usuario = await exigirUsuario();
+if (usuario) {
+  try {
+    await carregarSelectProdutos(false);
+    await renderizarHistorico();
+  } catch (erro) {
+    mostrarAviso(erro?.message || "Não foi possível carregar os dados.");
+  }
+}
