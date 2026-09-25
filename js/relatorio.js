@@ -1,5 +1,10 @@
 import { exigirUsuario } from "./auth.js";
 
+const estiloProdutos = document.createElement("link");
+estiloProdutos.rel = "stylesheet";
+estiloProdutos.href = "desempenho-produtos.css?v=20260925-1";
+document.head.appendChild(estiloProdutos);
+
 const botoesPeriodo = [...document.querySelectorAll("[data-periodo]")];
 const periodoPersonalizado = document.getElementById("periodoPersonalizado");
 const dataInicial = document.getElementById("dataInicialRelatorio");
