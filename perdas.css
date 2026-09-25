@@ -1,5 +1,5 @@
 .perdas-painel {
-  gap: 16px;
+  gap: 18px;
 }
 
 .bloco-registro,
@@ -7,8 +7,12 @@
   overflow: hidden;
 }
 
+.bloco-registro {
+  padding-bottom: 16px;
+}
+
 .cabecalho-bloco {
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 }
 
 .texto-apoio {
@@ -28,12 +32,12 @@
 .produto-resumo {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin: -3px 0 18px;
+  gap: 8px;
+  margin: -2px 0 18px;
   padding: 12px;
-  border: 1px solid #eee3dc;
-  border-radius: 14px;
-  background: linear-gradient(180deg, #fcf8f5 0%, #faf5f1 100%);
+  border: 1px solid #eadfd8;
+  border-radius: 15px;
+  background: linear-gradient(180deg, #fdfaf8 0%, #faf4ef 100%);
 }
 
 .produto-resumo[hidden],
@@ -44,7 +48,9 @@
 
 .produto-resumo > div {
   min-width: 0;
-  padding: 3px 4px;
+  padding: 6px 8px;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.58);
 }
 
 .produto-resumo span {
@@ -52,18 +58,20 @@
   margin-bottom: 3px;
   color: #8a7467;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.25px;
 }
 
 .produto-resumo b {
   display: block;
   color: #3a2418;
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.3;
 }
 
 .estado-sem-produtos {
-  margin: -3px 0 4px;
+  margin: -2px 0 4px;
   padding: 14px;
   border: 1px solid #eadfd8;
   border-radius: 14px;
@@ -163,21 +171,22 @@
 
 .impacto-box {
   margin-top: 2px;
-  padding: 15px;
+  padding: 14px 15px;
   border-radius: 16px;
-  border: 1px solid #f0d0cc;
-  background: linear-gradient(135deg, #fff8f7 0%, #fff2f0 100%);
+  border: 1px solid #efc9c5;
+  background: linear-gradient(135deg, #fff9f8 0%, #fff2f0 100%);
   display: flex;
   align-items: center;
   gap: 12px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.7);
 }
 
 .impacto-icone {
-  width: 42px;
-  height: 42px;
+  width: 40px;
+  height: 40px;
   flex: 0 0 auto;
-  border-radius: 13px;
-  background: rgba(var(--erro), 0.09);
+  border-radius: 12px;
+  background: rgba(var(--erro), 0.08);
   color: rgb(var(--erro));
   display: flex;
   align-items: center;
@@ -185,8 +194,8 @@
 }
 
 .impacto-icone svg {
-  width: 21px;
-  height: 21px;
+  width: 20px;
+  height: 20px;
   fill: none;
   stroke: currentColor;
   stroke-width: 2;
@@ -197,42 +206,64 @@
 .impacto-conteudo {
   min-width: 0;
   display: grid;
-  gap: 2px;
+  gap: 1px;
 }
 
-.impacto-box span,
+.impacto-box span {
+  color: #866b63;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
 .impacto-box small {
-  color: #8d6e65;
-  font-size: 12px;
+  margin-top: 2px;
+  color: #96786f;
+  font-size: 11px;
+  line-height: 1.35;
 }
 
 .impacto-box b {
   color: rgb(var(--erro));
-  font-size: 24px;
-  line-height: 1.15;
+  font-size: 23px;
+  line-height: 1.12;
+}
+
+.bloco-registro .aviso-finalizar {
+  margin: 10px 0 0;
+  padding: 10px 12px;
+  border: 1px solid #cae7d1;
+  border-radius: 12px;
+  background: #eef8f0;
+  color: #2f7a3e;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
 }
 
 .acoes-registro {
-  margin-top: 16px;
+  margin-top: 14px;
 }
 
 .btn-registrar-perda {
   width: 100%;
+  min-height: 54px;
   border: 0;
   border-radius: 16px;
-  padding: 16px;
-  background: linear-gradient(160deg, #cf4a42 0%, #aa251f 100%);
+  padding: 15px 18px;
+  background: linear-gradient(160deg, #cc433b 0%, #ac261f 100%);
   color: #fff;
   font-size: 16px;
   font-weight: 800;
   cursor: pointer;
-  box-shadow: 0 7px 18px rgba(179, 38, 30, 0.24);
+  box-shadow: 0 7px 17px rgba(179, 38, 30, 0.22);
   transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
 }
 
 .btn-registrar-perda:active:not(:disabled) {
   transform: scale(0.985);
-  box-shadow: 0 4px 12px rgba(179, 38, 30, 0.2);
+  box-shadow: 0 4px 12px rgba(179, 38, 30, 0.18);
 }
 
 .btn-registrar-perda:disabled {
@@ -242,16 +273,27 @@
 }
 
 .acoes-navegacao {
-  margin-top: 14px;
+  margin-top: 13px;
+  padding-top: 1px;
 }
 
 .acoes-navegacao .rodape-divisor {
-  margin: 0 0 12px;
+  margin: 0 0 10px;
+  color: #b09f95;
+  font-size: 11px;
 }
 
 .acoes-navegacao .btn-voltar-rodape {
-  height: 50px;
+  height: 48px;
   border-width: 1.5px;
+  border-color: rgba(var(--marca), .78);
+  border-radius: 15px;
+  font-size: 14px;
+  box-shadow: none;
+}
+
+.bloco-movimentacoes {
+  padding-top: 16px;
 }
 
 .titulo-com-resumo {
@@ -259,7 +301,7 @@
   justify-content: space-between;
   align-items: flex-start;
   gap: 12px;
-  margin-bottom: 12px;
+  margin-bottom: 13px;
 }
 
 .titulo-com-resumo .bloco-titulo {
@@ -269,8 +311,16 @@
 .subtitulo-movimentacoes {
   margin: 4px 0 0;
   color: #9a877b;
-  font-size: 12px;
+  font-size: 11px;
   line-height: 1.4;
+}
+
+.bloco-movimentacoes .badge-erro {
+  flex: 0 0 auto;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  line-height: 1;
 }
 
 .lista-perdas {
@@ -279,36 +329,47 @@
 }
 
 .perda-item {
+  position: relative;
   display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 10px 14px;
-  padding: 12px 0;
-  border-bottom: 1px solid #eee6e1;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "principal valor"
+    "principal acao";
+  gap: 5px 14px;
+  padding: 13px 14px;
+  border: 1px solid #eee3dc;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #fff 0%, #fdfbf9 100%);
 }
 
 .perda-item:last-child {
-  border-bottom: 0;
-  padding-bottom: 0;
+  border-bottom: 1px solid #eee3dc;
+  padding-bottom: 13px;
 }
 
 .perda-principal {
+  grid-area: principal;
   min-width: 0;
+  align-self: center;
 }
 
 .perda-principal b {
   display: block;
-  margin-bottom: 3px;
+  margin-bottom: 4px;
   color: #3a2418;
   font-size: 14px;
+  line-height: 1.25;
 }
 
 .perda-principal span {
   color: #877267;
-  font-size: 12px;
-  line-height: 1.4;
+  font-size: 11px;
+  line-height: 1.45;
 }
 
 .perda-valor {
+  grid-area: valor;
+  min-width: 82px;
   text-align: right;
 }
 
@@ -316,31 +377,40 @@
   display: block;
   color: rgb(var(--erro));
   font-size: 14px;
+  white-space: nowrap;
 }
 
 .perda-valor small {
-  color: #9a877b;
-  font-size: 11px;
+  display: block;
+  margin-top: 2px;
+  color: #aa978c;
+  font-size: 10px;
 }
 
 .btn-estornar {
-  grid-column: 1 / -1;
+  grid-area: acao;
   justify-self: end;
+  align-self: end;
   border: 0;
-  background: transparent;
+  border-radius: 9px;
+  background: rgba(var(--marca), 0.07);
   color: rgb(var(--marca));
-  padding: 4px 0;
-  font-size: 12px;
-  font-weight: 700;
+  padding: 6px 9px;
+  font-size: 11px;
+  font-weight: 800;
   cursor: pointer;
+}
+
+.btn-estornar:active {
+  background: rgba(var(--marca), 0.13);
 }
 
 .sem-registros {
   margin: 0;
-  padding: 12px 8px 4px;
+  padding: 13px 8px 5px;
   color: #9a877b;
   text-align: center;
-  font-size: 13px;
+  font-size: 12px;
   line-height: 1.45;
 }
 
@@ -351,11 +421,16 @@
   }
 
   .produto-resumo {
-    grid-template-columns: 1fr;
-    gap: 4px;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
   }
 
   .impacto-box {
-    align-items: flex-start;
+    align-items: center;
+  }
+
+  .perda-item {
+    grid-template-columns: minmax(0, 1fr) auto;
+    padding: 12px;
   }
 }
