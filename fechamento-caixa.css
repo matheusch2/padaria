@@ -1,0 +1,215 @@
+.cabecalho-fechamento {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.texto-apoio {
+  margin: -2px 0 14px;
+  color: #7b695e;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.campo-data {
+  border: 1px solid #e4dbd5;
+  border-radius: 10px;
+  background: #faf6f3;
+  color: #3a2418;
+  padding: 9px 10px;
+  font: inherit;
+  font-size: 13px;
+}
+
+.grade-resumo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.card-resumo {
+  min-width: 0;
+  padding: 13px;
+  border-radius: 14px;
+  border: 1px solid #ece2dc;
+  background: #fbf8f6;
+  display: grid;
+  gap: 4px;
+}
+
+.card-resumo.destaque {
+  background: rgba(var(--marca), 0.08);
+  border-color: rgba(var(--marca), 0.18);
+}
+
+.card-resumo span,
+.card-resumo small {
+  color: #877267;
+  font-size: 11px;
+}
+
+.card-resumo b {
+  color: #3a2418;
+  font-size: 17px;
+}
+
+.campo-valor input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #3a2418;
+  font: inherit;
+  font-size: 16px;
+}
+
+.campo-destaque {
+  border-color: rgba(var(--marca), 0.35);
+  background: rgba(var(--marca), 0.05);
+}
+
+.conferencia-caixa {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.conferencia-caixa > div {
+  padding: 13px;
+  border-radius: 14px;
+  background: #faf6f3;
+  border: 1px solid #ece2dc;
+  display: grid;
+  gap: 4px;
+}
+
+.conferencia-caixa span {
+  color: #877267;
+  font-size: 11px;
+}
+
+.conferencia-caixa b {
+  color: #3a2418;
+  font-size: 16px;
+}
+
+.diferenca.ok {
+  background: #eefaf3;
+  border-color: #cee9da;
+}
+
+.diferenca.ok b {
+  color: rgb(var(--sucesso));
+}
+
+.diferenca.sobra {
+  background: #eef6ff;
+  border-color: #cfe0f4;
+}
+
+.diferenca.sobra b {
+  color: #2d67a3;
+}
+
+.diferenca.falta {
+  background: #fdecec;
+  border-color: #f5cfcf;
+}
+
+.diferenca.falta b {
+  color: rgb(var(--erro));
+}
+
+.linha-financeira {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 11px 0;
+  border-bottom: 1px solid #eee6e1;
+  font-size: 14px;
+}
+
+.linha-financeira span {
+  color: #6f5c51;
+}
+
+.linha-financeira b {
+  color: #3a2418;
+  text-align: right;
+}
+
+.linha-financeira.perda b {
+  color: rgb(var(--erro));
+}
+
+.linha-financeira.total {
+  margin-top: 3px;
+  padding-top: 14px;
+  border-bottom: 0;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.linha-financeira.total b {
+  color: rgb(var(--sucesso));
+  font-size: 19px;
+}
+
+.linha-financeira.total.negativo b {
+  color: rgb(var(--erro));
+}
+
+.nota-resultado {
+  margin: 8px 0 0;
+  color: #9a877b;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.bloco textarea {
+  width: 100%;
+  resize: vertical;
+  min-height: 82px;
+  margin-bottom: 14px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #e4dbd5;
+  background: #faf6f3;
+  color: #3a2418;
+  font: inherit;
+  font-size: 16px;
+}
+
+.bloco textarea:focus {
+  outline: none;
+  border-color: rgb(var(--marca));
+  box-shadow: 0 0 0 4px rgba(var(--marca), 0.1);
+}
+
+.status-fechamento {
+  margin: 10px 0 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(var(--marca), 0.08);
+  color: rgb(var(--marca));
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+@media (max-width: 420px) {
+  .cabecalho-fechamento {
+    flex-direction: column;
+  }
+
+  .campo-data {
+    width: 100%;
+  }
+
+  .conferencia-caixa {
+    grid-template-columns: 1fr;
+  }
+}
