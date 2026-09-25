@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#8c4527" />
+    <title>Perdas e sobras - Padaria Gestão</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="pagina.css" />
+    <link rel="stylesheet" href="perdas.css" />
+  </head>
+  <body class="pagina-app">
+    <header class="topo-pagina">
+      <a class="voltar" href="index.html" aria-label="Voltar para o início">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
+      </a>
+      <h1>Perdas e Sobras</h1>
+    </header>
+
+    <main class="conteudo-pagina">
+      <div class="painel-pagina">
+        <section class="bloco">
+          <h2 class="bloco-titulo">Registrar saída</h2>
+          <p class="texto-apoio">Use esta tela para produtos perdidos, danificados, vencidos ou sobras que serão descartadas. O estoque é reduzido e o prejuízo é calculado pelo custo.</p>
+
+          <div class="campo-form">
+            <label for="produtoPerda">Produto</label>
+            <select id="produtoPerda"></select>
+          </div>
+
+          <div id="produtoResumo" class="produto-resumo" hidden>
+            <span>Estoque atual: <b id="estoqueAtual">0</b></span>
+            <span>Custo unitário: <b id="custoUnitario">R$ 0,00</b></span>
+          </div>
+
+          <div class="grade-campos">
+            <div class="campo-form">
+              <label for="tipoSaida">Tipo</label>
+              <select id="tipoSaida">
+                <option value="perda">Perda</option>
+                <option value="sobra">Sobra descartada</option>
+              </select>
+            </div>
+            <div class="campo-form">
+              <label for="quantidadePerda">Quantidade</label>
+              <input id="quantidadePerda" class="milhar" type="text" inputmode="numeric" placeholder="0" />
+            </div>
+          </div>
+
+          <div class="campo-form">
+            <label for="motivoPerda">Motivo</label>
+            <select id="motivoPerda">
+              <option value="Sobra do dia">Sobra do dia</option>
+              <option value="Produto danificado">Produto danificado</option>
+              <option value="Vencimento">Vencimento</option>
+              <option value="Erro de produção">Erro de produção</option>
+              <option value="Quebra ou acidente">Quebra ou acidente</option>
+              <option value="Outro">Outro</option>
+            </select>
+          </div>
+
+          <div class="campo-form">
+            <label for="observacaoPerda">Observação <span class="opcional">(opcional)</span></label>
+            <textarea id="observacaoPerda" rows="3" placeholder="Ex.: bandeja caiu no chão"></textarea>
+          </div>
+
+          <div class="impacto-box">
+            <span>Impacto no resultado</span>
+            <b id="impactoPerda">R$ 0,00</b>
+            <small>Valor calculado pelo custo do produto.</small>
+          </div>
+
+          <p id="avisoPerda" class="aviso-finalizar" hidden></p>
+          <button class="btn-registrar-perda" id="btnRegistrarPerda" type="button">Registrar saída</button>
+        </section>
+
+        <section class="bloco">
+          <div class="titulo-com-resumo">
+            <h2 class="bloco-titulo">Movimentações de hoje</h2>
+            <span id="totalPerdasHoje" class="badge-erro">R$ 0,00</span>
+          </div>
+          <div id="listaPerdas" class="lista-perdas"></div>
+        </section>
+      </div>
+    </main>
+
+    <script src="js/numeros.js"></script>
+    <script type="module" src="js/perdas.js"></script>
+  </body>
+</html>
