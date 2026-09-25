@@ -12,12 +12,18 @@
 }
 
 .data-fechamento-wrap {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   margin-bottom: 14px;
 }
 
 .campo-data {
+  display: block;
   width: 100%;
-  min-height: 48px;
+  max-width: 100%;
+  min-width: 0;
+  inline-size: 100%;
   box-sizing: border-box;
   border: 1px solid #e4dbd5;
   border-radius: 12px;
