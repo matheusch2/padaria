@@ -8,11 +8,7 @@ const btnCriar = document.getElementById("btnCriarConta");
 const btnAlternarSenha = document.getElementById("btnAlternarSenha");
 const aviso = document.getElementById("avisoLogin");
 
-function destinoSeguro() {
-  const valor = new URLSearchParams(window.location.search).get("redirect") || "index.html";
-  if (valor.includes("://") || valor.startsWith("//") || valor.startsWith("/")) return "index.html";
-  return valor;
-}
+const DESTINO_APOS_LOGIN = "index.html";
 
 function mostrarAviso(texto, sucesso = false) {
   aviso.textContent = texto;
@@ -62,7 +58,7 @@ btnEntrar.addEventListener("click", async () => {
   aviso.hidden = true;
   try {
     await entrar(campos.email, campos.senha);
-    window.location.replace(destinoSeguro());
+    window.location.replace(DESTINO_APOS_LOGIN);
   } catch (erro) {
     mostrarAviso(erro?.message || "Não foi possível entrar.");
   } finally {
@@ -79,7 +75,7 @@ btnCriar.addEventListener("click", async () => {
   try {
     const dados = await cadastrarUsuario(campos.email, campos.senha);
     if (dados.session) {
-      window.location.replace(destinoSeguro());
+      window.location.replace(DESTINO_APOS_LOGIN);
       return;
     }
     mostrarAviso("Conta criada. Confira seu e-mail para confirmar o cadastro e depois entre.", true);
@@ -97,4 +93,4 @@ senhaInput.addEventListener("keydown", (evento) => {
 });
 
 const { data } = await supabase.auth.getSession();
-if (data.session?.user) window.location.replace(destinoSeguro());
+if (data.session?.user) window.location.replace(DESTINO_APOS_LOGIN);
