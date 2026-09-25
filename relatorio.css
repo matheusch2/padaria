@@ -111,6 +111,7 @@
   width: 100%;
   min-width: 0;
   max-width: 100%;
+  box-sizing: border-box;
   min-height: 44px;
   border: 1px solid #e4dbd5;
   border-radius: 12px;
@@ -653,6 +654,11 @@
   .metrica-cabecalho svg {
     width: 18px;
     height: 18px;
+  }
+
+  .periodo-personalizado {
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
 
   .indicadores-secundarios {
