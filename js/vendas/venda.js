@@ -137,7 +137,7 @@ function renderizarCarrinho() {
 
   const total = obterTotalVenda(produtos);
   document.getElementById("totalVenda").textContent = formatarMoeda(total);
-  atualizarResumoPagamento(formatarMoeda);
+  atualizarResumoPagamento(formatarMoeda, total);
 }
 
 async function finalizarVenda() {
@@ -220,7 +220,7 @@ async function iniciarTelaVenda() {
   ["valorDinheiro", "valorCartao", "valorPix"].forEach((id) => {
     document
       .getElementById(id)
-      .addEventListener("input", () => atualizarResumoPagamento(formatarMoeda));
+      .addEventListener("input", () => atualizarResumoPagamento(formatarMoeda, obterTotalVenda(produtos)));
   });
 
   document.getElementById("btnFinalizar").addEventListener("click", finalizarVenda);
