@@ -1,10 +1,17 @@
 /* Casca compartilhada das telas internas (venda, produtos, etc.) */
 
 .pagina-app {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: hidden;
   background-color: #f4f3f1;
 }
 
 .topo-pagina {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   background: linear-gradient(
     135deg,
     rgb(var(--marca-escura)) 0%,
@@ -12,10 +19,11 @@
     rgb(var(--marca-viva)) 100%
   );
   color: white;
-  padding: 14px 18px;
+  padding: 14px max(14px, env(safe-area-inset-right)) 14px max(14px, env(safe-area-inset-left));
   display: flex;
   align-items: center;
   gap: 14px;
+  overflow: hidden;
 }
 
 .voltar {
@@ -51,26 +59,38 @@
 }
 
 .topo-pagina h1 {
+  flex: 1 1 auto;
+  min-width: 0;
   margin: 0;
   font-size: 18px;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
 }
 
 .conteudo-pagina {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   padding: 0 16px;
+  overflow-x: hidden;
 }
 
 .painel-pagina {
   width: 100%;
   max-width: 560px;
+  min-width: 0;
   margin: 16px auto;
   display: grid;
   gap: 18px;
 }
 
 .bloco {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   background: #fff;
   border-radius: 18px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
@@ -117,6 +137,8 @@
 
 .busca-produto {
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
   border: 0;
   outline: none;
   background: transparent;
@@ -130,6 +152,8 @@
 }
 
 .campo-valor {
+  min-width: 0;
+  max-width: 100%;
   display: flex;
   align-items: center;
   background: #faf6f3;
@@ -151,13 +175,18 @@
 }
 
 .rodape {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   padding: 0 16px max(24px, env(safe-area-inset-bottom));
   background: #f4f3f1;
+  overflow-x: hidden;
 }
 
 .rodape-conteudo {
   width: 100%;
   max-width: 560px;
+  min-width: 0;
   margin: 0 auto;
 }
 
@@ -204,6 +233,8 @@
 
 .btn-voltar-rodape {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   height: 52px;
   border-radius: 16px;
   background: transparent;
@@ -237,6 +268,8 @@
 
 .btn-primario {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   background: linear-gradient(160deg, rgb(var(--sucesso-viva)) 0%, rgb(var(--sucesso)) 100%);
   color: white;
   border: none;
@@ -259,6 +292,8 @@
 
 .btn-perigo {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   height: 52px;
   border-radius: 16px;
   background: transparent;
@@ -307,6 +342,8 @@
 
 /* Alertas "semáforo" */
 .alerta {
+  min-width: 0;
+  max-width: 100%;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -337,6 +374,8 @@
 
 /* Campo de formulário simples (texto/select) */
 .campo-form {
+  min-width: 0;
+  max-width: 100%;
   margin-bottom: 14px;
 }
 
@@ -355,6 +394,8 @@
 .campo-form input,
 .campo-form select {
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
   padding: 12px 14px;
   border-radius: 12px;
   border: 1px solid #e4dbd5;
@@ -374,6 +415,33 @@
 
 .campo-form input::placeholder {
   color: #ad9e96;
+}
+
+@media (max-width: 430px) {
+  .topo-pagina {
+    gap: 10px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  .topo-pagina h1 {
+    font-size: 16px;
+    letter-spacing: 0.35px;
+  }
+
+  .conteudo-pagina {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .painel-pagina {
+    margin-top: 14px;
+    gap: 14px;
+  }
+
+  .bloco {
+    padding: 15px;
+  }
 }
 
 @media (min-width: 640px) {
