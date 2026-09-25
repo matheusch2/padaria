@@ -1,0 +1,305 @@
+:root {
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-width: 0;
+  background: #ece9e6;
+  color: #38251c;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.relatorio-gerado-body {
+  padding: 24px 14px 50px;
+}
+
+.relatorio-acoes {
+  width: min(100%, 900px);
+  margin: 0 auto 14px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.relatorio-acao {
+  min-height: 42px;
+  border-radius: 12px;
+  padding: 0 16px;
+  border: 1px solid #d8cdc6;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.relatorio-acao.secundario {
+  background: #fff;
+  color: #6e5548;
+}
+
+.relatorio-acao.primario {
+  border-color: #8c4527;
+  background: #8c4527;
+  color: #fff;
+}
+
+.folha-relatorio {
+  width: min(100%, 900px);
+  min-height: 1120px;
+  margin: 0 auto;
+  padding: 42px;
+  background: #fff;
+  box-shadow: 0 12px 34px rgba(45, 29, 20, 0.12);
+}
+
+.documento-cabecalho {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  padding-bottom: 22px;
+  border-bottom: 2px solid #8c4527;
+}
+
+.documento-marca {
+  margin: 0 0 7px;
+  color: #9b745f;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.documento-cabecalho h1 {
+  margin: 0;
+  color: #3a2418;
+  font-size: 28px;
+  line-height: 1.15;
+}
+
+.documento-periodo {
+  margin: 7px 0 0;
+  color: #77655b;
+  font-size: 12px;
+}
+
+.documento-meta {
+  flex: 0 0 auto;
+  text-align: right;
+  display: grid;
+  gap: 3px;
+}
+
+.documento-meta span {
+  color: #9c8b82;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.documento-meta b {
+  color: #4b352a;
+  font-size: 11px;
+}
+
+.estado-relatorio {
+  margin-top: 28px;
+  padding: 20px;
+  border: 1px dashed #dbcfc8;
+  border-radius: 12px;
+  color: #8a776c;
+  text-align: center;
+  font-size: 12px;
+}
+
+.relatorio-resumo {
+  margin: 24px 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.resumo-item {
+  min-width: 0;
+  padding: 13px 14px;
+  border: 1px solid #e9dfd9;
+  border-radius: 10px;
+  background: #fcfaf8;
+}
+
+.resumo-item span {
+  display: block;
+  margin-bottom: 5px;
+  color: #8f7c70;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.35px;
+}
+
+.resumo-item b {
+  display: block;
+  color: #3c281e;
+  font-size: 15px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.relatorio-secao {
+  margin-top: 26px;
+}
+
+.relatorio-secao h2 {
+  margin: 0 0 10px;
+  color: #6f3b25;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.tabela-documento-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.tabela-documento {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+.tabela-documento th,
+.tabela-documento td {
+  padding: 8px 7px;
+  border-bottom: 1px solid #e9e1dc;
+  text-align: left;
+  vertical-align: top;
+  font-size: 10px;
+  line-height: 1.35;
+}
+
+.tabela-documento th {
+  background: #f7f3f0;
+  color: #6f5b50;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.tabela-documento td.numero,
+.tabela-documento th.numero {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.tabela-documento tr:last-child td {
+  border-bottom: 0;
+}
+
+.sem-registros {
+  padding: 24px 10px !important;
+  color: #9a887e;
+  text-align: center !important;
+}
+
+.relatorio-nota {
+  margin-top: 20px;
+  padding: 11px 13px;
+  border-left: 3px solid #c49b85;
+  background: #fbf7f4;
+  color: #806c61;
+  font-size: 9px;
+  line-height: 1.45;
+}
+
+@media (max-width: 700px) {
+  .relatorio-gerado-body {
+    padding: 12px 8px 30px;
+  }
+
+  .relatorio-acoes {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+  }
+
+  .folha-relatorio {
+    min-height: 0;
+    padding: 22px 16px 30px;
+    box-shadow: none;
+  }
+
+  .documento-cabecalho {
+    display: grid;
+    gap: 12px;
+  }
+
+  .documento-cabecalho h1 {
+    font-size: 22px;
+  }
+
+  .documento-meta {
+    text-align: left;
+  }
+
+  .relatorio-resumo {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@page {
+  size: A4 portrait;
+  margin: 12mm;
+}
+
+@media print {
+  html,
+  body,
+  .relatorio-gerado-body {
+    background: #fff !important;
+    padding: 0 !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .folha-relatorio {
+    width: 100%;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+
+  .documento-cabecalho {
+    break-after: avoid;
+  }
+
+  .relatorio-resumo,
+  .resumo-item,
+  .relatorio-secao h2 {
+    break-inside: avoid;
+  }
+
+  .tabela-documento-wrap {
+    overflow: visible;
+  }
+
+  .tabela-documento thead {
+    display: table-header-group;
+  }
+
+  .tabela-documento tr {
+    break-inside: avoid;
+  }
+}
