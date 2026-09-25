@@ -4,10 +4,11 @@ import {
   atualizarProduto,
   excluirProduto,
 } from "./produtos.js";
+import { exigirUsuario } from "./auth.js";
 
 const parametros = new URLSearchParams(window.location.search);
 const idEdicao = parametros.get("id");
-const produtoEmEdicao = idEdicao ? buscarProdutoPorId(idEdicao) : null;
+let produtoEmEdicao = null;
 
 const campoNome = document.getElementById("campoNome");
 const campoCategoria = document.getElementById("campoCategoria");
@@ -43,17 +44,31 @@ function mostrarAviso(texto, sucesso) {
   aviso.hidden = false;
 }
 
-if (produtoEmEdicao) {
-  document.getElementById("tituloTela").textContent = "Editar Produto";
-  document.title = "Editar produto - Padaria Gestão";
-  btnSalvar.textContent = "Salvar Alterações";
-  btnExcluir.hidden = false;
-  preencherFormulario(produtoEmEdicao);
-} else if (idEdicao) {
-  mostrarAviso("Produto não encontrado.", false);
+function bloquearFormulario(estado) {
+  btnSalvar.disabled = estado;
+  btnExcluir.disabled = estado;
 }
 
-btnSalvar.addEventListener("click", () => {
+async function carregarEdicao() {
+  if (!idEdicao) return;
+  try {
+    produtoEmEdicao = await buscarProdutoPorId(idEdicao);
+    if (!produtoEmEdicao) {
+      mostrarAviso("Produto não encontrado.", false);
+      return;
+    }
+
+    document.getElementById("tituloTela").textContent = "Editar Produto";
+    document.title = "Editar produto - Padaria Gestão";
+    btnSalvar.textContent = "Salvar Alterações";
+    btnExcluir.hidden = false;
+    preencherFormulario(produtoEmEdicao);
+  } catch (erro) {
+    mostrarAviso(erro?.message || "Não foi possível carregar o produto.", false);
+  }
+}
+
+btnSalvar.addEventListener("click", async () => {
   const nome = campoNome.value.trim();
   const custo = parseMoedaBR(campoCusto.value);
   const preco = parseMoedaBR(campoPreco.value);
@@ -85,27 +100,44 @@ btnSalvar.addEventListener("click", () => {
     estoque: Math.max(0, parseInteiroBR(campoEstoque.value)),
   };
 
-  if (produtoEmEdicao) {
-    atualizarProduto(produtoEmEdicao.id, dados);
-    window.location.href = "produtos.html";
-    return;
-  }
+  bloquearFormulario(true);
+  try {
+    if (produtoEmEdicao) {
+      await atualizarProduto(produtoEmEdicao.id, dados);
+      window.location.href = "produtos.html";
+      return;
+    }
 
-  salvarProduto(dados);
-  mostrarAviso("Produto salvo com sucesso!", true);
-  campoNome.value = "";
-  campoCusto.value = "";
-  campoPreco.value = "";
-  campoCategoria.value = "Pães";
-  campoUnidade.value = "un";
-  campoEstoque.value = "";
-  campoNome.focus();
+    await salvarProduto(dados);
+    mostrarAviso("Produto salvo no banco com sucesso!", true);
+    campoNome.value = "";
+    campoCusto.value = "";
+    campoPreco.value = "";
+    campoCategoria.value = "Pães";
+    campoUnidade.value = "un";
+    campoEstoque.value = "";
+    campoNome.focus();
+  } catch (erro) {
+    mostrarAviso(erro?.message || "Não foi possível salvar o produto.", false);
+  } finally {
+    bloquearFormulario(false);
+  }
 });
 
-btnExcluir.addEventListener("click", () => {
+btnExcluir.addEventListener("click", async () => {
   if (!produtoEmEdicao) return;
   if (!window.confirm(`Excluir "${produtoEmEdicao.nome}"?`)) return;
 
-  excluirProduto(produtoEmEdicao.id);
-  window.location.href = "produtos.html";
+  bloquearFormulario(true);
+  try {
+    await excluirProduto(produtoEmEdicao.id);
+    window.location.href = "produtos.html";
+  } catch (erro) {
+    mostrarAviso(erro?.message || "Não foi possível excluir o produto.", false);
+  } finally {
+    bloquearFormulario(false);
+  }
 });
+
+const usuario = await exigirUsuario();
+if (usuario) await carregarEdicao();
