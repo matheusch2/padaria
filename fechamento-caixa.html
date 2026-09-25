@@ -7,7 +7,7 @@
     <title>Fechamento do caixa - Padaria Gestão</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="pagina.css" />
-    <link rel="stylesheet" href="fechamento-caixa.css?v=20260925-4" />
+    <link rel="stylesheet" href="fechamento-caixa.css?v=20260925-5" />
   </head>
   <body class="pagina-app">
     <header class="topo-pagina">
@@ -23,8 +23,28 @@
           <h2 class="bloco-titulo fechamento-titulo">Resumo do dia</h2>
 
           <div class="data-fechamento-wrap">
-            <input id="dataFechamento" class="campo-data" type="date" aria-label="Data do fechamento" />
+            <label for="dataFechamento">Data do caixa</label>
+            <input id="dataFechamento" class="campo-data" type="date" aria-label="Data do caixa" />
+            <small>Escolha um dia para abrir, fechar ou consultar o histórico.</small>
           </div>
+
+          <div id="estadoCaixa" class="estado-caixa" data-estado="nao-aberto" role="status" aria-live="polite">
+            <span class="estado-caixa-icone" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2" /><path d="M7 6V4h10v2M7 12h10M8 16h.01M12 16h.01M16 16h.01" /></svg>
+            </span>
+            <span class="estado-caixa-texto">
+              <span class="estado-caixa-legenda">Status do caixa</span>
+              <strong id="estadoCaixaTitulo">Caixa não aberto</strong>
+              <small id="estadoCaixaDescricao">Informe o fundo inicial para iniciar o caixa deste dia.</small>
+            </span>
+            <span id="estadoCaixaBadge" class="badge-caixa badge-neutro">Não aberto</span>
+            <button id="btnProximoCaixa" class="btn-proximo-caixa" type="button" hidden>Próximo dia</button>
+          </div>
+
+          <a class="link-historico-inline" href="relatorios-impressao.html">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v15H4z" /><path d="M8 9h8M8 13h8M8 17h5" /></svg>
+            <span>Consultar histórico de fechamentos</span>
+          </a>
 
           <div class="grade-resumo">
             <div class="card-resumo">
@@ -58,7 +78,12 @@
             </div>
           </div>
 
-          <div class="campo-form">
+          <div id="acaoAberturaCaixa" class="acao-abertura-caixa" hidden>
+            <button id="btnAbrirCaixa" class="btn-primario btn-abrir-caixa" type="button">Abrir caixa</button>
+            <p>O fundo inicial será registrado como o valor de troco deste dia.</p>
+          </div>
+
+          <div class="campo-form" data-apenas-aberto>
             <label for="retiradasCaixa">Retiradas / sangrias</label>
             <div class="campo-valor">
               <span>R$</span>
@@ -66,7 +91,7 @@
             </div>
           </div>
 
-          <div class="campo-form">
+          <div class="campo-form" data-apenas-aberto>
             <label for="dinheiroContado">Dinheiro contado no caixa</label>
             <div class="campo-valor campo-destaque">
               <span>R$</span>
@@ -74,7 +99,7 @@
             </div>
           </div>
 
-          <div class="conferencia-caixa">
+          <div class="conferencia-caixa" data-apenas-aberto>
             <div>
               <span>Dinheiro esperado</span>
               <b id="dinheiroEsperado">R$ 0,00</b>
@@ -102,14 +127,18 @@
           </div>
         </section>
 
-        <section class="bloco bloco-fechamento">
+        <section id="secaoObservacoes" class="bloco bloco-fechamento">
           <h2 class="bloco-titulo fechamento-titulo">Observações</h2>
           <textarea id="observacaoFechamento" rows="3" placeholder="Ex.: retirada para pagamento de fornecedor"></textarea>
           <p id="avisoFechamento" class="aviso-finalizar" hidden></p>
-          <button class="btn-primario" id="btnFecharCaixa" type="button">Salvar fechamento</button>
+          <button class="btn-primario btn-fechar-caixa" id="btnFecharCaixa" type="button">Fechar caixa</button>
           <p id="statusFechamento" class="status-fechamento" hidden></p>
 
           <div class="acoes-fechamento">
+            <a class="link-historico-fechamento" href="relatorios-impressao.html">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v15H4z" /><path d="M8 9h8M8 13h8M8 17h5" /></svg>
+              <span>Ver histórico de fechamentos</span>
+            </a>
             <p class="rodape-divisor">ou</p>
             <a class="btn-voltar-rodape" href="index.html">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
@@ -121,6 +150,6 @@
     </main>
 
     <script src="js/numeros.js"></script>
-    <script type="module" src="js/fechamento-caixa.js?v=20260925-2"></script>
+    <script type="module" src="js/fechamento-caixa.js?v=20260925-3"></script>
   </body>
 </html>
