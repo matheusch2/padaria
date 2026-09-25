@@ -1,5 +1,3 @@
-import { obterTotalVenda } from "./carrinho.js";
-
 export function valoresPagamento() {
   const dinheiro = parseMoedaBR(document.getElementById("valorDinheiro").value);
   const cartao = parseMoedaBR(document.getElementById("valorCartao").value);
@@ -13,9 +11,8 @@ export function valoresPagamento() {
   };
 }
 
-export function atualizarResumoPagamento(formatarMoeda) {
+export function atualizarResumoPagamento(formatarMoeda, totalVenda = 0) {
   const { total: totalInformado } = valoresPagamento();
-  const totalVenda = obterTotalVenda();
   const resumo = document.getElementById("totalInformado");
   const diferenca = document.getElementById("pagamentoDiferenca");
 
