@@ -15,7 +15,7 @@ import {
 
 const estiloProdutos = document.createElement("link");
 estiloProdutos.rel = "stylesheet";
-estiloProdutos.href = "desempenho-produtos.css?v=20260925-2";
+estiloProdutos.href = "desempenho-produtos.css?v=20260925-3";
 document.head.appendChild(estiloProdutos);
 
 const botoesPeriodo = [...document.querySelectorAll("[data-periodo]")];
@@ -48,12 +48,15 @@ const elementos = {
   resumoDiario: document.getElementById("resumoDiarioTabela"),
   historico: document.getElementById("historicoVendasRelatorio"),
   historicoContagem: document.getElementById("historicoContagem"),
+  historicoMais: document.getElementById("btnHistoricoMais"),
 };
 
 let periodoAtual = "hoje";
 let produtosAtuais = [];
 let rankingAtual = "quantidade";
 let carregamentoId = 0;
+let vendasAtuais = [];
+let historicoExpandido = false;
 
 function escaparHTML(valor) {
   return String(valor ?? "")
@@ -87,6 +90,19 @@ function formatarDataHora(valor) {
     month: "2-digit",
     hour: "2-digit",
     minute: "2-digit",
+  });
+}
+
+function formatarValorGrafico(valor) {
+  const n = numero(valor);
+  if (Math.abs(n) >= 1000) {
+    return new Intl.NumberFormat("pt-BR", {
+      notation: "compact",
+      maximumFractionDigits: 1,
+    }).format(n);
+  }
+  return n.toLocaleString("pt-BR", {
+    maximumFractionDigits: n < 100 ? 1 : 0,
   });
 }
 
@@ -171,11 +187,27 @@ function renderizarPagamentos(resumo) {
     : "conic-gradient(#ded5cf 0 100%)";
 }
 
+function agruparHorasEmBlocos(serie) {
+  return Array.from({ length: 8 }, (_, indice) => {
+    const inicio = indice * 3;
+    const fim = inicio + 2;
+    const pontos = serie.slice(inicio, inicio + 3);
+    return {
+      chave: `${String(inicio).padStart(2, "0")}-${String(fim).padStart(2, "0")}`,
+      rotulo: `${String(inicio).padStart(2, "0")}h`,
+      titulo: `${String(inicio).padStart(2, "0")}h–${String(fim).padStart(2, "0")}h`,
+      valor: pontos.reduce((soma, ponto) => soma + numero(ponto.valor), 0),
+    };
+  });
+}
+
 function renderizarGrafico(vendas, intervalo) {
-  const serie = serieFaturamento(vendas, intervalo);
-  const maximo = Math.max(...serie.map((ponto) => ponto.valor), 0);
+  const serieOriginal = serieFaturamento(vendas, intervalo);
+  const serie = intervalo.duracaoDias <= 1 ? agruparHorasEmBlocos(serieOriginal) : serieOriginal;
+  const maximo = Math.max(...serie.map((ponto) => numero(ponto.valor)), 0);
+
   elementos.graficoEvolucaoLegenda.textContent = intervalo.duracaoDias <= 1
-    ? "Faturamento distribuído por hora do dia."
+    ? "Faturamento por faixas de 3 horas."
     : "Faturamento distribuído por dia no período.";
 
   if (!maximo) {
@@ -183,44 +215,39 @@ function renderizarGrafico(vendas, intervalo) {
     return;
   }
 
-  const largura = 640;
-  const altura = 220;
-  const esquerda = 28;
-  const direita = 18;
-  const topo = 18;
-  const base = 178;
-  const areaLargura = largura - esquerda - direita;
-  const areaAltura = base - topo;
-  const divisor = Math.max(1, serie.length - 1);
-  const pontos = serie.map((ponto, indice) => {
-    const x = esquerda + (indice / divisor) * areaLargura;
-    const y = base - (ponto.valor / maximo) * areaAltura;
-    return { ...ponto, x, y };
-  });
-  const caminho = pontos.map((ponto, indice) => `${indice ? "L" : "M"}${ponto.x.toFixed(1)},${ponto.y.toFixed(1)}`).join(" ");
-  const indicesRotulo = new Set([
-    0,
-    Math.round((serie.length - 1) * 0.25),
-    Math.round((serie.length - 1) * 0.5),
-    Math.round((serie.length - 1) * 0.75),
-    serie.length - 1,
-  ]);
-  const rotulos = pontos
-    .filter((_, indice) => indicesRotulo.has(indice))
-    .map((ponto) => `<text x="${ponto.x.toFixed(1)}" y="207" text-anchor="middle">${escaparHTML(ponto.rotulo)}</text>`)
-    .join("");
-  const circulos = pontos
-    .filter((ponto) => ponto.valor > 0)
-    .map((ponto) => `<circle cx="${ponto.x.toFixed(1)}" cy="${ponto.y.toFixed(1)}" r="3"><title>${escaparHTML(ponto.rotulo)}: ${escaparHTML(formatarMoeda(ponto.valor))}</title></circle>`)
-    .join("");
+  const quantidade = serie.length;
+  const passoRotulo = quantidade <= 10 ? 1 : Math.ceil(quantidade / 7);
+  const mostrarValores = quantidade <= 10;
+  const gap = quantidade > 20 ? 2 : quantidade > 12 ? 4 : 7;
+
+  const colunas = serie.map((ponto, indice) => {
+    const valor = numero(ponto.valor);
+    const altura = valor > 0 ? Math.max(4, (valor / maximo) * 88) : 0;
+    const mostrarRotulo = indice % passoRotulo === 0 || indice === quantidade - 1;
+    const titulo = ponto.titulo || ponto.rotulo;
+    const valorHTML = mostrarValores && valor > 0
+      ? `<span class="grafico-torre-valor" style="--altura:${altura.toFixed(2)}%">${escaparHTML(formatarValorGrafico(valor))}</span>`
+      : "";
+
+    return `
+      <div class="grafico-torre-item" aria-label="${escaparHTML(titulo)}: ${escaparHTML(formatarMoeda(valor))}">
+        <div class="grafico-torre-area">
+          ${valorHTML}
+          <span
+            class="grafico-torre-barra cor-${indice % 5}${valor === 0 ? " zero" : ""}"
+            style="--altura:${altura.toFixed(2)}%"
+            title="${escaparHTML(titulo)}: ${escaparHTML(formatarMoeda(valor))}"
+          ></span>
+        </div>
+        <span class="grafico-torre-rotulo">${mostrarRotulo ? escaparHTML(ponto.rotulo) : ""}</span>
+      </div>
+    `;
+  }).join("");
 
   elementos.graficoEvolucao.innerHTML = `
-    <svg class="grafico-svg-relatorio" viewBox="0 0 ${largura} ${altura}" preserveAspectRatio="none" aria-hidden="true">
-      <line x1="${esquerda}" y1="${base}" x2="${largura - direita}" y2="${base}" class="grafico-eixo" />
-      <path d="${caminho}" class="grafico-linha-path" />
-      ${circulos}
-      <g class="grafico-rotulos">${rotulos}</g>
-    </svg>
+    <div class="grafico-torres-relatorio" style="--colunas:${quantidade}; --gap:${gap}px">
+      <div class="grafico-torre-colunas">${colunas}</div>
+    </div>
   `;
 }
 
@@ -281,13 +308,19 @@ function formaPagamento(venda) {
 }
 
 function renderizarHistorico(vendas) {
+  vendasAtuais = vendas;
   elementos.historicoContagem.textContent = vendas.length.toLocaleString("pt-BR");
+
   if (!vendas.length) {
     elementos.historico.innerHTML = '<div class="estado-vazio-compacto">Nenhuma venda encontrada.</div>';
+    elementos.historicoMais.hidden = true;
     return;
   }
 
-  elementos.historico.innerHTML = vendas.map((venda) => `
+  const limite = 5;
+  const vendasVisiveis = historicoExpandido ? vendas : vendas.slice(0, limite);
+
+  elementos.historico.innerHTML = vendasVisiveis.map((venda) => `
     <details class="venda-relatorio-detalhe">
       <summary class="venda-relatorio-item">
         <span class="venda-info">
@@ -302,6 +335,11 @@ function renderizarHistorico(vendas) {
       </div>
     </details>
   `).join("");
+
+  elementos.historicoMais.hidden = vendas.length <= limite;
+  elementos.historicoMais.textContent = historicoExpandido
+    ? "Ver menos"
+    : `Ver mais (${vendas.length - limite})`;
 }
 
 function mostrarErro(erro) {
@@ -342,6 +380,7 @@ async function carregarRelatorio() {
     const resumo = resumirPeriodo(vendas, perdas);
     const resumoAnterior = resumirPeriodo(vendasAnteriores, []);
     produtosAtuais = agruparProdutos(vendas);
+    historicoExpandido = false;
 
     renderizarResumo(resumo, resumoAnterior.faturamento);
     renderizarPagamentos(resumo);
@@ -375,6 +414,11 @@ botoesRanking.forEach((botao) => {
     rankingAtual = botao.dataset.ranking;
     renderizarProdutos();
   });
+});
+
+elementos.historicoMais.addEventListener("click", () => {
+  historicoExpandido = !historicoExpandido;
+  renderizarHistorico(vendasAtuais);
 });
 
 const hoje = new Date();
