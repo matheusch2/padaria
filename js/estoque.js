@@ -1,7 +1,9 @@
 import { filtrarProdutos, ajustarEstoque } from "./produtos.js";
+import { exigirUsuario } from "./auth.js";
 
 const QUANTIDADE_POR_PAGINA = 6;
 let quantidadeVisivel = QUANTIDADE_POR_PAGINA;
+let renderizacaoAtual = 0;
 
 const campoBusca = document.getElementById("buscaProduto");
 const listaEl = document.getElementById("listaEstoque");
@@ -15,74 +17,98 @@ const rotulosUnidade = {
   cento: "cento",
 };
 
+function escaparHTML(valor) {
+  return String(valor ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
 function classeQuantidade(quantidade) {
   if (quantidade <= 0) return "zerado";
   if (quantidade < 10) return "baixo";
   return "";
 }
 
-function renderizar() {
-  const termo = campoBusca.value;
-  const produtos = filtrarProdutos(termo);
+async function renderizar() {
+  const token = ++renderizacaoAtual;
+  listaEl.innerHTML = '<p class="sem-produtos">Carregando estoque...</p>';
 
-  if (produtos.length === 0) {
-    listaEl.innerHTML = '<p class="sem-produtos">Nenhum produto cadastrado.</p>';
-    btnVerMais.hidden = true;
-    return;
-  }
+  try {
+    const produtos = await filtrarProdutos(campoBusca.value);
+    if (token !== renderizacaoAtual) return;
 
-  const visiveis = produtos.slice(0, quantidadeVisivel);
+    if (produtos.length === 0) {
+      listaEl.innerHTML = '<p class="sem-produtos">Nenhum produto cadastrado.</p>';
+      btnVerMais.hidden = true;
+      return;
+    }
 
-  listaEl.innerHTML = visiveis
-    .map((produto) => {
-      const estoque = Number(produto.estoque) || 0;
-      const unidade = rotulosUnidade[produto.unidade] || "un";
+    const visiveis = produtos.slice(0, quantidadeVisivel);
 
-      return `
-      <div class="item-estoque">
-        <div class="item-estoque-topo">
-          <div class="item-estoque-info">
-            <b>${produto.nome}</b>
-            <span>${produto.categoria || "Outros"}</span>
+    listaEl.innerHTML = visiveis
+      .map((produto) => {
+        const estoque = Number(produto.estoque) || 0;
+        const unidade = rotulosUnidade[produto.unidade] || "un";
+
+        return `
+        <div class="item-estoque">
+          <div class="item-estoque-topo">
+            <div class="item-estoque-info">
+              <b>${escaparHTML(produto.nome)}</b>
+              <span>${escaparHTML(produto.categoria || "Outros")}</span>
+            </div>
+            <div class="item-estoque-quantidade ${classeQuantidade(estoque)}">
+              <b>${estoque.toLocaleString("pt-BR")}</b>
+              <span>${escaparHTML(unidade)} em estoque</span>
+            </div>
           </div>
-          <div class="item-estoque-quantidade ${classeQuantidade(estoque)}">
-            <b>${estoque.toLocaleString("pt-BR")}</b>
-            <span>${unidade} em estoque</span>
+          <div class="item-estoque-movimento">
+            <input
+              type="text"
+              class="campo-movimento milhar"
+              data-id="${produto.id}"
+              inputmode="numeric"
+              placeholder="Qtd"
+            />
+            <button type="button" class="btn-entrada" data-id="${produto.id}">Entrada</button>
+            <button type="button" class="btn-saida" data-id="${produto.id}">Saída</button>
           </div>
-        </div>
-        <div class="item-estoque-movimento">
-          <input
-            type="text"
-            class="campo-movimento milhar"
-            data-id="${produto.id}"
-            inputmode="numeric"
-            placeholder="Qtd"
-          />
-          <button type="button" class="btn-entrada" data-id="${produto.id}">Entrada</button>
-          <button type="button" class="btn-saida" data-id="${produto.id}">Saída</button>
-        </div>
-      </div>`;
-    })
-    .join("");
+        </div>`;
+      })
+      .join("");
 
-  listaEl.querySelectorAll(".btn-entrada, .btn-saida").forEach((botao) => {
-    botao.addEventListener("click", () => {
-      const id = botao.dataset.id;
-      const campo = listaEl.querySelector(`.campo-movimento[data-id="${id}"]`);
-      const quantidade = parseInteiroBR(campo.value);
+    listaEl.querySelectorAll(".btn-entrada, .btn-saida").forEach((botao) => {
+      botao.addEventListener("click", async () => {
+        const id = botao.dataset.id;
+        const campo = listaEl.querySelector(`.campo-movimento[data-id="${id}"]`);
+        const quantidade = parseInteiroBR(campo.value);
 
-      if (!(quantidade > 0)) {
-        campo.focus();
-        return;
-      }
+        if (!(quantidade > 0)) {
+          campo.focus();
+          return;
+        }
 
-      const delta = botao.classList.contains("btn-entrada") ? quantidade : -quantidade;
-      ajustarEstoque(id, delta);
-      renderizar();
+        const delta = botao.classList.contains("btn-entrada") ? quantidade : -quantidade;
+        botao.disabled = true;
+        try {
+          await ajustarEstoque(id, delta);
+          await renderizar();
+        } catch (erro) {
+          window.alert(erro?.message || "Não foi possível ajustar o estoque.");
+          botao.disabled = false;
+        }
+      });
     });
-  });
 
-  btnVerMais.hidden = produtos.length <= quantidadeVisivel;
+    btnVerMais.hidden = produtos.length <= quantidadeVisivel;
+  } catch (erro) {
+    if (token !== renderizacaoAtual) return;
+    listaEl.innerHTML = `<p class="sem-produtos">${escaparHTML(erro?.message || "Não foi possível carregar o estoque.")}</p>`;
+    btnVerMais.hidden = true;
+  }
 }
 
 campoBusca.addEventListener("input", () => {
@@ -95,4 +121,5 @@ btnVerMais.addEventListener("click", () => {
   renderizar();
 });
 
-renderizar();
+const usuario = await exigirUsuario();
+if (usuario) await renderizar();
