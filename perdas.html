@@ -47,66 +47,71 @@
             <a href="cadastrar-produto.html">Cadastrar produto</a>
           </div>
 
-          <div id="produtoResumo" class="produto-resumo" hidden>
-            <div>
-              <span>Estoque atual</span>
-              <b id="estoqueAtual">0</b>
+          <div id="camposSaida">
+            <div id="produtoResumo" class="produto-resumo" hidden>
+              <div>
+                <span>Estoque atual</span>
+                <b id="estoqueAtual">0</b>
+              </div>
+              <div>
+                <span>Custo unitário</span>
+                <b id="custoUnitario">R$ 0,00</b>
+              </div>
             </div>
-            <div>
-              <span>Custo unitário</span>
-              <b id="custoUnitario">R$ 0,00</b>
-            </div>
-          </div>
 
-          <div class="grade-campos">
+            <div class="grade-campos">
+              <div class="campo-form">
+                <label for="tipoSaida">Tipo</label>
+                <select id="tipoSaida">
+                  <option value="perda">Perda</option>
+                  <option value="sobra">Sobra descartada</option>
+                </select>
+              </div>
+              <div class="campo-form">
+                <label for="quantidadePerda">Quantidade</label>
+                <input id="quantidadePerda" class="milhar" type="text" inputmode="numeric" placeholder="0" />
+              </div>
+            </div>
+
             <div class="campo-form">
-              <label for="tipoSaida">Tipo</label>
-              <select id="tipoSaida">
-                <option value="perda">Perda</option>
-                <option value="sobra">Sobra descartada</option>
+              <label for="motivoPerda">Motivo</label>
+              <select id="motivoPerda">
+                <option value="Sobra do dia">Sobra do dia</option>
+                <option value="Produto danificado">Produto danificado</option>
+                <option value="Vencimento">Vencimento</option>
+                <option value="Erro de produção">Erro de produção</option>
+                <option value="Quebra ou acidente">Quebra ou acidente</option>
+                <option value="Outro">Outro</option>
               </select>
             </div>
-            <div class="campo-form">
-              <label for="quantidadePerda">Quantidade</label>
-              <input id="quantidadePerda" class="milhar" type="text" inputmode="numeric" placeholder="0" />
+
+            <div class="campo-form campo-observacao">
+              <label for="observacaoPerda">Observação <span class="opcional">(opcional)</span></label>
+              <textarea id="observacaoPerda" rows="3" placeholder="Ex.: bandeja caiu no chão"></textarea>
+            </div>
+
+            <div class="impacto-box">
+              <div class="impacto-icone" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 2v20" />
+                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                </svg>
+              </div>
+              <div class="impacto-conteudo">
+                <span>Impacto no resultado</span>
+                <b id="impactoPerda">R$ 0,00</b>
+                <small>Prejuízo calculado pelo custo do produto.</small>
+              </div>
+            </div>
+
+            <p id="avisoPerda" class="aviso-finalizar" hidden></p>
+
+            <div class="acoes-registro">
+              <button class="btn-registrar-perda" id="btnRegistrarPerda" type="button">Registrar saída</button>
             </div>
           </div>
 
-          <div class="campo-form">
-            <label for="motivoPerda">Motivo</label>
-            <select id="motivoPerda">
-              <option value="Sobra do dia">Sobra do dia</option>
-              <option value="Produto danificado">Produto danificado</option>
-              <option value="Vencimento">Vencimento</option>
-              <option value="Erro de produção">Erro de produção</option>
-              <option value="Quebra ou acidente">Quebra ou acidente</option>
-              <option value="Outro">Outro</option>
-            </select>
-          </div>
-
-          <div class="campo-form campo-observacao">
-            <label for="observacaoPerda">Observação <span class="opcional">(opcional)</span></label>
-            <textarea id="observacaoPerda" rows="3" placeholder="Ex.: bandeja caiu no chão"></textarea>
-          </div>
-
-          <div class="impacto-box">
-            <div class="impacto-icone" aria-hidden="true">
-              <svg viewBox="0 0 24 24">
-                <path d="M12 2v20" />
-                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-              </svg>
-            </div>
-            <div class="impacto-conteudo">
-              <span>Impacto no resultado</span>
-              <b id="impactoPerda">R$ 0,00</b>
-              <small>Prejuízo calculado pelo custo do produto.</small>
-            </div>
-          </div>
-
-          <p id="avisoPerda" class="aviso-finalizar" hidden></p>
-
-          <div class="acoes-registro">
-            <button class="btn-registrar-perda" id="btnRegistrarPerda" type="button">Registrar saída</button>
+          <div class="acoes-navegacao">
             <p class="rodape-divisor">ou</p>
             <a class="btn-voltar-rodape" href="index.html">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
