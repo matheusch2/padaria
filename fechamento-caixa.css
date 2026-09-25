@@ -1,25 +1,39 @@
-.cabecalho-fechamento {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 14px;
+.fechamento-painel {
+  padding-bottom: 6px;
 }
 
-.texto-apoio {
-  margin: -2px 0 14px;
-  color: #7b695e;
-  font-size: 13px;
-  line-height: 1.45;
+.bloco-fechamento {
+  overflow: hidden;
+}
+
+.fechamento-titulo {
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.data-fechamento-wrap {
+  margin-bottom: 14px;
 }
 
 .campo-data {
+  width: 100%;
+  min-height: 48px;
+  box-sizing: border-box;
   border: 1px solid #e4dbd5;
-  border-radius: 10px;
+  border-radius: 12px;
   background: #faf6f3;
   color: #3a2418;
-  padding: 9px 10px;
+  padding: 11px 13px;
   font: inherit;
   font-size: 13px;
+  text-align: center;
+}
+
+.campo-data:focus {
+  outline: none;
+  border-color: rgb(var(--marca));
+  box-shadow: 0 0 0 4px rgba(var(--marca), 0.1);
+  background: #fff;
 }
 
 .grade-resumo {
@@ -29,29 +43,37 @@
 }
 
 .card-resumo {
+  position: relative;
   min-width: 0;
+  min-height: 82px;
+  box-sizing: border-box;
   padding: 13px;
   border-radius: 14px;
   border: 1px solid #ece2dc;
   background: #fbf8f6;
-  display: grid;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   gap: 4px;
 }
 
-.card-resumo.destaque {
-  background: rgba(var(--marca), 0.08);
-  border-color: rgba(var(--marca), 0.18);
-}
-
-.card-resumo span,
-.card-resumo small {
+.card-resumo span {
   color: #877267;
   font-size: 11px;
+}
+
+.card-resumo small {
+  position: absolute;
+  top: 13px;
+  right: 13px;
+  color: #a08d82;
+  font-size: 10px;
 }
 
 .card-resumo b {
   color: #3a2418;
   font-size: 17px;
+  line-height: 1.15;
 }
 
 .campo-valor input {
@@ -78,11 +100,15 @@
 }
 
 .conferencia-caixa > div {
+  min-height: 70px;
+  box-sizing: border-box;
   padding: 13px;
   border-radius: 14px;
   background: #faf6f3;
   border: 1px solid #ece2dc;
-  display: grid;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   gap: 4px;
 }
 
@@ -126,6 +152,7 @@
 .linha-financeira {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 16px;
   padding: 11px 0;
   border-bottom: 1px solid #eee6e1;
@@ -139,6 +166,7 @@
 .linha-financeira b {
   color: #3a2418;
   text-align: right;
+  white-space: nowrap;
 }
 
 .linha-financeira.perda b {
@@ -148,6 +176,7 @@
 .linha-financeira.total {
   margin-top: 3px;
   padding-top: 14px;
+  padding-bottom: 2px;
   border-bottom: 0;
   font-size: 16px;
   font-weight: 800;
@@ -162,17 +191,11 @@
   color: rgb(var(--erro));
 }
 
-.nota-resultado {
-  margin: 8px 0 0;
-  color: #9a877b;
-  font-size: 11px;
-  line-height: 1.45;
-}
-
 .bloco textarea {
   width: 100%;
+  box-sizing: border-box;
   resize: vertical;
-  min-height: 82px;
+  min-height: 92px;
   margin-bottom: 14px;
   padding: 12px 14px;
   border-radius: 12px;
@@ -181,12 +204,14 @@
   color: #3a2418;
   font: inherit;
   font-size: 16px;
+  line-height: 1.4;
 }
 
 .bloco textarea:focus {
   outline: none;
   border-color: rgb(var(--marca));
   box-shadow: 0 0 0 4px rgba(var(--marca), 0.1);
+  background: #fff;
 }
 
 .status-fechamento {
@@ -200,16 +225,35 @@
   font-weight: 700;
 }
 
+.acoes-fechamento {
+  margin-top: 13px;
+}
+
+.acoes-fechamento .rodape-divisor {
+  margin: 0 0 10px;
+}
+
+.acoes-fechamento .btn-voltar-rodape {
+  height: 48px;
+  border-width: 1.5px;
+  border-radius: 15px;
+  font-size: 14px;
+}
+
 @media (max-width: 420px) {
-  .cabecalho-fechamento {
-    flex-direction: column;
-  }
-
-  .campo-data {
-    width: 100%;
-  }
-
   .conferencia-caixa {
     grid-template-columns: 1fr;
+  }
+
+  .card-resumo {
+    min-height: 80px;
+  }
+
+  .linha-financeira {
+    gap: 10px;
+  }
+
+  .linha-financeira span {
+    max-width: 62%;
   }
 }
