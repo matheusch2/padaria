@@ -7,7 +7,7 @@
     <title>Fechamento do caixa - Padaria Gestão</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="pagina.css" />
-    <link rel="stylesheet" href="fechamento-caixa.css" />
+    <link rel="stylesheet" href="fechamento-caixa.css?v=20260925-2" />
   </head>
   <body class="pagina-app">
     <header class="topo-pagina">
@@ -18,18 +18,16 @@
     </header>
 
     <main class="conteudo-pagina">
-      <div class="painel-pagina">
-        <section class="bloco">
-          <div class="cabecalho-fechamento">
-            <div>
-              <h2 class="bloco-titulo">Resumo do dia</h2>
-              <p class="texto-apoio">As vendas e perdas são puxadas automaticamente.</p>
-            </div>
-            <input id="dataFechamento" class="campo-data" type="date" />
+      <div class="painel-pagina fechamento-painel">
+        <section class="bloco bloco-fechamento">
+          <h2 class="bloco-titulo fechamento-titulo">Resumo do dia</h2>
+
+          <div class="data-fechamento-wrap">
+            <input id="dataFechamento" class="campo-data" type="date" aria-label="Data do fechamento" />
           </div>
 
           <div class="grade-resumo">
-            <div class="card-resumo destaque">
+            <div class="card-resumo">
               <span>Faturamento</span>
               <b id="resumoFaturamento">R$ 0,00</b>
               <small id="resumoQtdVendas">0 vendas</small>
@@ -49,9 +47,8 @@
           </div>
         </section>
 
-        <section class="bloco">
-          <h2 class="bloco-titulo">Conferência do dinheiro</h2>
-          <p class="texto-apoio">Informe o valor que iniciou no caixa, retiradas feitas durante o dia e o dinheiro contado no final.</p>
+        <section class="bloco bloco-fechamento">
+          <h2 class="bloco-titulo fechamento-titulo">Conferência do dinheiro</h2>
 
           <div class="campo-form">
             <label for="fundoInicial">Fundo inicial / troco</label>
@@ -89,8 +86,8 @@
           </div>
         </section>
 
-        <section class="bloco">
-          <h2 class="bloco-titulo">Resultado bruto estimado</h2>
+        <section class="bloco bloco-fechamento">
+          <h2 class="bloco-titulo fechamento-titulo">Resultado bruto estimado</h2>
           <div class="linha-financeira">
             <span>Faturamento</span><b id="resultadoFaturamento">R$ 0,00</b>
           </div>
@@ -103,20 +100,27 @@
           <div class="linha-financeira total">
             <span>Resultado bruto</span><b id="resultadoBruto">R$ 0,00</b>
           </div>
-          <p class="nota-resultado">Resultado bruto = vendas − custo dos produtos vendidos − perdas/sobras. Não inclui outras despesas da padaria.</p>
         </section>
 
-        <section class="bloco">
-          <h2 class="bloco-titulo">Observações</h2>
+        <section class="bloco bloco-fechamento">
+          <h2 class="bloco-titulo fechamento-titulo">Observações</h2>
           <textarea id="observacaoFechamento" rows="3" placeholder="Ex.: retirada para pagamento de fornecedor"></textarea>
           <p id="avisoFechamento" class="aviso-finalizar" hidden></p>
           <button class="btn-primario" id="btnFecharCaixa" type="button">Salvar fechamento</button>
           <p id="statusFechamento" class="status-fechamento" hidden></p>
+
+          <div class="acoes-fechamento">
+            <p class="rodape-divisor">ou</p>
+            <a class="btn-voltar-rodape" href="index.html">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
+              <span>Voltar</span>
+            </a>
+          </div>
         </section>
       </div>
     </main>
 
     <script src="js/numeros.js"></script>
-    <script type="module" src="js/fechamento-caixa.js"></script>
+    <script type="module" src="js/fechamento-caixa.js?v=20260925-2"></script>
   </body>
 </html>
