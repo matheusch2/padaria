@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="pagina.css" />
     <link rel="stylesheet" href="financeiro.css?v=20260925-1" />
+    <link rel="stylesheet" href="financeiro-central-ajustes.css?v=20260925-1" />
   </head>
   <body class="pagina-app financeiro-body">
     <header class="topo-pagina">
@@ -23,10 +24,7 @@
           <div class="financeiro-icone-principal" aria-hidden="true">
             <svg viewBox="0 0 24 24"><path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
           </div>
-          <div>
-            <h2>Controle financeiro da padaria</h2>
-            <p>Caixa, compromissos, projeções, contas e resultado real do negócio em um só lugar.</p>
-          </div>
+          <h2>Controle financeiro</h2>
         </section>
 
         <section class="financeiro-menu" aria-label="Módulos financeiros">
@@ -34,77 +32,49 @@
             <span class="financeiro-menu-icone">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg>
             </span>
-            <span class="financeiro-menu-texto">
-              <b>Visão financeira</b>
-              <small>Indicadores, gráficos, projeções e alertas para tomada de decisão.</small>
-            </span>
-            <svg class="financeiro-menu-seta" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+            <span class="financeiro-menu-texto"><b>Visão financeira</b></span>
           </a>
 
           <button class="financeiro-menu-card" type="button" data-financeiro-pendente="Contas a pagar">
             <span class="financeiro-menu-icone">
               <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>
             </span>
-            <span class="financeiro-menu-texto">
-              <b>Contas a pagar</b>
-              <small>Boletos, fornecedores, vencimentos, pagamentos e contas em atraso.</small>
-            </span>
-            <span class="financeiro-menu-status">Próxima etapa</span>
+            <span class="financeiro-menu-texto"><b>Contas a pagar</b></span>
           </button>
 
           <button class="financeiro-menu-card" type="button" data-financeiro-pendente="Contas a receber">
             <span class="financeiro-menu-icone">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16v12H4z"/><path d="M7 7V5h10v2"/><path d="M8 13h8"/></svg>
             </span>
-            <span class="financeiro-menu-texto">
-              <b>Contas a receber</b>
-              <small>Valores futuros, clientes a prazo e entradas previstas.</small>
-            </span>
-            <span class="financeiro-menu-status">Próxima etapa</span>
+            <span class="financeiro-menu-texto"><b>Contas a receber</b></span>
           </button>
 
           <button class="financeiro-menu-card" type="button" data-financeiro-pendente="Lançamentos">
             <span class="financeiro-menu-icone">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/><circle cx="12" cy="12" r="9"/></svg>
             </span>
-            <span class="financeiro-menu-texto">
-              <b>Receitas e despesas</b>
-              <small>Lançamentos manuais que não vêm das vendas automáticas.</small>
-            </span>
-            <span class="financeiro-menu-status">Próxima etapa</span>
+            <span class="financeiro-menu-texto"><b>Receitas e despesas</b></span>
           </button>
 
           <button class="financeiro-menu-card" type="button" data-financeiro-pendente="Despesas recorrentes">
             <span class="financeiro-menu-icone">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4v6h6"/><path d="M20 20v-6h-6"/><path d="M5.2 16A8 8 0 0 0 18 18.8M18.8 8A8 8 0 0 0 6 5.2"/></svg>
             </span>
-            <span class="financeiro-menu-texto">
-              <b>Despesas recorrentes</b>
-              <small>Funcionários, aluguel, internet e demais compromissos mensais.</small>
-            </span>
-            <span class="financeiro-menu-status">Próxima etapa</span>
+            <span class="financeiro-menu-texto"><b>Despesas recorrentes</b></span>
           </button>
 
           <button class="financeiro-menu-card" type="button" data-financeiro-pendente="Fluxo de caixa">
             <span class="financeiro-menu-icone">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17l5-5 4 3 7-8"/><path d="M4 21h16"/></svg>
             </span>
-            <span class="financeiro-menu-texto">
-              <b>Fluxo de caixa</b>
-              <small>Realizado e projetado, com visão dos próximos dias e meses.</small>
-            </span>
-            <span class="financeiro-menu-status">Próxima etapa</span>
+            <span class="financeiro-menu-texto"><b>Fluxo de caixa</b></span>
           </button>
 
           <button class="financeiro-menu-card" type="button" data-financeiro-pendente="Relatórios financeiros">
             <span class="financeiro-menu-icone">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
             </span>
-            <span class="financeiro-menu-texto">
-              <b>Relatórios financeiros</b>
-              <small>Resultado, despesas, compromissos e análise por período.</small>
-            </span>
-            <span class="financeiro-menu-status">Próxima etapa</span>
+            <span class="financeiro-menu-texto"><b>Relatórios financeiros</b></span>
           </button>
         </section>
 
