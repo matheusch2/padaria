@@ -1,5 +1,3 @@
-import { carregarProdutos } from "../produtos.js";
-
 const carrinho = {};
 
 export function obterCarrinho() {
@@ -36,11 +34,9 @@ export function limparCarrinho() {
   Object.keys(carrinho).forEach((id) => delete carrinho[id]);
 }
 
-export function obterTotalVenda() {
-  const produtos = carregarProdutos();
-
+export function obterTotalVenda(produtos) {
   return Object.entries(carrinho).reduce((soma, [id, quantidade]) => {
     const produto = produtos.find((item) => item.id === id);
-    return produto ? soma + produto.preco * quantidade : soma;
+    return produto ? soma + Number(produto.preco || 0) * quantidade : soma;
   }, 0);
 }
