@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#8c4527" />
+    <title>Desempenho - Padaria Gestão</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="pagina.css" />
+    <link rel="stylesheet" href="relatorio.css?v=20260925-2" />
+  </head>
+  <body class="pagina-app relatorio-body">
+    <header class="topo-pagina">
+      <a class="voltar" href="relatorio.html" aria-label="Voltar para relatórios">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
+      </a>
+      <h1>Desempenho</h1>
+    </header>
+
+    <main class="conteudo-pagina relatorio-conteudo">
+      <div class="painel-pagina relatorio-painel">
+        <section class="bloco relatorio-bloco periodo-bloco" aria-labelledby="tituloPeriodo">
+          <h2 id="tituloPeriodo" class="bloco-titulo relatorio-titulo">Período</h2>
+
+          <div class="periodo-opcoes" role="group" aria-label="Selecionar período">
+            <button class="periodo-btn ativo" type="button" data-periodo="hoje">Hoje</button>
+            <button class="periodo-btn" type="button" data-periodo="ontem">Ontem</button>
+            <button class="periodo-btn" type="button" data-periodo="7">7 dias</button>
+            <button class="periodo-btn" type="button" data-periodo="30">30 dias</button>
+            <button class="periodo-btn" type="button" data-periodo="personalizado">Personalizado</button>
+          </div>
+
+          <div id="periodoPersonalizado" class="periodo-personalizado" hidden>
+            <label>
+              <span>Data inicial</span>
+              <input id="dataInicialRelatorio" type="date" />
+            </label>
+            <label>
+              <span>Data final</span>
+              <input id="dataFinalRelatorio" type="date" />
+            </label>
+          </div>
+
+          <p id="periodoLegenda" class="periodo-legenda">Hoje</p>
+        </section>
+
+        <section class="resumo-relatorio" aria-label="Resumo geral">
+          <article class="metrica-card metrica-principal">
+            <div class="metrica-cabecalho">
+              <span>Faturamento</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18" /><path d="m7 15 4-4 3 3 5-6" /></svg>
+            </div>
+            <strong id="relatorioFaturamento">R$ 0,00</strong>
+            <small id="variacaoFaturamento" class="variacao neutra">Sem comparação disponível</small>
+          </article>
+
+          <article class="metrica-card">
+            <div class="metrica-cabecalho">
+              <span>Vendas</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h2l2.5 11h9.8l2-7H7" /><circle cx="9" cy="19" r="1.4" /><circle cx="17" cy="19" r="1.4" /></svg>
+            </div>
+            <strong id="relatorioQtdVendas">0</strong>
+            <small>vendas no período</small>
+          </article>
+
+          <article class="metrica-card">
+            <div class="metrica-cabecalho">
+              <span>Ticket médio</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M7 9h10M7 13h5" /></svg>
+            </div>
+            <strong id="relatorioTicketMedio">R$ 0,00</strong>
+            <small>por venda</small>
+          </article>
+
+          <article class="metrica-card resultado-card">
+            <div class="metrica-cabecalho">
+              <span>Resultado bruto</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v20" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></svg>
+            </div>
+            <strong id="relatorioResultadoBruto">R$ 0,00</strong>
+            <small id="relatorioMargemBruta">Margem: 0%</small>
+          </article>
+        </section>
+
+        <section class="bloco relatorio-bloco indicadores-secundarios" aria-label="Custos e perdas">
+          <div class="indicador-secundario">
+            <span>Custo vendido</span>
+            <b id="relatorioCustoVendido">R$ 0,00</b>
+          </div>
+          <div class="indicador-divisor" aria-hidden="true"></div>
+          <div class="indicador-secundario perda">
+            <span>Perdas e sobras</span>
+            <b id="relatorioPerdas">R$ 0,00</b>
+          </div>
+        </section>
+
+        <section class="bloco relatorio-bloco grafico-bloco" aria-labelledby="tituloEvolucao">
+          <div class="secao-cabecalho">
+            <div>
+              <h2 id="tituloEvolucao" class="bloco-titulo relatorio-titulo">Evolução do faturamento</h2>
+              <p id="graficoEvolucaoLegenda" class="secao-subtitulo">Acompanhe como as vendas se distribuem no período.</p>
+            </div>
+          </div>
+
+          <div id="graficoEvolucao" class="grafico-area grafico-linha" role="img" aria-label="Gráfico de evolução do faturamento">
+            <div class="grafico-vazio">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h18" /><path d="M5 16l4-5 4 3 6-8" /></svg>
+              <span>Os dados do período aparecerão aqui.</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="bloco relatorio-bloco pagamentos-bloco" aria-labelledby="tituloPagamentos">
+          <h2 id="tituloPagamentos" class="bloco-titulo relatorio-titulo">Formas de pagamento</h2>
+
+          <div class="pagamentos-layout">
+            <div class="grafico-rosca-wrap">
+              <div id="graficoPagamentos" class="grafico-rosca vazio" aria-label="Distribuição por forma de pagamento">
+                <div class="rosca-centro">
+                  <span>Total</span>
+                  <b id="pagamentosTotal">R$ 0,00</b>
+                </div>
+              </div>
+            </div>
+
+            <div class="pagamentos-lista">
+              <div class="pagamento-item">
+                <span class="pagamento-marcador dinheiro" aria-hidden="true"></span>
+                <div><b>Dinheiro</b><small id="pagamentoDinheiroPercentual">0%</small></div>
+                <strong id="pagamentoDinheiroValor">R$ 0,00</strong>
+              </div>
+              <div class="pagamento-item">
+                <span class="pagamento-marcador pix" aria-hidden="true"></span>
+                <div><b>Pix</b><small id="pagamentoPixPercentual">0%</small></div>
+                <strong id="pagamentoPixValor">R$ 0,00</strong>
+              </div>
+              <div class="pagamento-item">
+                <span class="pagamento-marcador cartao" aria-hidden="true"></span>
+                <div><b>Cartão</b><small id="pagamentoCartaoPercentual">0%</small></div>
+                <strong id="pagamentoCartaoValor">R$ 0,00</strong>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="bloco relatorio-bloco produtos-bloco" aria-labelledby="tituloProdutos">
+          <div class="secao-cabecalho secao-cabecalho-com-controle">
+            <div>
+              <h2 id="tituloProdutos" class="bloco-titulo relatorio-titulo">Desempenho dos produtos</h2>
+              <p class="secao-subtitulo">Compare saída, faturamento e lucro bruto por produto.</p>
+            </div>
+            <div class="segmentado segmentado-produtos" role="group" aria-label="Ordenar produtos por">
+              <button class="segmentado-btn ativo" type="button" data-ranking="quantidade">Quantidade</button>
+              <button class="segmentado-btn" type="button" data-ranking="faturamento">Faturamento</button>
+              <button class="segmentado-btn" type="button" data-ranking="lucro">Lucro bruto</button>
+            </div>
+          </div>
+
+          <div class="tabela-scroll tabela-produtos-wrap">
+            <table class="tabela-relatorio tabela-produtos">
+              <thead>
+                <tr>
+                  <th>Produto</th>
+                  <th>Quantidade</th>
+                  <th>Faturamento</th>
+                  <th>Lucro bruto</th>
+                </tr>
+              </thead>
+              <tbody id="rankingProdutos">
+                <tr class="tabela-vazia">
+                  <td colspan="4">Nenhuma venda no período selecionado.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="bloco relatorio-bloco tabela-bloco" aria-labelledby="tituloResumoDiario">
+          <h2 id="tituloResumoDiario" class="bloco-titulo relatorio-titulo">Resumo por dia</h2>
+
+          <div class="tabela-scroll">
+            <table class="tabela-relatorio">
+              <thead>
+                <tr>
+                  <th>Data</th>
+                  <th>Vendas</th>
+                  <th>Faturamento</th>
+                  <th>Resultado</th>
+                </tr>
+              </thead>
+              <tbody id="resumoDiarioTabela">
+                <tr class="tabela-vazia">
+                  <td colspan="4">Nenhum dado no período selecionado.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="bloco relatorio-bloco historico-bloco" aria-labelledby="tituloHistorico">
+          <div class="secao-cabecalho">
+            <div>
+              <h2 id="tituloHistorico" class="bloco-titulo relatorio-titulo">Vendas do período</h2>
+              <p class="secao-subtitulo">Toque em uma venda para ver os detalhes.</p>
+            </div>
+            <span id="historicoContagem" class="contador-registros">0</span>
+          </div>
+
+          <div id="historicoVendasRelatorio" class="historico-vendas-relatorio">
+            <div class="estado-vazio-compacto">Nenhuma venda encontrada.</div>
+          </div>
+        </section>
+
+        <a class="btn-voltar-rodape relatorio-voltar" href="relatorio.html">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
+          <span>Voltar para Relatórios</span>
+        </a>
+      </div>
+    </main>
+
+    <script type="module" src="js/relatorio.js?v=20260925-2"></script>
+  </body>
+</html>
