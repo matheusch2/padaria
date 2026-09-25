@@ -1,10 +1,5 @@
 import { supabase } from "./supabase.js";
 
-function paginaAtual() {
-  const nome = window.location.pathname.split("/").pop() || "index.html";
-  return `${nome}${window.location.search || ""}`;
-}
-
 export async function obterUsuario() {
   const { data, error } = await supabase.auth.getUser();
   if (error) return null;
@@ -14,8 +9,7 @@ export async function obterUsuario() {
 export async function exigirUsuario() {
   const { data, error } = await supabase.auth.getSession();
   if (error || !data.session?.user) {
-    const destino = encodeURIComponent(paginaAtual());
-    window.location.replace(`login.html?redirect=${destino}`);
+    window.location.replace("login.html");
     return null;
   }
 
