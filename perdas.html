@@ -18,19 +18,44 @@
     </header>
 
     <main class="conteudo-pagina">
-      <div class="painel-pagina">
-        <section class="bloco">
-          <h2 class="bloco-titulo">Registrar saída</h2>
-          <p class="texto-apoio">Use esta tela para produtos perdidos, danificados, vencidos ou sobras que serão descartadas. O estoque é reduzido e o prejuízo é calculado pelo custo.</p>
+      <div class="painel-pagina perdas-painel">
+        <section class="bloco bloco-registro">
+          <div class="cabecalho-bloco">
+            <div>
+              <h2 class="bloco-titulo">Registrar saída</h2>
+              <p class="texto-apoio">Registre produtos perdidos, danificados, vencidos ou sobras descartadas. O estoque é reduzido e o impacto é calculado pelo custo.</p>
+            </div>
+          </div>
 
           <div class="campo-form">
             <label for="produtoPerda">Produto</label>
             <select id="produtoPerda"></select>
           </div>
 
+          <div id="semProdutos" class="estado-sem-produtos" hidden>
+            <div class="estado-sem-produtos-icone" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                <path d="M3.27 6.96 12 12.01l8.73-5.05" />
+                <line x1="12" y1="22" x2="12" y2="12" />
+              </svg>
+            </div>
+            <div>
+              <b>Nenhum produto cadastrado</b>
+              <span>Cadastre pelo menos um produto antes de registrar perdas ou sobras.</span>
+            </div>
+            <a href="cadastrar-produto.html">Cadastrar produto</a>
+          </div>
+
           <div id="produtoResumo" class="produto-resumo" hidden>
-            <span>Estoque atual: <b id="estoqueAtual">0</b></span>
-            <span>Custo unitário: <b id="custoUnitario">R$ 0,00</b></span>
+            <div>
+              <span>Estoque atual</span>
+              <b id="estoqueAtual">0</b>
+            </div>
+            <div>
+              <span>Custo unitário</span>
+              <b id="custoUnitario">R$ 0,00</b>
+            </div>
           </div>
 
           <div class="grade-campos">
@@ -59,24 +84,43 @@
             </select>
           </div>
 
-          <div class="campo-form">
+          <div class="campo-form campo-observacao">
             <label for="observacaoPerda">Observação <span class="opcional">(opcional)</span></label>
             <textarea id="observacaoPerda" rows="3" placeholder="Ex.: bandeja caiu no chão"></textarea>
           </div>
 
           <div class="impacto-box">
-            <span>Impacto no resultado</span>
-            <b id="impactoPerda">R$ 0,00</b>
-            <small>Valor calculado pelo custo do produto.</small>
+            <div class="impacto-icone" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 2v20" />
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+              </svg>
+            </div>
+            <div class="impacto-conteudo">
+              <span>Impacto no resultado</span>
+              <b id="impactoPerda">R$ 0,00</b>
+              <small>Prejuízo calculado pelo custo do produto.</small>
+            </div>
           </div>
 
           <p id="avisoPerda" class="aviso-finalizar" hidden></p>
-          <button class="btn-registrar-perda" id="btnRegistrarPerda" type="button">Registrar saída</button>
+
+          <div class="acoes-registro">
+            <button class="btn-registrar-perda" id="btnRegistrarPerda" type="button">Registrar saída</button>
+            <p class="rodape-divisor">ou</p>
+            <a class="btn-voltar-rodape" href="index.html">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
+              <span>Voltar</span>
+            </a>
+          </div>
         </section>
 
-        <section class="bloco">
+        <section class="bloco bloco-movimentacoes">
           <div class="titulo-com-resumo">
-            <h2 class="bloco-titulo">Movimentações de hoje</h2>
+            <div>
+              <h2 class="bloco-titulo">Movimentações de hoje</h2>
+              <p class="subtitulo-movimentacoes">Acompanhe as saídas registradas no dia.</p>
+            </div>
             <span id="totalPerdasHoje" class="badge-erro">R$ 0,00</span>
           </div>
           <div id="listaPerdas" class="lista-perdas"></div>
