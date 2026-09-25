@@ -8,6 +8,8 @@ const motivoSelect = document.getElementById("motivoPerda");
 const observacaoInput = document.getElementById("observacaoPerda");
 const aviso = document.getElementById("avisoPerda");
 const btnRegistrar = document.getElementById("btnRegistrarPerda");
+const semProdutos = document.getElementById("semProdutos");
+const camposSaida = document.getElementById("camposSaida");
 
 function formatarMoeda(valor) {
   return Number(valor || 0).toLocaleString("pt-BR", {
@@ -60,19 +62,28 @@ function esconderAviso() {
   aviso.classList.remove("sucesso");
 }
 
+function definirEstadoSemProdutos(semCadastro) {
+  semProdutos.hidden = !semCadastro;
+  camposSaida.hidden = semCadastro;
+  produtoSelect.disabled = semCadastro;
+  btnRegistrar.disabled = semCadastro;
+
+  [tipoSelect, quantidadeInput, motivoSelect, observacaoInput].forEach((campo) => {
+    campo.disabled = semCadastro;
+  });
+}
+
 function carregarSelectProdutos() {
   const produtos = carregarProdutos().sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
 
   if (!produtos.length) {
     produtoSelect.innerHTML = '<option value="">Nenhum produto cadastrado</option>';
-    produtoSelect.disabled = true;
-    btnRegistrar.disabled = true;
+    definirEstadoSemProdutos(true);
     atualizarResumoProduto();
     return;
   }
 
-  produtoSelect.disabled = false;
-  btnRegistrar.disabled = false;
+  definirEstadoSemProdutos(false);
   produtoSelect.innerHTML = '<option value="">Selecione um produto</option>' + produtos
     .map((produto) => `<option value="${produto.id}">${escaparHTML(produto.nome)}</option>`)
     .join("");
