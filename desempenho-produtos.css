@@ -1,0 +1,75 @@
+.segmentado-produtos {
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.segmentado-produtos::-webkit-scrollbar {
+  display: none;
+}
+
+.segmentado-produtos .segmentado-btn {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.tabela-produtos-wrap {
+  margin-top: 2px;
+}
+
+.tabela-produtos {
+  min-width: 560px;
+}
+
+.tabela-produtos th:first-child,
+.tabela-produtos td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  min-width: 150px;
+  max-width: 190px;
+  background: #fff;
+}
+
+.tabela-produtos th:first-child {
+  z-index: 2;
+  background: #faf7f4;
+}
+
+.tabela-produtos td:first-child {
+  font-weight: 700;
+  color: #432d22;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tabela-produtos th:last-child,
+.tabela-produtos td:last-child {
+  color: rgb(var(--sucesso));
+  font-weight: 800;
+}
+
+.tabela-produtos .tabela-vazia td {
+  position: static;
+  max-width: none;
+  background: #fff;
+  color: #a08d82;
+  font-weight: 400;
+}
+
+@media (max-width: 430px) {
+  .produtos-bloco .secao-cabecalho-com-controle {
+    gap: 10px;
+  }
+
+  .segmentado-produtos {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .segmentado-produtos .segmentado-btn {
+    min-height: 34px;
+    padding-inline: 11px;
+  }
+}
