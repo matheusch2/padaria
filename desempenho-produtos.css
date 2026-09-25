@@ -1,47 +1,95 @@
 .segmentado-produtos {
+  width: 100%;
   max-width: 100%;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-}
-
-.segmentado-produtos::-webkit-scrollbar {
-  display: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 3px;
+  overflow: visible;
 }
 
 .segmentado-produtos .segmentado-btn {
-  flex: 0 0 auto;
+  width: 100%;
+  min-width: 0;
+  padding: 0 6px;
   white-space: nowrap;
 }
 
-.tabela-produtos-wrap {
-  margin-top: 2px;
+.produtos-bloco .secao-cabecalho-com-controle {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 12px;
 }
 
-.tabela-produtos {
-  min-width: 560px;
+.produtos-bloco .secao-cabecalho-com-controle .relatorio-titulo {
+  margin: 0;
+  text-align: center;
+}
+
+.tabela-produtos-wrap,
+.tabela-resumo-wrap {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.tabela-produtos,
+.tabela-resumo-diario {
+  width: 100%;
+  min-width: 0 !important;
+  max-width: 100%;
+  table-layout: fixed;
+}
+
+.tabela-produtos th,
+.tabela-produtos td,
+.tabela-resumo-diario th,
+.tabela-resumo-diario td {
+  min-width: 0;
+  padding: 10px 6px;
+  font-size: 10px;
+  white-space: normal;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+.tabela-produtos th:nth-child(1),
+.tabela-produtos td:nth-child(1) {
+  width: 34%;
+  text-align: left;
+}
+
+.tabela-produtos th:nth-child(2),
+.tabela-produtos td:nth-child(2) {
+  width: 17%;
+  text-align: center;
+}
+
+.tabela-produtos th:nth-child(3),
+.tabela-produtos td:nth-child(3) {
+  width: 24%;
+  text-align: right;
+}
+
+.tabela-produtos th:nth-child(4),
+.tabela-produtos td:nth-child(4) {
+  width: 25%;
+  text-align: right;
 }
 
 .tabela-produtos th:first-child,
 .tabela-produtos td:first-child {
-  position: sticky;
-  left: 0;
-  z-index: 1;
-  min-width: 150px;
-  max-width: 190px;
-  background: #fff;
-}
-
-.tabela-produtos th:first-child {
-  z-index: 2;
-  background: #faf7f4;
+  position: static;
+  min-width: 0;
+  max-width: none;
 }
 
 .tabela-produtos td:first-child {
-  font-weight: 700;
   color: #432d22;
+  font-weight: 700;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .tabela-produtos th:last-child,
@@ -50,46 +98,121 @@
   font-weight: 800;
 }
 
-.tabela-produtos .tabela-vazia td {
+.tabela-produtos td:nth-child(n + 2),
+.tabela-resumo-diario td:nth-child(n + 2) {
+  white-space: nowrap;
+}
+
+.tabela-produtos .tabela-vazia td,
+.tabela-resumo-diario .tabela-vazia td {
+  width: auto;
   position: static;
   max-width: none;
+  padding: 20px 8px;
   background: #fff;
   color: #a08d82;
   font-weight: 400;
+  white-space: normal;
 }
 
-.grafico-svg-relatorio {
-  display: block;
+.tabela-resumo-diario th:nth-child(1),
+.tabela-resumo-diario td:nth-child(1) {
+  width: 24%;
+  text-align: left;
+}
+
+.tabela-resumo-diario th:nth-child(2),
+.tabela-resumo-diario td:nth-child(2) {
+  width: 15%;
+  text-align: center;
+}
+
+.tabela-resumo-diario th:nth-child(3),
+.tabela-resumo-diario td:nth-child(3),
+.tabela-resumo-diario th:nth-child(4),
+.tabela-resumo-diario td:nth-child(4) {
+  width: 30.5%;
+  text-align: right;
+}
+
+/* Gráfico de torres */
+.grafico-torres-relatorio {
   width: 100%;
-  height: 220px;
+  min-width: 0;
+  min-height: 224px;
+  padding: 14px 10px 8px;
+  background:
+    linear-gradient(to bottom, rgba(122, 97, 83, 0.075) 1px, transparent 1px) 0 0 / 100% 25%,
+    #fcfaf8;
 }
 
-.grafico-svg-relatorio .grafico-eixo {
-  stroke: #ddd4ce;
-  stroke-width: 1.2;
-  vector-effect: non-scaling-stroke;
+.grafico-torre-colunas {
+  height: 202px;
+  display: grid;
+  grid-template-columns: repeat(var(--colunas), minmax(0, 1fr));
+  align-items: stretch;
+  gap: var(--gap, 6px);
 }
 
-.grafico-svg-relatorio .grafico-linha-path {
-  fill: none;
-  stroke: rgb(var(--marca));
-  stroke-width: 3;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  vector-effect: non-scaling-stroke;
+.grafico-torre-item {
+  min-width: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) 24px;
+  gap: 5px;
 }
 
-.grafico-svg-relatorio circle {
-  fill: #fff;
-  stroke: rgb(var(--marca));
-  stroke-width: 2;
-  vector-effect: non-scaling-stroke;
+.grafico-torre-area {
+  position: relative;
+  min-height: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
 }
 
-.grafico-svg-relatorio .grafico-rotulos text {
-  fill: #9b887d;
-  font-size: 10px;
-  font-family: inherit;
+.grafico-torre-barra {
+  width: 78%;
+  max-width: 34px;
+  min-width: 3px;
+  height: var(--altura);
+  min-height: 2px;
+  border-radius: 9px 9px 4px 4px;
+  background: rgb(var(--marca));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  transition: height 0.25s ease, opacity 0.2s ease;
+}
+
+.grafico-torre-barra.cor-0 { background: rgb(var(--marca)); }
+.grafico-torre-barra.cor-1 { background: rgb(var(--marca-viva)); }
+.grafico-torre-barra.cor-2 { background: rgb(var(--sucesso)); }
+.grafico-torre-barra.cor-3 { background: #5e7391; }
+.grafico-torre-barra.cor-4 { background: #756b89; }
+
+.grafico-torre-barra.zero {
+  opacity: 0.16;
+}
+
+.grafico-torre-valor {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--altura) + 4px);
+  transform: translateX(-50%);
+  color: #806d61;
+  font-size: 8px;
+  font-weight: 800;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.grafico-torre-rotulo {
+  min-width: 0;
+  align-self: start;
+  color: #9b887d;
+  font-size: 8px;
+  line-height: 1.1;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .venda-relatorio-detalhe {
@@ -134,22 +257,83 @@
   color: #968278;
 }
 
+.btn-historico-mais {
+  width: 100%;
+  min-height: 42px;
+  margin-top: 10px;
+  border: 1px solid #e4d8d1;
+  border-radius: 12px;
+  background: #faf7f4;
+  color: rgb(var(--marca));
+  font: inherit;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.btn-historico-mais[hidden] {
+  display: none !important;
+}
+
 @media (max-width: 430px) {
-  .produtos-bloco .secao-cabecalho-com-controle {
-    gap: 10px;
-  }
-
-  .segmentado-produtos {
-    width: 100%;
-    justify-content: flex-start;
-  }
-
   .segmentado-produtos .segmentado-btn {
-    min-height: 34px;
-    padding-inline: 11px;
+    min-height: 36px;
+    padding-inline: 3px;
+    font-size: 9.5px;
   }
 
-  .grafico-svg-relatorio {
-    height: 205px;
+  .tabela-produtos th,
+  .tabela-produtos td,
+  .tabela-resumo-diario th,
+  .tabela-resumo-diario td {
+    padding: 9px 4px;
+    font-size: 9px;
+  }
+
+  .tabela-produtos th,
+  .tabela-resumo-diario th {
+    font-size: 8px;
+    letter-spacing: 0.1px;
+  }
+
+  .grafico-torres-relatorio {
+    min-height: 210px;
+    padding-inline: 6px;
+  }
+
+  .grafico-torre-colunas {
+    height: 190px;
+  }
+
+  .grafico-torre-barra {
+    width: 82%;
+    border-radius: 7px 7px 3px 3px;
+  }
+
+  .grafico-torre-valor {
+    font-size: 7px;
+  }
+
+  .grafico-torre-rotulo {
+    font-size: 7.5px;
+  }
+}
+
+@media (max-width: 350px) {
+  .segmentado-produtos .segmentado-btn {
+    font-size: 8.5px;
+  }
+
+  .tabela-produtos th,
+  .tabela-produtos td,
+  .tabela-resumo-diario th,
+  .tabela-resumo-diario td {
+    padding-inline: 3px;
+    font-size: 8.5px;
+  }
+
+  .tabela-produtos th,
+  .tabela-resumo-diario th {
+    font-size: 7.5px;
   }
 }
