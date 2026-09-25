@@ -1,4 +1,5 @@
 import { exigirUsuario } from "./auth.js";
+import { dataLocalISO, intervaloPorTipo } from "./relatorios-dados.js";
 
 const botoesPeriodo = [...document.querySelectorAll("[data-periodo-impressao]")];
 const periodoPersonalizado = document.getElementById("periodoImpressaoPersonalizado");
@@ -10,12 +11,16 @@ const documentoSelecionado = document.getElementById("documentoSelecionado");
 const btnPrepararRelatorio = document.getElementById("btnPrepararRelatorio");
 const avisoImpressao = document.getElementById("avisoImpressao");
 
-function dataISO(data) {
-  const ano = data.getFullYear();
-  const mes = String(data.getMonth() + 1).padStart(2, "0");
-  const dia = String(data.getDate()).padStart(2, "0");
-  return `${ano}-${mes}-${dia}`;
-}
+const TIPOS = {
+  "Vendas": { slug: "vendas", nome: "Relatório de vendas" },
+  "Perdas e sobras": { slug: "perdas", nome: "Relatório de perdas e sobras" },
+  "Estoque": { slug: "estoque", nome: "Relatório de estoque" },
+  "Fechamento do caixa": { slug: "fechamento", nome: "Relatório de fechamento do caixa" },
+  "Produtos e lucratividade": { slug: "produtos", nome: "Produtos e lucratividade" },
+};
+
+let periodoAtual = "hoje";
+let documentoAtual = null;
 
 function formatarDataCurta(data) {
   return new Intl.DateTimeFormat("pt-BR", {
@@ -26,67 +31,88 @@ function formatarDataCurta(data) {
 }
 
 function atualizarLegenda(tipo) {
-  const hoje = new Date();
-  hoje.setHours(0, 0, 0, 0);
+  try {
+    const intervalo = intervaloPorTipo(tipo, dataInicial.value, dataFinal.value);
+    if (tipo === "hoje") {
+      periodoLegenda.textContent = `Hoje · ${formatarDataCurta(intervalo.inicio)}`;
+    } else if (tipo === "ontem") {
+      periodoLegenda.textContent = `Ontem · ${formatarDataCurta(intervalo.inicio)}`;
+    } else {
+      periodoLegenda.textContent = `${formatarDataCurta(intervalo.inicio)} — ${formatarDataCurta(intervalo.fimInclusivo)}`;
+    }
+    avisoImpressao.textContent = documentoAtual
+      ? "Pronto para gerar com os dados reais do período selecionado."
+      : "Selecione um relatório para preparar a visualização.";
+  } catch (erro) {
+    periodoLegenda.textContent = erro?.message || "Escolha as datas do período";
+    avisoImpressao.textContent = erro?.message || "Período inválido.";
+  }
+}
 
-  if (tipo === "hoje") {
-    periodoLegenda.textContent = `Hoje · ${formatarDataCurta(hoje)}`;
+function atualizarBotao() {
+  if (!documentoAtual) {
+    btnPrepararRelatorio.disabled = true;
     return;
   }
 
-  if (tipo === "ontem") {
-    const ontem = new Date(hoje);
-    ontem.setDate(ontem.getDate() - 1);
-    periodoLegenda.textContent = `Ontem · ${formatarDataCurta(ontem)}`;
-    return;
+  try {
+    intervaloPorTipo(periodoAtual, dataInicial.value, dataFinal.value);
+    btnPrepararRelatorio.disabled = false;
+  } catch {
+    btnPrepararRelatorio.disabled = true;
   }
-
-  if (tipo === "7" || tipo === "30") {
-    const dias = Number(tipo);
-    const inicio = new Date(hoje);
-    inicio.setDate(inicio.getDate() - (dias - 1));
-    periodoLegenda.textContent = `${formatarDataCurta(inicio)} — ${formatarDataCurta(hoje)}`;
-    return;
-  }
-
-  const inicio = dataInicial.value ? new Date(`${dataInicial.value}T00:00:00`) : null;
-  const fim = dataFinal.value ? new Date(`${dataFinal.value}T00:00:00`) : null;
-  periodoLegenda.textContent = inicio && fim
-    ? `${formatarDataCurta(inicio)} — ${formatarDataCurta(fim)}`
-    : "Escolha as datas do período";
 }
 
 botoesPeriodo.forEach((botao) => {
   botao.addEventListener("click", () => {
     botoesPeriodo.forEach((item) => item.classList.toggle("ativo", item === botao));
-    const tipo = botao.dataset.periodoImpressao;
-    periodoPersonalizado.hidden = tipo !== "personalizado";
-    atualizarLegenda(tipo);
+    periodoAtual = botao.dataset.periodoImpressao;
+    periodoPersonalizado.hidden = periodoAtual !== "personalizado";
+    atualizarLegenda(periodoAtual);
+    atualizarBotao();
   });
 });
 
 [dataInicial, dataFinal].forEach((campo) => {
-  campo.addEventListener("change", () => atualizarLegenda("personalizado"));
+  campo.addEventListener("change", () => {
+    atualizarLegenda("personalizado");
+    atualizarBotao();
+  });
 });
 
 documentos.forEach((card) => {
   card.addEventListener("click", () => {
     documentos.forEach((item) => item.classList.toggle("selecionado", item === card));
-    documentoSelecionado.textContent = card.dataset.documento;
-    btnPrepararRelatorio.disabled = false;
-    avisoImpressao.textContent = "Seleção pronta. A geração com dados reais será conectada na próxima etapa.";
+    documentoAtual = TIPOS[card.dataset.documento] || null;
+    documentoSelecionado.textContent = documentoAtual?.nome || "Nenhum";
+    atualizarBotao();
+    avisoImpressao.textContent = documentoAtual
+      ? "Pronto para gerar com os dados reais do período selecionado."
+      : "Selecione um relatório para preparar a visualização.";
   });
 });
 
 btnPrepararRelatorio.addEventListener("click", () => {
-  avisoImpressao.textContent = "A visualização e o PDF ainda não foram conectados. A estrutura visual já está pronta.";
+  if (!documentoAtual) return;
+
+  try {
+    const intervalo = intervaloPorTipo(periodoAtual, dataInicial.value, dataFinal.value);
+    const query = new URLSearchParams({
+      tipo: documentoAtual.slug,
+      inicio: intervalo.inicioData,
+      fim: intervalo.fimData,
+    });
+    window.location.href = `relatorio-gerado.html?${query.toString()}`;
+  } catch (erro) {
+    avisoImpressao.textContent = erro?.message || "Não foi possível preparar o relatório.";
+  }
 });
 
 const hoje = new Date();
 const haTrintaDias = new Date(hoje);
 haTrintaDias.setDate(haTrintaDias.getDate() - 29);
-dataInicial.value = dataISO(haTrintaDias);
-dataFinal.value = dataISO(hoje);
+dataInicial.value = dataLocalISO(haTrintaDias);
+dataFinal.value = dataLocalISO(hoje);
 atualizarLegenda("hoje");
 
 await exigirUsuario();
