@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#8c4527" />
+    <title>Relatório - Padaria Gestão</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="relatorio-gerado.css?v=20260925-1" />
+  </head>
+  <body class="relatorio-gerado-body">
+    <div class="relatorio-acoes no-print">
+      <a href="relatorios-impressao.html" class="relatorio-acao secundario">Voltar</a>
+      <button id="btnImprimir" class="relatorio-acao primario" type="button">Imprimir / Salvar PDF</button>
+    </div>
+
+    <main id="folhaRelatorio" class="folha-relatorio" aria-live="polite">
+      <header class="documento-cabecalho">
+        <div>
+          <p class="documento-marca">Padaria Gestão</p>
+          <h1 id="tituloRelatorio">Relatório</h1>
+          <p id="periodoRelatorio" class="documento-periodo">Carregando período...</p>
+        </div>
+        <div class="documento-meta">
+          <span>Gerado em</span>
+          <b id="geradoEm">—</b>
+        </div>
+      </header>
+
+      <div id="estadoRelatorio" class="estado-relatorio">Carregando dados...</div>
+      <section id="conteudoRelatorio" hidden></section>
+    </main>
+
+    <script type="module" src="js/relatorio-gerado.js?v=20260925-1"></script>
+  </body>
+</html>
