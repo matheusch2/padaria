@@ -179,6 +179,16 @@ body {
 .vendas-dia summary:focus-visible { outline: 3px solid #c49b85; outline-offset: 2px; }
 .vendas-dia[open] > summary { margin-bottom: 10px; }
 
+.tipo-registro { display: inline-block; padding: 3px 7px; border-radius: 6px; font-size: 10px; font-weight: 700; }
+.tipo-perda { background: #fbeae6; color: #943c2b; }
+.tipo-sobra { background: #fff3d6; color: #775414; }
+.tabela-vendas.tabela-perdas th:nth-child(1) { width: 16%; }
+.tabela-vendas.tabela-perdas th:nth-child(2) { width: 21%; }
+.tabela-vendas.tabela-perdas th:nth-child(3) { width: 12%; }
+.tabela-vendas.tabela-perdas th:nth-child(4) { width: 13%; }
+.tabela-vendas.tabela-perdas th:nth-child(5) { width: 14%; }
+.tabela-vendas.tabela-perdas th:nth-child(6) { width: 24%; }
+
 .folha-relatorio {
   width: min(100%, 900px);
   min-height: 1120px;
@@ -424,6 +434,11 @@ body {
 }
 
 @media screen and (max-width: 700px) {
+  .tabela-vendas.tabela-perdas tbody tr {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .tabela-perdas td:last-child { grid-column: 1 / -1; }
+  .tabela-perdas td:nth-child(2) { font-weight: 700; }
   .tabela-vendas,
   .tabela-vendas tbody {
     display: block;

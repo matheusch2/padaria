@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#8c4527" />
     <title>Relatório - Padaria Gestão</title>
     <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="relatorio-gerado.css?v=20260925-4" />
+    <link rel="stylesheet" href="relatorio-gerado.css?v=20260925-5" />
   </head>
   <body class="relatorio-gerado-body">
     <div class="relatorio-acoes no-print">
@@ -26,7 +26,7 @@
       <label><span id="rotuloDataVendas">Dia</span><input id="dataVendas" type="date" required /></label>
       <label id="campoFimVendas" hidden>Data final<input id="fimVendas" type="date" /></label>
       <button type="submit" class="relatorio-acao primario">Atualizar relatório</button>
-      <label class="opcao-detalhes"><input id="imprimirDetalhesVendas" type="checkbox" /> Incluir todas as vendas detalhadas na impressão / PDF</label>
+      <label id="opcaoDetalhesVendas" class="opcao-detalhes"><input id="imprimirDetalhesVendas" type="checkbox" /> Incluir todas as vendas detalhadas na impressão / PDF</label>
       <p id="erroFiltroVendas" class="erro-filtro" role="alert" hidden></p>
     </form>
 
@@ -46,6 +46,6 @@
       <section id="conteudoRelatorio" hidden></section>
     </main>
 
-    <script type="module" src="js/relatorio-gerado.js?v=20260925-3"></script>
+    <script type="module" src="js/relatorio-gerado.js?v=20260925-4"></script>
   </body>
 </html>

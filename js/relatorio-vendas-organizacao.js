@@ -26,10 +26,10 @@ export function periodoDeVendas(modo, referencia, final = referencia) {
   return intervaloPorTipo("personalizado", dataLocalISO(inicio), dataLocalISO(fim));
 }
 
-export function agruparVendasPorDia(vendas) {
+export function agruparVendasPorDia(vendas, campoData = "realizada_em") {
   const dias = new Map();
   for (const venda of vendas) {
-    const data = new Date(venda.realizada_em);
+    const data = new Date(venda[campoData]);
     const chave = Number.isNaN(data.getTime()) ? "" : dataLocalISO(data);
     if (!dias.has(chave)) dias.set(chave, []);
     dias.get(chave).push(venda);

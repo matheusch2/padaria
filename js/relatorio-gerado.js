@@ -3,7 +3,7 @@ import { listarVendasPeriodo } from "./vendas-api.js";
 import { listarPerdasPeriodo } from "./perdas-api.js";
 import { carregarProdutos } from "./produtos.js";
 import { listarFechamentosPeriodo } from "./fechamentos-api.js";
-import { agruparVendasPorDia, periodoDeVendas } from "./relatorio-vendas-organizacao.js";
+import { agruparVendasPorDia, periodoDeVendas } from "./relatorio-vendas-organizacao.js?v=20260925-2";
 import {
   agruparProdutos,
   custoItensVenda,
@@ -165,33 +165,39 @@ async function renderVendas(intervalo) {
 
 async function renderPerdas(intervalo) {
   const registros = await listarPerdasPeriodo(intervalo.inicioISO, intervalo.fimISO);
-  const custoTotal = registros.reduce((soma, item) => soma + numero(item.custo_total), 0);
   const quantidade = registros.reduce((soma, item) => soma + numero(item.quantidade), 0);
   const perdas = registros.filter((item) => item.tipo === "perda").length;
   const sobras = registros.filter((item) => item.tipo === "sobra").length;
+  const custoPorTipo = (tipoRegistro) => registros.filter((item) => item.tipo === tipoRegistro)
+    .reduce((soma, item) => soma + numero(item.custo_total), 0);
 
-  const linhas = registros.map((item) => `<tr>
-    <td>${escaparHTML(formatarData(item.registrada_em, true))}</td>
-    <td>${escaparHTML(item.nome_produto || "Produto")}</td>
-    <td>${item.tipo === "sobra" ? "Sobra" : "Perda"}</td>
-    <td class="numero">${escaparHTML(formatarQuantidade(item.quantidade))}</td>
-    <td class="numero">${escaparHTML(formatarMoeda(item.custo_total))}</td>
-    <td>${escaparHTML(item.motivo || "—")}</td>
+  const linhasPorDia = (itens) => itens.map((item) => `<tr>
+    <td data-rotulo="Data / hora">${escaparHTML(formatarData(item.registrada_em, true))}</td>
+    <td data-rotulo="Produto">${escaparHTML(item.nome_produto || "Produto")}</td>
+    <td data-rotulo="Tipo"><span class="tipo-registro ${item.tipo === "sobra" ? "tipo-sobra" : "tipo-perda"}">${item.tipo === "sobra" ? "Sobra" : item.tipo === "perda" ? "Perda" : "Não informado"}</span></td>
+    <td data-rotulo="Quantidade" class="numero">${escaparHTML(formatarQuantidade(item.quantidade))}</td>
+    <td data-rotulo="Custo" class="numero">${escaparHTML(formatarMoeda(item.custo_total))}</td>
+    <td data-rotulo="Motivo">${escaparHTML(item.motivo || "—")}</td>
   </tr>`).join("");
+  const dias = agruparVendasPorDia(registros, "registrada_em");
+  const detalhes = dias.map(([dia, itens]) => `<details class="vendas-dia perdas-dia"${dias.length === 1 ? " open" : ""}>
+    <summary><span>${escaparHTML(dia ? formatarDataISO(dia) : "Data não informada")}</span><span>${itens.length} ${itens.length === 1 ? "registro" : "registros"}</span></summary>
+    ${tabela(["Data / hora", "Produto", "Tipo", { texto: "Quantidade", numero: true }, { texto: "Custo", numero: true }, "Motivo"], linhasPorDia(itens), 6, "tabela-vendas tabela-perdas")}
+  </details>`).join("");
 
   return `
     ${cardsResumo([
       ["Registros", String(registros.length)],
       ["Quantidade total", formatarQuantidade(quantidade)],
-      ["Custo total", formatarMoeda(custoTotal)],
-      ["Perdas / Sobras", `${perdas} / ${sobras}`],
+      ["Perdas · registros", String(perdas)],
+      ["Sobras · registros", String(sobras)],
+      ["Custo das perdas", formatarMoeda(custoPorTipo("perda"))],
+      ["Custo das sobras", formatarMoeda(custoPorTipo("sobra"))],
     ])}
     <section class="relatorio-secao">
       <h2>Registros do período</h2>
-      ${tabela([
-        "Data / hora", "Produto", "Tipo", { texto: "Quantidade", numero: true },
-        { texto: "Custo", numero: true }, "Motivo",
-      ], linhas, 6)}
+      ${registros.length ? '<p class="instrucao-dias no-print">Toque na data para abrir ou fechar os registros. A impressão inclui todos os dias do período.</p>' : ""}
+      ${detalhes || '<p class="sem-registros">Nenhuma perda ou sobra no período.</p>'}
     </section>
   `;
 }
@@ -361,7 +367,8 @@ async function carregar() {
 }
 
 function configurarFiltroVendas() {
-  if (tipo !== "vendas") return;
+  if (!["vendas", "perdas"].includes(tipo)) return;
+  document.getElementById("opcaoDetalhesVendas").hidden = tipo !== "vendas";
   const form = document.getElementById("filtroVendas");
   const modo = document.getElementById("modoVendas");
   const data = document.getElementById("dataVendas");
@@ -386,7 +393,7 @@ function configurarFiltroVendas() {
     event.preventDefault();
     try {
       const intervalo = periodoDeVendas(modo.value, data.value, dataFim.value);
-      const query = new URLSearchParams({ tipo: "vendas", inicio: intervalo.inicioData, fim: intervalo.fimData, periodo: modo.value });
+      const query = new URLSearchParams({ tipo, inicio: intervalo.inicioData, fim: intervalo.fimData, periodo: modo.value });
       window.location.href = `relatorio-gerado.html?${query}`;
     } catch (falha) {
       erro.textContent = falha.message;
@@ -397,8 +404,8 @@ function configurarFiltroVendas() {
 
 let estadoAntesImpressao = null;
 window.addEventListener("beforeprint", () => {
-  if (tipo !== "vendas" || estadoAntesImpressao) return;
-  const incluir = document.getElementById("imprimirDetalhesVendas").checked;
+  if (!["vendas", "perdas"].includes(tipo) || estadoAntesImpressao) return;
+  const incluir = tipo === "perdas" || document.getElementById("imprimirDetalhesVendas").checked;
   document.body.classList.toggle("imprimir-vendas-detalhadas", incluir);
   estadoAntesImpressao = [...document.querySelectorAll(".vendas-dia")].map((elemento) => [elemento, elemento.open]);
   if (incluir) estadoAntesImpressao.forEach(([elemento]) => { elemento.open = true; });

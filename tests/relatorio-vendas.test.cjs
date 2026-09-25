@@ -9,7 +9,7 @@ const raiz = path.resolve(__dirname, '..');
 const ler = (arquivo) => fs.readFileSync(path.join(raiz, arquivo), 'utf8');
 const semModulos = (codigo) => codigo.replace(/^import[\s\S]*?from "[^\"]+";\n/gm, '').replaceAll('export function', 'function');
 
-function ambiente(vendas = []) {
+function ambiente(vendas = [], tipo = 'vendas', registros = []) {
   const ids = new Map();
   const eventos = new Map();
   const classes = new Set();
@@ -18,9 +18,9 @@ function ambiente(vendas = []) {
     if (!ids.has(id)) ids.set(id, { value: '', hidden: false, checked: false, textContent: '', addEventListener(nome, fn) { this[nome] = fn; } });
     return ids.get(id);
   };
-  const window = { location: { search: '?tipo=vendas&inicio=2026-09-01&fim=2026-09-30' }, addEventListener: (nome, fn) => eventos.set(nome, fn), print() {} };
+  const window = { location: { search: `?tipo=${tipo}&inicio=2026-09-01&fim=2026-09-30` }, addEventListener: (nome, fn) => eventos.set(nome, fn), print() {} };
   const document = { getElementById: elemento, querySelectorAll: () => dias, body: { classList: { toggle(nome, ativo) { if (ativo) classes.add(nome); else classes.delete(nome); }, remove(nome) { classes.delete(nome); } } } };
-  const contexto = vm.createContext({ URLSearchParams, window, document, console, listarVendasPeriodo: async () => vendas });
+  const contexto = vm.createContext({ URLSearchParams, window, document, console, listarVendasPeriodo: async () => vendas, listarPerdasPeriodo: async () => registros });
   for (const arquivo of ['js/relatorios-dados.js', 'js/relatorio-vendas-organizacao.js', 'js/relatorio-gerado.js']) {
     vm.runInContext(semModulos(ler(arquivo)).replace('await carregar();', ''), contexto);
   }
@@ -109,4 +109,44 @@ test('impressão resumida por padrão; detalhada abre todos os dias e restaura a
   assert.equal(a.classes.size, 0);
   const css = ler('relatorio-gerado.css');
   assert.match(css, /@media print\s*\{\s*\.vendas-detalhadas\s*\{ display: none; \}/);
+});
+
+const perdasSobras = [
+  { registrada_em: '2026-09-26T01:00:00Z', tipo: 'sobra', nome_produto: 'Coxinha', quantidade: 1, custo_total: 3, motivo: 'Sobra do dia' },
+  { registrada_em: '2026-09-24T16:00:00Z', tipo: 'perda', nome_produto: 'Pão', quantidade: 10, custo_total: 5, motivo: '<img src=x onerror=alert(1)>' },
+];
+
+test('perdas e sobras: contagens e custos separados, datas locais e conteúdo escapado', async () => {
+  const html = await ambiente([], 'perdas', perdasSobras).executar('renderPerdas({})');
+  assert.match(html, /Custo das perdas<\/span>\s*<b>R\$\s*5,00/);
+  assert.match(html, /Custo das sobras<\/span>\s*<b>R\$\s*3,00/);
+  assert.match(html, /Perdas · registros<\/span>\s*<b>1/);
+  assert.match(html, /Sobras · registros<\/span>\s*<b>1/);
+  assert.equal((html.match(/<details class="vendas-dia perdas-dia">/g) || []).length, 2);
+  assert.ok(html.indexOf('25/09/2026') < html.indexOf('24/09/2026'));
+  assert.ok(!html.includes('26/09/2026'));
+  assert.ok(!html.includes('<img'));
+  assert.ok(html.includes('&lt;img'));
+  const vazio = await ambiente([], 'perdas').executar('renderPerdas({})');
+  assert.match(vazio, /Nenhuma perda ou sobra no período/);
+  const umDia = await ambiente([], 'perdas', [perdasSobras[0]]).executar('renderPerdas({})');
+  assert.match(umDia, /<details class="vendas-dia perdas-dia" open>/);
+});
+
+test('calendário de perdas mantém o tipo de relatório e esconde opção exclusiva de vendas', () => {
+  const a = ambiente([], 'perdas');
+  assert.equal(a.elemento('filtroVendas').hidden, false);
+  assert.equal(a.elemento('opcaoDetalhesVendas').hidden, true);
+  a.elemento('modoVendas').value = 'semanal';
+  a.elemento('dataVendas').value = '2026-10-01';
+  a.elemento('filtroVendas').submit({ preventDefault() {} });
+  assert.match(a.window.location.href, /tipo=perdas&inicio=2026-09-28&fim=2026-10-04&periodo=semanal/);
+});
+
+test('impressão de perdas inclui todos os dias e restaura os blocos depois', () => {
+  const a = ambiente([], 'perdas');
+  a.eventos.get('beforeprint')();
+  assert.ok(a.dias.every(dia => dia.open));
+  a.eventos.get('afterprint')();
+  assert.deepEqual(a.dias.map(dia => dia.open), [false, true]);
 });
