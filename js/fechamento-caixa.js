@@ -1,11 +1,7 @@
-import {
-  CHAVE_FECHAMENTOS,
-  CHAVE_PERDAS,
-  CHAVE_VENDAS,
-  lerLista,
-  salvarLista,
-} from "./armazenamento.js";
-import { carregarProdutos } from "./produtos.js";
+import { listarVendasPeriodo } from "./vendas-api.js";
+import { listarPerdasPeriodo } from "./perdas-api.js";
+import { buscarFechamento, salvarFechamento as persistirFechamento } from "./fechamentos-api.js";
+import { exigirUsuario } from "./auth.js";
 
 const dataInput = document.getElementById("dataFechamento");
 const fundoInput = document.getElementById("fundoInicial");
@@ -49,51 +45,36 @@ function dataLocal(data = new Date()) {
   return `${ano}-${mes}-${dia}`;
 }
 
-function dataLocalDoISO(valor) {
-  const data = new Date(valor);
-  return Number.isNaN(data.getTime()) ? "" : dataLocal(data);
+function intervaloDaData(dataReferencia) {
+  const [ano, mes, dia] = dataReferencia.split("-").map(Number);
+  const inicio = new Date(ano, mes - 1, dia, 0, 0, 0, 0);
+  const fim = new Date(inicio);
+  fim.setDate(fim.getDate() + 1);
+  return { inicioISO: inicio.toISOString(), fimISO: fim.toISOString() };
 }
 
-function calcularResumo(dataReferencia) {
-  const vendas = lerLista(CHAVE_VENDAS).filter(
-    (venda) => dataLocalDoISO(venda.data) === dataReferencia,
-  );
-  const perdas = lerLista(CHAVE_PERDAS).filter(
-    (perda) => dataLocalDoISO(perda.data) === dataReferencia,
-  );
-  const produtos = carregarProdutos();
-  const custosAtuais = new Map(
-    produtos.map((produto) => [produto.id, Number(produto.custo) || 0]),
-  );
+async function calcularResumo(dataReferencia) {
+  const { inicioISO, fimISO } = intervaloDaData(dataReferencia);
+  const [vendas, perdas] = await Promise.all([
+    listarVendasPeriodo(inicioISO, fimISO),
+    listarPerdasPeriodo(inicioISO, fimISO),
+  ]);
 
   const faturamento = vendas.reduce((soma, venda) => soma + (Number(venda.total) || 0), 0);
-  const dinheiro = vendas.reduce((soma, venda) => soma + (Number(venda.pagamento?.dinheiro) || 0), 0);
-  const cartao = vendas.reduce((soma, venda) => soma + (Number(venda.pagamento?.cartao) || 0), 0);
-  const pix = vendas.reduce((soma, venda) => soma + (Number(venda.pagamento?.pix) || 0), 0);
+  const dinheiro = vendas.reduce((soma, venda) => soma + (Number(venda.dinheiro) || 0), 0);
+  const cartao = vendas.reduce((soma, venda) => soma + (Number(venda.cartao) || 0), 0);
+  const pix = vendas.reduce((soma, venda) => soma + (Number(venda.pix) || 0), 0);
 
-  let itensSemCustoHistorico = 0;
   const custoVendido = vendas.reduce((totalVendas, venda) => {
-    const custoDaVenda = (venda.itens || []).reduce((totalItens, item) => {
-      const quantidade = Number(item.quantidade) || 0;
-      let custoUnitario;
-
-      if (item.custo !== undefined && item.custo !== null) {
-        custoUnitario = Number(item.custo) || 0;
-      } else {
-        custoUnitario = custosAtuais.get(item.produtoId) || 0;
-        itensSemCustoHistorico += 1;
-      }
-
-      return totalItens + custoUnitario * quantidade;
+    return totalVendas + (venda.itens_venda || []).reduce((totalItens, item) => {
+      return totalItens + (Number(item.custo_unitario) || 0) * (Number(item.quantidade) || 0);
     }, 0);
-    return totalVendas + custoDaVenda;
   }, 0);
 
-  const custoPerdas = perdas.reduce((soma, perda) => {
-    const custoTotal = Number(perda.custoTotal);
-    if (Number.isFinite(custoTotal)) return soma + custoTotal;
-    return soma + (Number(perda.custoUnitario) || 0) * (Number(perda.quantidade) || 0);
-  }, 0);
+  const custoPerdas = perdas.reduce(
+    (soma, perda) => soma + (Number(perda.custo_total) || 0),
+    0,
+  );
 
   return {
     dataReferencia,
@@ -105,12 +86,12 @@ function calcularResumo(dataReferencia) {
     custoVendido,
     custoPerdas,
     resultadoBruto: faturamento - custoVendido - custoPerdas,
-    itensSemCustoHistorico,
   };
 }
 
-function renderizarResumo() {
-  resumoAtual = calcularResumo(dataInput.value);
+async function renderizarResumo() {
+  if (!dataInput.value) return;
+  resumoAtual = await calcularResumo(dataInput.value);
 
   document.getElementById("resumoFaturamento").textContent = formatarMoeda(resumoAtual.faturamento);
   document.getElementById("resumoQtdVendas").textContent = `${resumoAtual.quantidadeVendas} ${resumoAtual.quantidadeVendas === 1 ? "venda" : "vendas"}`;
@@ -160,40 +141,43 @@ function atualizarConferencia() {
   }
 }
 
-function carregarFechamentoSalvo() {
-  const fechamento = lerLista(CHAVE_FECHAMENTOS).find(
-    (item) => item.dataReferencia === dataInput.value,
-  );
-
+async function carregarFechamentoSalvo() {
   aviso.hidden = true;
   aviso.classList.remove("sucesso");
+  status.hidden = true;
 
-  if (!fechamento) {
-    fundoInput.value = "";
-    retiradasInput.value = "";
-    contadoInput.value = "";
-    observacaoInput.value = "";
-    status.hidden = true;
-    btnFechar.textContent = "Salvar fechamento";
-    renderizarResumo();
-    return;
+  try {
+    const fechamento = await buscarFechamento(dataInput.value);
+
+    if (!fechamento) {
+      fundoInput.value = "";
+      retiradasInput.value = "";
+      contadoInput.value = "";
+      observacaoInput.value = "";
+      btnFechar.textContent = "Salvar fechamento";
+      await renderizarResumo();
+      return;
+    }
+
+    fundoInput.value = formatarCampoMoeda(fechamento.fundo_inicial);
+    retiradasInput.value = formatarCampoMoeda(fechamento.retiradas);
+    contadoInput.value = formatarCampoMoeda(fechamento.dinheiro_contado);
+    observacaoInput.value = fechamento.observacao || "";
+    btnFechar.textContent = "Atualizar fechamento";
+
+    const salvoEm = new Date(fechamento.atualizado_em || fechamento.criado_em);
+    status.textContent = Number.isNaN(salvoEm.getTime())
+      ? "Fechamento já salvo para esta data."
+      : `Fechamento salvo em ${salvoEm.toLocaleDateString("pt-BR")} às ${salvoEm.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}.`;
+    status.hidden = false;
+    await renderizarResumo();
+  } catch (erro) {
+    aviso.textContent = erro?.message || "Não foi possível carregar o fechamento.";
+    aviso.hidden = false;
   }
-
-  fundoInput.value = formatarCampoMoeda(fechamento.fundoInicial);
-  retiradasInput.value = formatarCampoMoeda(fechamento.retiradas);
-  contadoInput.value = formatarCampoMoeda(fechamento.dinheiroContado);
-  observacaoInput.value = fechamento.observacao || "";
-  btnFechar.textContent = "Atualizar fechamento";
-
-  const salvoEm = new Date(fechamento.salvoEm);
-  status.textContent = Number.isNaN(salvoEm.getTime())
-    ? "Fechamento já salvo para esta data."
-    : `Fechamento salvo em ${salvoEm.toLocaleDateString("pt-BR")} às ${salvoEm.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}.`;
-  status.hidden = false;
-  renderizarResumo();
 }
 
-function salvarFechamento() {
+async function salvarFechamento() {
   aviso.hidden = true;
   aviso.classList.remove("sucesso");
 
@@ -210,67 +194,61 @@ function salvarFechamento() {
     return;
   }
 
-  renderizarResumo();
+  btnFechar.disabled = true;
+  try {
+    await renderizarResumo();
 
-  const fundoInicial = lerMoeda(fundoInput);
-  const retiradas = lerMoeda(retiradasInput);
-  const dinheiroContado = lerMoeda(contadoInput);
-  const dinheiroEsperado = resumoAtual.dinheiro + fundoInicial - retiradas;
-  const diferenca = dinheiroContado - dinheiroEsperado;
-  const fechamentos = lerLista(CHAVE_FECHAMENTOS);
-  const indiceExistente = fechamentos.findIndex(
-    (item) => item.dataReferencia === dataInput.value,
-  );
+    const fundoInicial = lerMoeda(fundoInput);
+    const retiradas = lerMoeda(retiradasInput);
+    const dinheiroContado = lerMoeda(contadoInput);
+    const dinheiroEsperado = resumoAtual.dinheiro + fundoInicial - retiradas;
+    const diferenca = dinheiroContado - dinheiroEsperado;
 
-  const anterior = indiceExistente >= 0 ? fechamentos[indiceExistente] : null;
-  const fechamento = {
-    id: anterior?.id || `${Date.now()}-${Math.random().toString(16).slice(2)}`,
-    dataReferencia: dataInput.value,
-    salvoEm: new Date().toISOString(),
-    quantidadeVendas: resumoAtual.quantidadeVendas,
-    faturamento: resumoAtual.faturamento,
-    pagamento: {
+    await persistirFechamento({
+      dataReferencia: dataInput.value,
+      quantidadeVendas: resumoAtual.quantidadeVendas,
+      faturamento: resumoAtual.faturamento,
       dinheiro: resumoAtual.dinheiro,
       cartao: resumoAtual.cartao,
       pix: resumoAtual.pix,
-    },
-    custoVendido: resumoAtual.custoVendido,
-    perdas: resumoAtual.custoPerdas,
-    resultadoBruto: resumoAtual.resultadoBruto,
-    fundoInicial,
-    retiradas,
-    dinheiroEsperado,
-    dinheiroContado,
-    diferenca,
-    observacao: observacaoInput.value.trim(),
-  };
+      custoVendido: resumoAtual.custoVendido,
+      custoPerdas: resumoAtual.custoPerdas,
+      resultadoBruto: resumoAtual.resultadoBruto,
+      fundoInicial,
+      retiradas,
+      dinheiroEsperado,
+      dinheiroContado,
+      diferenca,
+      observacao: observacaoInput.value.trim(),
+    });
 
-  if (indiceExistente >= 0) fechamentos[indiceExistente] = fechamento;
-  else fechamentos.push(fechamento);
+    aviso.textContent = Math.abs(diferenca) < 0.005
+      ? "Fechamento salvo. O caixa conferiu sem diferença."
+      : `Fechamento salvo com ${diferenca > 0 ? "sobra" : "falta"} de ${formatarMoeda(Math.abs(diferenca))}.`;
+    aviso.classList.add("sucesso");
+    aviso.hidden = false;
 
-  salvarLista(CHAVE_FECHAMENTOS, fechamentos);
-
-  aviso.textContent = Math.abs(diferenca) < 0.005
-    ? "Fechamento salvo. O caixa conferiu sem diferença."
-    : `Fechamento salvo com ${diferenca > 0 ? "sobra" : "falta"} de ${formatarMoeda(Math.abs(diferenca))}.`;
-  aviso.classList.add("sucesso");
-  aviso.hidden = false;
-
-  btnFechar.textContent = "Atualizar fechamento";
-  const agora = new Date();
-  status.textContent = `Fechamento salvo em ${agora.toLocaleDateString("pt-BR")} às ${agora.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}.`;
-  status.hidden = false;
+    btnFechar.textContent = "Atualizar fechamento";
+    const agora = new Date();
+    status.textContent = `Fechamento salvo em ${agora.toLocaleDateString("pt-BR")} às ${agora.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}.`;
+    status.hidden = false;
+  } catch (erro) {
+    aviso.textContent = erro?.message || "Não foi possível salvar o fechamento.";
+    aviso.hidden = false;
+  } finally {
+    btnFechar.disabled = false;
+  }
 }
 
-[dataInput, fundoInput, retiradasInput, contadoInput].forEach((campo) => {
-  campo.addEventListener("input", () => {
-    if (campo === dataInput) return;
-    atualizarConferencia();
-  });
+[fundoInput, retiradasInput, contadoInput].forEach((campo) => {
+  campo.addEventListener("input", atualizarConferencia);
 });
 
 dataInput.addEventListener("change", carregarFechamentoSalvo);
 btnFechar.addEventListener("click", salvarFechamento);
 
-dataInput.value = dataLocal();
-carregarFechamentoSalvo();
+const usuario = await exigirUsuario();
+if (usuario) {
+  dataInput.value = dataLocal();
+  await carregarFechamentoSalvo();
+}
