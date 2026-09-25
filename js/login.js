@@ -5,6 +5,7 @@ const emailInput = document.getElementById("emailLogin");
 const senhaInput = document.getElementById("senhaLogin");
 const btnEntrar = document.getElementById("btnEntrar");
 const btnCriar = document.getElementById("btnCriarConta");
+const btnAlternarSenha = document.getElementById("btnAlternarSenha");
 const aviso = document.getElementById("avisoLogin");
 
 function destinoSeguro() {
@@ -24,6 +25,14 @@ function bloquear(estado) {
   btnCriar.disabled = estado;
   emailInput.disabled = estado;
   senhaInput.disabled = estado;
+  btnAlternarSenha.disabled = estado;
+}
+
+function alternarVisibilidadeSenha() {
+  const exibindo = senhaInput.type === "text";
+  senhaInput.type = exibindo ? "password" : "text";
+  btnAlternarSenha.setAttribute("aria-pressed", String(!exibindo));
+  btnAlternarSenha.setAttribute("aria-label", exibindo ? "Mostrar senha" : "Ocultar senha");
 }
 
 async function validarCampos() {
@@ -80,6 +89,8 @@ btnCriar.addEventListener("click", async () => {
     bloquear(false);
   }
 });
+
+btnAlternarSenha.addEventListener("click", alternarVisibilidadeSenha);
 
 senhaInput.addEventListener("keydown", (evento) => {
   if (evento.key === "Enter") btnEntrar.click();
