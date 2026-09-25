@@ -1,5 +1,5 @@
 import { carregarProdutos } from "./produtos.js";
-import { registrarPerdaSobra, estornarPerdaSobra, listarPerdasPeriodo } from "./perdas-api.js";
+import { registrarPerdaSobra } from "./perdas-api.js";
 import { exigirUsuario } from "./auth.js";
 
 const produtoSelect = document.getElementById("produtoPerda");
@@ -40,14 +40,6 @@ function escaparHTML(valor) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
-}
-
-function intervaloHoje() {
-  const inicio = new Date();
-  inicio.setHours(0, 0, 0, 0);
-  const fim = new Date(inicio);
-  fim.setDate(fim.getDate() + 1);
-  return { inicioISO: inicio.toISOString(), fimISO: fim.toISOString() };
 }
 
 function mostrarAviso(texto, sucesso = false) {
@@ -148,73 +140,10 @@ async function registrarSaida() {
     observacaoInput.value = "";
     mostrarAviso("Saída registrada. O estoque e o resultado foram atualizados.", true);
     await carregarSelectProdutos(true);
-    await renderizarHistorico();
   } catch (erro) {
     mostrarAviso(erro?.message || "Não foi possível registrar a saída.");
   } finally {
     btnRegistrar.disabled = false;
-  }
-}
-
-async function estornarRegistro(id) {
-  const { inicioISO, fimISO } = intervaloHoje();
-  const registros = await listarPerdasPeriodo(inicioISO, fimISO);
-  const registro = registros.find((item) => item.id === id);
-  if (!registro) return;
-
-  if (!window.confirm(`Estornar a saída de ${registro.quantidade} de "${registro.nome_produto}"?`)) return;
-
-  try {
-    await estornarPerdaSobra(id);
-    mostrarAviso("Movimentação estornada e estoque devolvido.", true);
-    await carregarSelectProdutos(true);
-    await renderizarHistorico();
-  } catch (erro) {
-    mostrarAviso(erro?.message || "Não foi possível estornar a movimentação.");
-  }
-}
-
-async function renderizarHistorico() {
-  const lista = document.getElementById("listaPerdas");
-  lista.innerHTML = '<p class="sem-registros">Carregando movimentações...</p>';
-
-  try {
-    const { inicioISO, fimISO } = intervaloHoje();
-    const registros = await listarPerdasPeriodo(inicioISO, fimISO);
-    const total = registros.reduce((soma, item) => soma + (Number(item.custo_total) || 0), 0);
-    document.getElementById("totalPerdasHoje").textContent = formatarMoeda(total);
-
-    if (!registros.length) {
-      lista.innerHTML = '<p class="sem-registros">Nenhuma perda ou sobra registrada hoje.</p>';
-      return;
-    }
-
-    lista.innerHTML = registros.map((registro) => {
-      const hora = new Date(registro.registrada_em).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
-      const tipo = registro.tipo === "sobra" ? "Sobra" : "Perda";
-      const observacao = registro.observacao ? ` · ${escaparHTML(registro.observacao)}` : "";
-      const produto = produtos.find((item) => item.id === registro.produto_id);
-      const unidade = produto?.unidade || "un";
-
-      return `
-        <div class="perda-item">
-          <div class="perda-principal">
-            <b>${escaparHTML(registro.nome_produto)}</b>
-            <span>${tipo} · ${formatarQuantidade(registro.quantidade)} ${escaparHTML(unidade)} · ${escaparHTML(registro.motivo || "Sem motivo")}${observacao}</span>
-          </div>
-          <div class="perda-valor">
-            <b>− ${formatarMoeda(registro.custo_total)}</b>
-            <small>${hora}</small>
-          </div>
-          <button class="btn-estornar" type="button" data-estornar="${registro.id}">Estornar</button>
-        </div>`;
-    }).join("");
-
-    lista.querySelectorAll("[data-estornar]").forEach((botao) => {
-      botao.addEventListener("click", () => estornarRegistro(botao.dataset.estornar));
-    });
-  } catch (erro) {
-    lista.innerHTML = `<p class="sem-registros">${escaparHTML(erro?.message || "Não foi possível carregar as movimentações.")}</p>`;
   }
 }
 
@@ -229,7 +158,6 @@ const usuario = await exigirUsuario();
 if (usuario) {
   try {
     await carregarSelectProdutos(false);
-    await renderizarHistorico();
   } catch (erro) {
     mostrarAviso(erro?.message || "Não foi possível carregar os dados.");
   }
