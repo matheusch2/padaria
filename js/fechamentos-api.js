@@ -18,6 +18,18 @@ export async function buscarFechamento(dataReferencia) {
   return data || null;
 }
 
+export async function listarFechamentosPeriodo(dataInicial, dataFinal) {
+  const { data, error } = await supabase
+    .from("fechamentos_caixa")
+    .select("*")
+    .gte("data_referencia", dataInicial)
+    .lte("data_referencia", dataFinal)
+    .order("data_referencia", { ascending: false });
+
+  tratarErro(error, "Não foi possível carregar os fechamentos.");
+  return data || [];
+}
+
 export async function salvarFechamento(payload) {
   const { data: authData, error: authError } = await supabase.auth.getUser();
   tratarErro(authError, "Sessão inválida.");
