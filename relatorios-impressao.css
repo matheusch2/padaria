@@ -1,16 +1,44 @@
 .impressao-body {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: hidden;
   background:
     radial-gradient(circle at top, rgba(var(--marca-viva), 0.045), transparent 320px),
     #f4f3f1;
 }
 
+.impressao-body .topo-pagina {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.impressao-body .topo-pagina h1 {
+  min-width: 0;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
 .impressao-conteudo {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: hidden;
   padding-bottom: max(30px, env(safe-area-inset-bottom));
 }
 
 .impressao-painel {
+  width: 100%;
   max-width: 650px;
+  min-width: 0;
   gap: 16px;
+}
+
+.impressao-painel > * {
+  min-width: 0;
+  max-width: 100%;
 }
 
 .impressao-intro {
@@ -28,12 +56,17 @@
   color: #8d7a6e;
   font-size: 11px;
   line-height: 1.55;
+  overflow-wrap: anywhere;
 }
 
 .periodo-impressao-opcoes {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   display: flex;
   gap: 8px;
   overflow-x: auto;
+  overflow-y: hidden;
   padding: 2px 1px 5px;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
@@ -45,6 +78,7 @@
 
 .periodo-impressao-btn {
   flex: 0 0 auto;
+  min-width: 0;
   min-height: 39px;
   border: 1px solid #e3d8d1;
   border-radius: 999px;
@@ -66,6 +100,9 @@
 }
 
 .periodo-impressao-personalizado {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
@@ -74,6 +111,11 @@
 
 .periodo-impressao-personalizado[hidden] {
   display: none !important;
+}
+
+.periodo-impressao-personalizado label {
+  min-width: 0;
+  max-width: 100%;
 }
 
 .periodo-impressao-personalizado span {
@@ -88,6 +130,7 @@
   display: block;
   width: 100%;
   min-width: 0;
+  max-width: 100%;
   min-height: 44px;
   border: 1px solid #e4dbd5;
   border-radius: 12px;
@@ -107,15 +150,21 @@
 }
 
 .documentos-lista {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 11px;
 }
 
 .documento-card {
   position: relative;
   width: 100%;
+  max-width: 100%;
   min-width: 0;
   min-height: 112px;
+  overflow: hidden;
   border: 1px solid #e9dfd8;
   border-radius: 17px;
   padding: 14px 15px;
@@ -123,7 +172,7 @@
   color: inherit;
   text-align: left;
   display: grid;
-  grid-template-columns: 44px minmax(0, 1fr) auto;
+  grid-template-columns: 44px minmax(0, 1fr) 29px;
   align-items: center;
   gap: 12px;
   cursor: pointer;
@@ -139,6 +188,7 @@
 .documento-icone {
   width: 44px;
   height: 44px;
+  min-width: 0;
   border-radius: 13px;
   background: #f6f1ed;
   color: rgb(var(--marca));
@@ -162,25 +212,33 @@
 
 .documento-texto {
   min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .documento-texto b {
   display: block;
+  max-width: 100%;
   margin-bottom: 4px;
   color: #432d22;
   font-size: 13px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
 }
 
 .documento-texto span {
   display: block;
+  max-width: 100%;
   color: #907d71;
   font-size: 10px;
   line-height: 1.45;
+  overflow-wrap: anywhere;
 }
 
 .documento-status {
-  flex: 0 0 auto;
+  width: 27px;
   min-width: 27px;
+  max-width: 27px;
   height: 27px;
   border: 1.5px solid #ddd2cb;
   border-radius: 50%;
@@ -206,11 +264,17 @@
 }
 
 .preparar-relatorio {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   display: grid;
   gap: 10px;
 }
 
 .preparar-resumo {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   min-height: 58px;
   border: 1px solid #ece2dc;
   border-radius: 14px;
@@ -222,6 +286,11 @@
   gap: 12px;
 }
 
+.preparar-resumo span,
+.preparar-resumo b {
+  min-width: 0;
+}
+
 .preparar-resumo span {
   color: #8c796d;
   font-size: 10px;
@@ -231,10 +300,13 @@
   color: #3e2a20;
   font-size: 12px;
   text-align: right;
+  overflow-wrap: anywhere;
 }
 
 .btn-preparar-relatorio {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   min-height: 50px;
   border: none;
   border-radius: 15px;
@@ -263,17 +335,40 @@
 }
 
 .impressao-voltar {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   height: 50px;
   border-width: 1.5px;
   border-radius: 15px;
   background: rgba(255, 255, 255, 0.55);
 }
 
-@media (max-width: 390px) {
+@media (max-width: 430px) {
+  .impressao-body .topo-pagina h1 {
+    font-size: 15px;
+    line-height: 1.1;
+  }
+
+  .impressao-painel {
+    margin-top: 14px;
+    gap: 14px;
+  }
+
+  .periodo-impressao-opcoes {
+    gap: 7px;
+  }
+
+  .periodo-impressao-btn {
+    min-height: 37px;
+    padding: 0 12px;
+    font-size: 10px;
+  }
+
   .documento-card {
-    grid-template-columns: 40px minmax(0, 1fr) auto;
-    min-height: 106px;
-    padding: 13px;
+    grid-template-columns: 40px minmax(0, 1fr) 27px;
+    min-height: 100px;
+    padding: 12px;
     gap: 10px;
   }
 
@@ -284,6 +379,14 @@
 
   .documento-texto b {
     font-size: 12px;
+  }
+
+  .documento-texto span {
+    font-size: 9.5px;
+  }
+
+  .preparar-resumo {
+    align-items: flex-start;
   }
 }
 
@@ -298,6 +401,15 @@
 
   .documento-status {
     display: none;
+  }
+
+  .preparar-resumo {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .preparar-resumo b {
+    text-align: left;
   }
 }
 
