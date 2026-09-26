@@ -72,6 +72,41 @@
   background: linear-gradient(145deg, rgba(var(--marca), 0.055), #fff 58%);
 }
 
+/* Contenção dos campos de período, especialmente no Safari/iOS */
+.impressao-painel > .bloco {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.periodo-impressao-personalizado {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.periodo-impressao-personalizado label {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.periodo-impressao-personalizado input {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
 @media (max-width: 430px) {
   .documento-card {
     min-height: 74px;
