@@ -1,0 +1,109 @@
+/* Ajustes específicos da tela Relatórios para impressão no iOS/WebKit */
+.periodo-impressao-opcoes {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  gap: 8px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding-left: 16px;
+  padding-right: 16px;
+  scroll-padding-left: 16px;
+  margin-left: 0;
+  margin-right: 0;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.periodo-impressao-opcoes::-webkit-scrollbar {
+  display: none;
+}
+
+.periodo-impressao-personalizado {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.periodo-impressao-personalizado label {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.periodo-impressao-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  min-height: 44px;
+  border: 1px solid #e4dbd5;
+  border-radius: 12px;
+  -webkit-border-radius: 12px;
+  background: #faf6f3;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.periodo-impressao-input-wrap:focus-within {
+  border-color: rgb(var(--marca));
+  box-shadow: 0 0 0 4px rgba(var(--marca), 0.09);
+  background: #fff;
+}
+
+.periodo-impressao-personalizado input {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  min-height: 44px;
+  border: 0;
+  border-radius: 0;
+  -webkit-border-radius: 0;
+  padding: 9px 10px;
+  background: transparent;
+  color: #3a2418;
+  font: inherit;
+  font-size: 16px;
+  text-align: center;
+  outline: none;
+  box-shadow: none;
+  overflow: hidden;
+}
+
+.periodo-impressao-personalizado input:focus {
+  border: 0;
+  background: transparent;
+  outline: none;
+  box-shadow: none;
+}
+
+.periodo-impressao-personalizado input::-webkit-date-and-time-value {
+  text-align: center;
+}
+
+.periodo-impressao-personalizado input::-webkit-datetime-edit {
+  padding: 0;
+}
+
+@media (max-width: 430px) {
+  .periodo-impressao-opcoes {
+    padding-left: 16px;
+    padding-right: 16px;
+    scroll-padding-left: 16px;
+  }
+}
