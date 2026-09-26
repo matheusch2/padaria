@@ -280,6 +280,41 @@
   display: none !important;
 }
 
+/* Contenção dos campos de período, especialmente no Safari/iOS */
+.periodo-bloco {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.periodo-personalizado {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.periodo-personalizado label {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.periodo-personalizado input {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
 @media (max-width: 430px) {
   .segmentado-produtos .segmentado-btn {
     min-height: 36px;
