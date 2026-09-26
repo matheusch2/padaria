@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="pagina.css" />
     <link rel="stylesheet" href="relatorio.css?v=20260925-4" />
-    <link rel="stylesheet" href="desempenho-produtos.css?v=20260925-4" />
+    <link rel="stylesheet" href="desempenho-produtos.css?v=20260926-1" />
   </head>
   <body class="pagina-app relatorio-body">
     <header class="topo-pagina">
@@ -34,11 +34,15 @@
           <div id="periodoPersonalizado" class="periodo-personalizado" hidden>
             <label>
               <span>Data inicial</span>
-              <input id="dataInicialRelatorio" type="date" />
+              <div class="periodo-input-wrap">
+                <input id="dataInicialRelatorio" type="date" />
+              </div>
             </label>
             <label>
               <span>Data final</span>
-              <input id="dataFinalRelatorio" type="date" />
+              <div class="periodo-input-wrap">
+                <input id="dataFinalRelatorio" type="date" />
+              </div>
             </label>
           </div>
 
