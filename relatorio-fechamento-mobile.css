@@ -1,0 +1,134 @@
+/* Relatório de fechamento: cards no celular, tabela preservada no desktop/PDF */
+@media screen and (max-width: 700px) {
+  body.relatorio-fechamento-ativo .relatorio-secao-fechamento {
+    margin-top: 24px;
+  }
+
+  body.relatorio-fechamento-ativo .relatorio-secao-fechamento > h2 {
+    margin-bottom: 12px;
+    font-size: 14px;
+  }
+
+  body.relatorio-fechamento-ativo .tabela-fechamento-wrap {
+    overflow: visible;
+  }
+
+  body.relatorio-fechamento-ativo .tabela-fechamento,
+  body.relatorio-fechamento-ativo .tabela-fechamento tbody {
+    display: block;
+    width: 100%;
+  }
+
+  body.relatorio-fechamento-ativo .tabela-fechamento thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  body.relatorio-fechamento-ativo .tabela-fechamento tbody tr:not(.fechamento-vazio) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-bottom: 12px;
+    overflow: hidden;
+    border: 1px solid #e7ddd7;
+    border-radius: 13px;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(62, 40, 27, 0.045);
+  }
+
+  body.relatorio-fechamento-ativo .tabela-fechamento td,
+  body.relatorio-fechamento-ativo .tabela-fechamento tr:last-child td {
+    min-width: 0;
+    padding: 11px 12px;
+    border: 0;
+    border-top: 1px solid #eee6e1;
+    background: #fff;
+    color: #3f2a20;
+    text-align: left;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    font-size: 12px;
+    line-height: 1.3;
+  }
+
+  body.relatorio-fechamento-ativo .tabela-fechamento td::before {
+    content: attr(data-rotulo);
+    display: block;
+    margin-bottom: 5px;
+    color: #958277;
+    font-size: 8.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.35px;
+  }
+
+  body.relatorio-fechamento-ativo .tabela-fechamento td:nth-child(1) {
+    grid-column: 1 / -1;
+    padding: 13px 12px 10px;
+    border-top: 0;
+    background: #f8f4f1;
+    color: #3a2418;
+    font-size: 14px;
+    font-weight: 800;
+  }
+
+  body.relatorio-fechamento-ativo .tabela-fechamento td:nth-child(1)::before {
+    margin-bottom: 3px;
+    color: #9b877b;
+  }
+
+  body.relatorio-fechamento-ativo .tabela-fechamento td:nth-child(2),
+  body.relatorio-fechamento-ativo .tabela-fechamento td:nth-child(4),
+  body.relatorio-fechamento-ativo .tabela-fechamento td:nth-child(6) {
+    border-right: 1px solid #eee6e1;
+  }
+
+  body.relatorio-fechamento-ativo .tabela-fechamento td:nth-child(8) {
+    grid-column: 1 / -1;
+    background: #fcfaf8;
+  }
+
+  body.relatorio-fechamento-ativo .tabela-fechamento td.numero {
+    text-align: left;
+    white-space: normal;
+    font-weight: 700;
+  }
+
+  body.relatorio-fechamento-ativo .tabela-fechamento .valor-resultado.positivo,
+  body.relatorio-fechamento-ativo .tabela-fechamento .valor-diferenca.positivo {
+    color: #207a43;
+  }
+
+  body.relatorio-fechamento-ativo .tabela-fechamento .valor-resultado.negativo,
+  body.relatorio-fechamento-ativo .tabela-fechamento .valor-diferenca.negativo {
+    color: #a13d31;
+  }
+
+  body.relatorio-fechamento-ativo .tabela-fechamento .valor-diferenca.neutro {
+    color: #6f5b50;
+  }
+
+  body.relatorio-fechamento-ativo .tabela-fechamento tbody tr.fechamento-vazio {
+    display: block;
+  }
+
+  body.relatorio-fechamento-ativo .tabela-fechamento .sem-registros {
+    display: block;
+    width: 100%;
+    padding: 18px 14px !important;
+    border: 1px dashed #dfd3cc;
+    border-radius: 12px;
+    background: #fcfaf8;
+    color: #9a887e;
+    text-align: center !important;
+    font-size: 11px;
+  }
+
+  body.relatorio-fechamento-ativo .tabela-fechamento .sem-registros::before {
+    content: none;
+  }
+}
