@@ -377,3 +377,48 @@
     font-size: 7.5px;
   }
 }
+
+/* iOS / WebKit: aparência nativa do date e início da rolagem dos períodos */
+.periodo-opcoes {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  gap: 8px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding-left: 16px;
+  padding-right: 16px;
+  scroll-padding-left: 16px;
+  margin-left: 0;
+  margin-right: 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+.periodo-personalizado input {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  min-height: 44px;
+  border: 1px solid #e4dbd5;
+  border-radius: 12px;
+  -webkit-border-radius: 12px;
+  padding: 9px 10px;
+  background: #faf6f3;
+  color: #3a2418;
+  font: inherit;
+  font-size: 16px;
+  overflow: hidden;
+}
+
+.periodo-personalizado input::-webkit-date-and-time-value {
+  text-align: center;
+}
+
+.periodo-personalizado input::-webkit-datetime-edit {
+  padding: 0;
+}
