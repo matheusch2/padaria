@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#8c4527" />
+    <title>Relatório financeiro - Padaria Gestão</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="pagina.css" />
+    <link rel="stylesheet" href="financeiro.css?v=20260925-1" />
+    <link rel="stylesheet" href="relatorio-financeiro.css?v=20260930-1" />
+  </head>
+  <body class="pagina-app financeiro-body">
+    <header class="topo-pagina no-print">
+      <a class="voltar" href="financeiro.html" aria-label="Voltar para o financeiro">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
+      </a>
+      <h1>Relatório financeiro</h1>
+    </header>
+
+    <main class="conteudo-pagina financeiro-conteudo">
+      <div class="painel-pagina">
+        <section class="bloco periodo-financeiro-bloco no-print">
+          <div class="periodo-financeiro-opcoes" role="group" aria-label="Selecionar período">
+            <button class="periodo-financeiro-btn ativo" type="button" data-periodo="mes">Este mês</button>
+            <button class="periodo-financeiro-btn" type="button" data-periodo="mes-passado">Mês passado</button>
+            <button class="periodo-financeiro-btn" type="button" data-periodo="90">90 dias</button>
+          </div>
+          <p id="legendaPeriodoRelatorio" class="periodo-financeiro-legenda"></p>
+        </section>
+
+        <section class="bloco financeiro-bloco" aria-labelledby="tituloResultadoRelatorio">
+          <h2 id="tituloResultadoRelatorio" class="bloco-titulo financeiro-titulo">Resultado do período</h2>
+          <div class="resultado-financeiro-lista">
+            <div><span>Receita</span><b id="resultadoReceita">R$ 0,00</b></div>
+            <div><span>Custo dos produtos vendidos</span><b id="resultadoCustos">− R$ 0,00</b></div>
+            <div><span>Despesas operacionais</span><b id="resultadoDespesas">− R$ 0,00</b></div>
+            <div class="resultado-liquido" id="linhaLucroLiquido"><span>Lucro líquido</span><b id="resultadoLiquido">R$ 0,00</b></div>
+          </div>
+          <div class="margem-liquida">
+            <span>Margem líquida</span>
+            <strong id="margemLiquida">0%</strong>
+          </div>
+        </section>
+
+        <section class="bloco financeiro-bloco" aria-labelledby="tituloCategoriasRelatorio">
+          <h2 id="tituloCategoriasRelatorio" class="bloco-titulo financeiro-titulo">Despesas por categoria</h2>
+          <div id="listaCategorias"></div>
+        </section>
+
+        <button class="btn-primario no-print" id="btnImprimir" type="button">Imprimir relatório</button>
+
+        <a class="btn-voltar-rodape financeiro-voltar no-print" href="financeiro.html">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
+          <span>Voltar</span>
+        </a>
+      </div>
+    </main>
+
+    <script type="module" src="js/relatorio-financeiro.js"></script>
+  </body>
+</html>

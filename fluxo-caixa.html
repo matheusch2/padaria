@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#8c4527" />
+    <title>Fluxo de caixa - Padaria Gestão</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="pagina.css" />
+    <link rel="stylesheet" href="financeiro.css?v=20260925-1" />
+    <link rel="stylesheet" href="contas.css?v=20260930-1" />
+    <link rel="stylesheet" href="lancamentos.css?v=20260930-1" />
+    <link rel="stylesheet" href="fluxo-caixa.css?v=20260930-1" />
+  </head>
+  <body class="pagina-app financeiro-body">
+    <header class="topo-pagina">
+      <a class="voltar" href="financeiro.html" aria-label="Voltar para o financeiro">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
+      </a>
+      <h1>Fluxo de caixa</h1>
+    </header>
+
+    <main class="conteudo-pagina financeiro-conteudo">
+      <div class="painel-pagina">
+        <section class="bloco periodo-financeiro-bloco">
+          <div class="periodo-financeiro-opcoes" role="group" aria-label="Selecionar período">
+            <button class="periodo-financeiro-btn" type="button" data-periodo="7">7 dias</button>
+            <button class="periodo-financeiro-btn ativo" type="button" data-periodo="30">30 dias</button>
+            <button class="periodo-financeiro-btn" type="button" data-periodo="mes">Este mês</button>
+          </div>
+        </section>
+
+        <section class="lancamentos-resumo">
+          <article class="lancamentos-resumo-card receita">
+            <span>Entradas</span>
+            <b id="totalEntradas">R$ 0,00</b>
+          </article>
+          <article class="lancamentos-resumo-card despesa">
+            <span>Saídas</span>
+            <b id="totalSaidas">R$ 0,00</b>
+          </article>
+          <article class="lancamentos-resumo-card saldo">
+            <span>Saldo</span>
+            <b id="totalSaldoFluxo">R$ 0,00</b>
+          </article>
+        </section>
+
+        <section class="bloco" aria-labelledby="tituloProjecaoFluxo">
+          <div class="financeiro-secao-cabecalho">
+            <div>
+              <h2 id="tituloProjecaoFluxo" class="bloco-titulo financeiro-titulo alinhado-esquerda">Próximos 30 dias</h2>
+              <p class="financeiro-subtitulo">O que ainda está pendente de receber e pagar.</p>
+            </div>
+          </div>
+          <div class="projecao-fluxo-linhas">
+            <div><span>A receber</span><b id="projecaoReceber" class="positivo">R$ 0,00</b></div>
+            <div><span>A pagar</span><b id="projecaoPagar" class="negativo">R$ 0,00</b></div>
+            <div class="projecao-fluxo-total"><span>Saldo projetado</span><b id="projecaoSaldo">R$ 0,00</b></div>
+          </div>
+        </section>
+
+        <section class="bloco">
+          <h2 class="bloco-titulo">Extrato do período</h2>
+          <div id="listaExtrato"></div>
+        </section>
+
+        <a class="btn-voltar-rodape financeiro-voltar" href="financeiro.html">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
+          <span>Voltar</span>
+        </a>
+      </div>
+    </main>
+
+    <script type="module" src="js/fluxo-caixa.js"></script>
+  </body>
+</html>

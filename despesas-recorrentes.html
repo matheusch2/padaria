@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#8c4527" />
+    <title>Despesas recorrentes - Padaria Gestão</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="pagina.css" />
+    <link rel="stylesheet" href="financeiro.css?v=20260925-1" />
+    <link rel="stylesheet" href="contas.css?v=20260930-1" />
+    <link rel="stylesheet" href="despesas-recorrentes.css?v=20260930-1" />
+  </head>
+  <body class="pagina-app financeiro-body">
+    <header class="topo-pagina">
+      <a class="voltar" href="financeiro.html" aria-label="Voltar para o financeiro">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
+      </a>
+      <h1>Despesas recorrentes</h1>
+    </header>
+
+    <main class="conteudo-pagina financeiro-conteudo">
+      <div class="painel-pagina">
+        <section class="bloco">
+          <p class="recorrente-explicacao">
+            Cadastre aqui gastos ou recebimentos fixos (aluguel, internet, mensalidade) e eles entram
+            sozinhos em Contas a pagar/receber todo mês, no dia escolhido.
+          </p>
+
+          <div id="listaRecorrentes"></div>
+
+          <button class="btn-nova-conta" id="btnNovaRecorrente" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
+            <span>Nova despesa/receita recorrente</span>
+          </button>
+        </section>
+
+        <section class="bloco" id="formRecorrente" hidden>
+          <h2 class="bloco-titulo">Nova recorrência</h2>
+
+          <div class="campo-form">
+            <label for="campoTipoRecorrente">Tipo</label>
+            <select id="campoTipoRecorrente">
+              <option value="pagar">Despesa (sai do caixa)</option>
+              <option value="receber">Receita (entra no caixa)</option>
+            </select>
+          </div>
+
+          <div class="campo-form">
+            <label for="campoDescricaoRecorrente">Descrição</label>
+            <input type="text" id="campoDescricaoRecorrente" placeholder="Ex: Aluguel da loja" autocomplete="off" />
+          </div>
+
+          <div class="campo-form campo-form-dupla">
+            <div>
+              <label for="campoCategoriaRecorrente">Categoria</label>
+              <input type="text" id="campoCategoriaRecorrente" placeholder="Ex: Aluguel" autocomplete="off" />
+            </div>
+            <div>
+              <label for="campoPessoaRecorrente">Fornecedor/Cliente</label>
+              <input type="text" id="campoPessoaRecorrente" placeholder="Opcional" autocomplete="off" />
+            </div>
+          </div>
+
+          <div class="campo-form campo-form-dupla">
+            <div>
+              <label for="campoValorRecorrente">Valor</label>
+              <div class="campo-valor">
+                <span>R$</span>
+                <input type="text" id="campoValorRecorrente" inputmode="decimal" placeholder="0,00" />
+              </div>
+            </div>
+            <div>
+              <label for="campoDiaRecorrente">Dia do vencimento</label>
+              <input type="text" id="campoDiaRecorrente" class="milhar" inputmode="numeric" placeholder="Ex: 5" />
+            </div>
+          </div>
+
+          <p id="avisoRecorrenteForm" class="aviso-finalizar" hidden></p>
+
+          <div class="contas-form-acoes">
+            <button class="btn-primario" id="btnSalvarRecorrente" type="button">Salvar</button>
+            <button class="btn-cancelar-conta" id="btnCancelarRecorrente" type="button">Cancelar</button>
+          </div>
+        </section>
+
+        <a class="btn-voltar-rodape financeiro-voltar" href="financeiro.html">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
+          <span>Voltar</span>
+        </a>
+      </div>
+    </main>
+
+    <script src="js/numeros.js"></script>
+    <script type="module" src="js/despesas-recorrentes.js"></script>
+  </body>
+</html>

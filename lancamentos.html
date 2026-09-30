@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#8c4527" />
+    <title>Receitas e despesas - Padaria Gestão</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="pagina.css" />
+    <link rel="stylesheet" href="financeiro.css?v=20260925-1" />
+    <link rel="stylesheet" href="contas.css?v=20260930-1" />
+    <link rel="stylesheet" href="lancamentos.css?v=20260930-1" />
+  </head>
+  <body class="pagina-app financeiro-body">
+    <header class="topo-pagina">
+      <a class="voltar" href="financeiro.html" aria-label="Voltar para o financeiro">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
+      </a>
+      <h1>Receitas e despesas</h1>
+    </header>
+
+    <main class="conteudo-pagina financeiro-conteudo">
+      <div class="painel-pagina">
+        <section class="bloco periodo-financeiro-bloco">
+          <div class="periodo-financeiro-opcoes" role="group" aria-label="Selecionar período">
+            <button class="periodo-financeiro-btn ativo" type="button" data-periodo="mes">Este mês</button>
+            <button class="periodo-financeiro-btn" type="button" data-periodo="mes-passado">Mês passado</button>
+            <button class="periodo-financeiro-btn" type="button" data-periodo="todos">Todos</button>
+          </div>
+        </section>
+
+        <section class="lancamentos-resumo">
+          <article class="lancamentos-resumo-card receita">
+            <span>Receitas</span>
+            <b id="totalReceitas">R$ 0,00</b>
+          </article>
+          <article class="lancamentos-resumo-card despesa">
+            <span>Despesas</span>
+            <b id="totalDespesas">R$ 0,00</b>
+          </article>
+          <article class="lancamentos-resumo-card saldo">
+            <span>Saldo</span>
+            <b id="totalSaldo">R$ 0,00</b>
+          </article>
+        </section>
+
+        <section class="bloco">
+          <div class="contas-filtros" role="group" aria-label="Filtrar por tipo">
+            <button class="contas-filtro-btn ativo" type="button" data-tipo="todos">Todos</button>
+            <button class="contas-filtro-btn" type="button" data-tipo="receber">Receitas</button>
+            <button class="contas-filtro-btn" type="button" data-tipo="pagar">Despesas</button>
+          </div>
+
+          <div id="listaLancamentos"></div>
+
+          <button class="btn-nova-conta" id="btnNovoLancamento" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
+            <span>Novo lançamento</span>
+          </button>
+        </section>
+
+        <section class="bloco" id="formLancamento" hidden>
+          <h2 class="bloco-titulo">Novo lançamento</h2>
+
+          <div class="campo-form">
+            <label for="campoTipoLancamento">Tipo</label>
+            <select id="campoTipoLancamento">
+              <option value="pagar">Despesa</option>
+              <option value="receber">Receita</option>
+            </select>
+          </div>
+
+          <div class="campo-form">
+            <label for="campoDescricaoLancamento">Descrição</label>
+            <input type="text" id="campoDescricaoLancamento" placeholder="Ex: Compra de material de limpeza" autocomplete="off" />
+          </div>
+
+          <div class="campo-form campo-form-dupla">
+            <div>
+              <label for="campoCategoriaLancamento">Categoria</label>
+              <input type="text" id="campoCategoriaLancamento" placeholder="Opcional" autocomplete="off" />
+            </div>
+            <div>
+              <label for="campoPessoaLancamento">Fornecedor/Cliente</label>
+              <input type="text" id="campoPessoaLancamento" placeholder="Opcional" autocomplete="off" />
+            </div>
+          </div>
+
+          <div class="campo-form campo-form-dupla">
+            <div>
+              <label for="campoValorLancamento">Valor</label>
+              <div class="campo-valor">
+                <span>R$</span>
+                <input type="text" id="campoValorLancamento" inputmode="decimal" placeholder="0,00" />
+              </div>
+            </div>
+            <div>
+              <label for="campoDataLancamento">Data</label>
+              <input type="date" id="campoDataLancamento" />
+            </div>
+          </div>
+
+          <label class="campo-checkbox">
+            <input type="checkbox" id="campoJaLancado" checked />
+            <span>Já aconteceu (pago/recebido)</span>
+          </label>
+
+          <p id="avisoLancamentoForm" class="aviso-finalizar" hidden></p>
+
+          <div class="contas-form-acoes">
+            <button class="btn-primario" id="btnSalvarLancamento" type="button">Salvar</button>
+            <button class="btn-cancelar-conta" id="btnCancelarLancamento" type="button">Cancelar</button>
+          </div>
+        </section>
+
+        <a class="btn-voltar-rodape financeiro-voltar" href="financeiro.html">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
+          <span>Voltar</span>
+        </a>
+      </div>
+    </main>
+
+    <script src="js/numeros.js"></script>
+    <script type="module" src="js/lancamentos.js"></script>
+  </body>
+</html>

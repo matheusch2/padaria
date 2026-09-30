@@ -1,0 +1,65 @@
+.lancamentos-resumo {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.lancamentos-resumo-card {
+  min-width: 0;
+  padding: 12px 10px;
+  border: 1px solid #e9dfd8;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 5px 14px rgba(68, 42, 28, 0.05);
+  display: grid;
+  gap: 3px;
+  text-align: center;
+}
+
+.lancamentos-resumo-card span {
+  color: #8f7c70;
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.lancamentos-resumo-card b {
+  font-size: clamp(13px, 3.6vw, 16px);
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+  color: #3a2418;
+}
+
+.lancamentos-resumo-card.receita b {
+  color: rgb(var(--sucesso));
+}
+
+.lancamentos-resumo-card.despesa b {
+  color: rgb(var(--erro));
+}
+
+.lancamento-tipo-badge {
+  flex: 0 0 auto;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.lancamento-tipo-badge.receber {
+  background: rgba(var(--sucesso), 0.12);
+  color: rgb(var(--sucesso));
+}
+
+.lancamento-tipo-badge.pagar {
+  background: rgba(var(--erro), 0.1);
+  color: rgb(var(--erro));
+}
+
+.lancamento-info .lancamento-meta-linha {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}

@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#8c4527" />
+    <title id="tituloAba">Contas - Padaria Gestão</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="pagina.css" />
+    <link rel="stylesheet" href="financeiro.css?v=20260925-1" />
+    <link rel="stylesheet" href="contas.css?v=20260930-1" />
+  </head>
+  <body class="pagina-app financeiro-body">
+    <header class="topo-pagina">
+      <a class="voltar" href="financeiro.html" aria-label="Voltar para o financeiro">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
+      </a>
+      <h1 id="tituloTela">Contas a pagar</h1>
+    </header>
+
+    <main class="conteudo-pagina financeiro-conteudo">
+      <div class="painel-pagina">
+        <section class="contas-resumo">
+          <article class="contas-resumo-card atrasado">
+            <span>Atrasadas</span>
+            <b id="totalAtrasado">R$ 0,00</b>
+            <small id="qtdAtrasado">0 contas</small>
+          </article>
+          <article class="contas-resumo-card pendente">
+            <span>A vencer</span>
+            <b id="totalPendente">R$ 0,00</b>
+            <small id="qtdPendente">0 contas</small>
+          </article>
+        </section>
+
+        <section class="bloco">
+          <div class="contas-filtros" role="group" aria-label="Filtrar contas">
+            <button class="contas-filtro-btn ativo" type="button" data-filtro="abertas">Abertas</button>
+            <button class="contas-filtro-btn" type="button" data-filtro="pagas">Pagas</button>
+            <button class="contas-filtro-btn" type="button" data-filtro="todas">Todas</button>
+          </div>
+
+          <div id="listaContas"></div>
+
+          <button class="btn-nova-conta" id="btnNovaConta" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
+            <span id="rotuloBtnNova">Nova conta a pagar</span>
+          </button>
+        </section>
+
+        <section class="bloco" id="formNovaConta" hidden>
+          <h2 class="bloco-titulo">Nova conta</h2>
+
+          <div class="campo-form">
+            <label for="campoDescricao">Descrição</label>
+            <input type="text" id="campoDescricao" placeholder="Ex: Aluguel da loja" autocomplete="off" />
+          </div>
+
+          <div class="campo-form campo-form-dupla">
+            <div>
+              <label for="campoCategoria">Categoria</label>
+              <select id="campoCategoria"></select>
+            </div>
+            <div>
+              <label for="campoPessoa" id="rotuloPessoa">Fornecedor</label>
+              <input type="text" id="campoPessoa" placeholder="Opcional" autocomplete="off" />
+            </div>
+          </div>
+
+          <div class="campo-form campo-form-dupla">
+            <div>
+              <label for="campoValor">Valor</label>
+              <div class="campo-valor">
+                <span>R$</span>
+                <input type="text" id="campoValor" inputmode="decimal" placeholder="0,00" />
+              </div>
+            </div>
+            <div>
+              <label for="campoVencimento" id="rotuloVencimento">Vencimento</label>
+              <input type="date" id="campoVencimento" />
+            </div>
+          </div>
+
+          <label class="campo-checkbox">
+            <input type="checkbox" id="campoJaPago" />
+            <span id="rotuloJaPago">Já foi pago</span>
+          </label>
+
+          <p id="avisoContaForm" class="aviso-finalizar" hidden></p>
+
+          <div class="contas-form-acoes">
+            <button class="btn-primario" id="btnSalvarConta" type="button">Salvar</button>
+            <button class="btn-cancelar-conta" id="btnCancelarConta" type="button">Cancelar</button>
+          </div>
+        </section>
+
+        <a class="btn-voltar-rodape financeiro-voltar" href="financeiro.html">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
+          <span>Voltar</span>
+        </a>
+      </div>
+    </main>
+
+    <script src="js/numeros.js"></script>
+    <script type="module" src="js/contas.js"></script>
+  </body>
+</html>

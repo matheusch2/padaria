@@ -1,0 +1,230 @@
+/* CONTAS A PAGAR / A RECEBER */
+
+.contas-resumo {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.contas-resumo-card {
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid #e9dfd8;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 5px 14px rgba(68, 42, 28, 0.05);
+  display: grid;
+  gap: 4px;
+}
+
+.contas-resumo-card span {
+  color: #8f7c70;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.contas-resumo-card b {
+  color: #3a2418;
+  font-size: clamp(18px, 4.6vw, 22px);
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.contas-resumo-card small {
+  color: #9a877b;
+  font-size: 10px;
+}
+
+.contas-resumo-card.atrasado {
+  border-color: rgba(var(--erro), 0.18);
+  background: linear-gradient(145deg, rgba(var(--erro), 0.055), #fff 60%);
+}
+
+.contas-resumo-card.atrasado b {
+  color: rgb(var(--erro));
+}
+
+.contas-resumo-card.pendente {
+  border-color: rgba(var(--aviso), 0.2);
+  background: linear-gradient(145deg, rgba(var(--aviso), 0.06), #fff 60%);
+}
+
+.contas-filtros {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+  padding: 4px;
+  border: 1px solid #eadfd9;
+  border-radius: 13px;
+  background: #f8f4f1;
+}
+
+.contas-filtro-btn {
+  flex: 1;
+  min-width: 0;
+  min-height: 38px;
+  border: 0;
+  border-radius: 9px;
+  padding: 0 6px;
+  background: transparent;
+  color: #8d786c;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.contas-filtro-btn.ativo {
+  background: #fff;
+  color: rgb(var(--marca));
+  box-shadow: 0 2px 7px rgba(74, 47, 32, 0.08);
+}
+
+.lancamento-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 0;
+  border-bottom: 1px solid #f1e9e4;
+}
+
+.lancamento-item:last-child {
+  border-bottom: 0;
+}
+
+.lancamento-info {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.lancamento-info b {
+  color: #3a2418;
+  font-size: 14px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.lancamento-info span {
+  color: #8e7b70;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.lancamento-info .lancamento-vencimento.atrasado {
+  color: rgb(var(--erro));
+  font-weight: 700;
+}
+
+.lancamento-acao {
+  display: grid;
+  justify-items: end;
+  gap: 6px;
+}
+
+.lancamento-acao b {
+  color: #3a2418;
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+.lancamento-marcar-pago {
+  border: 1px solid rgba(var(--sucesso), 0.3);
+  border-radius: 999px;
+  padding: 5px 10px;
+  background: rgba(var(--sucesso), 0.08);
+  color: rgb(var(--sucesso));
+  font-size: 10px;
+  font-weight: 800;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.lancamento-excluir {
+  border: 0;
+  background: transparent;
+  color: #b09a8d;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.lancamento-excluir svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sem-contas {
+  padding: 22px 12px;
+  color: #a08d82;
+  text-align: center;
+  font-size: 12px;
+}
+
+.btn-nova-conta {
+  width: 100%;
+  min-height: 48px;
+  margin-top: 6px;
+  border: 1.5px dashed rgba(var(--marca), 0.35);
+  border-radius: 14px;
+  background: rgba(var(--marca), 0.04);
+  color: rgb(var(--marca));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.btn-nova-conta svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.campo-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  color: #3a2418;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.campo-checkbox input {
+  width: 19px;
+  height: 19px;
+  accent-color: rgb(var(--marca));
+}
+
+.contas-form-acoes {
+  display: grid;
+  gap: 10px;
+}
+
+.btn-cancelar-conta {
+  width: 100%;
+  height: 44px;
+  border: 0;
+  background: transparent;
+  color: #8e7b70;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
