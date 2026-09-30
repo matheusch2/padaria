@@ -1,0 +1,19 @@
+{
+  "name": "Padaria Gestão",
+  "short_name": "Padaria",
+  "description": "Controle do que sai do forno",
+  "start_url": "index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f4f3f1",
+  "theme_color": "#5c2e18",
+  "icons": [
+    {
+      "src": "imagens/logo.png",
+      "sizes": "1254x1254",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
