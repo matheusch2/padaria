@@ -1,13 +1,13 @@
-import { entrar, revelarPagina } from "./auth.js";
+import { cadastrarUsuario, revelarPagina } from "./auth.js";
 import { supabase } from "./supabase.js";
 
-const emailInput = document.getElementById("emailLogin");
-const senhaInput = document.getElementById("senhaLogin");
-const btnEntrar = document.getElementById("btnEntrar");
+const emailInput = document.getElementById("emailCadastro");
+const senhaInput = document.getElementById("senhaCadastro");
+const btnCriar = document.getElementById("btnCriar");
 const btnAlternarSenha = document.getElementById("btnAlternarSenha");
-const aviso = document.getElementById("avisoLogin");
+const aviso = document.getElementById("avisoCadastro");
 
-const DESTINO_APOS_LOGIN = "index.html";
+const DESTINO_APOS_CADASTRO = "index.html";
 
 function mostrarAviso(texto, sucesso = false) {
   aviso.textContent = texto;
@@ -16,7 +16,7 @@ function mostrarAviso(texto, sucesso = false) {
 }
 
 function bloquear(estado) {
-  btnEntrar.disabled = estado;
+  btnCriar.disabled = estado;
   emailInput.disabled = estado;
   senhaInput.disabled = estado;
   btnAlternarSenha.disabled = estado;
@@ -48,17 +48,23 @@ async function validarCampos() {
   return { email, senha };
 }
 
-btnEntrar.addEventListener("click", async () => {
+btnCriar.addEventListener("click", async () => {
   const campos = await validarCampos();
   if (!campos) return;
 
   bloquear(true);
   aviso.hidden = true;
   try {
-    await entrar(campos.email, campos.senha);
-    window.location.replace(DESTINO_APOS_LOGIN);
+    const dados = await cadastrarUsuario(campos.email, campos.senha);
+    if (dados.session) {
+      window.location.replace(DESTINO_APOS_CADASTRO);
+      return;
+    }
+    mostrarAviso("Conta criada! Confira seu e-mail para confirmar o cadastro e depois entre.", true);
+    emailInput.value = "";
+    senhaInput.value = "";
   } catch (erro) {
-    mostrarAviso(erro?.message || "Não foi possível entrar.");
+    mostrarAviso(erro?.message || "Não foi possível criar a conta.");
   } finally {
     bloquear(false);
   }
@@ -67,12 +73,12 @@ btnEntrar.addEventListener("click", async () => {
 btnAlternarSenha.addEventListener("click", alternarVisibilidadeSenha);
 
 senhaInput.addEventListener("keydown", (evento) => {
-  if (evento.key === "Enter") btnEntrar.click();
+  if (evento.key === "Enter") btnCriar.click();
 });
 
 const { data } = await supabase.auth.getSession();
 if (data.session?.user) {
-  window.location.replace(DESTINO_APOS_LOGIN);
+  window.location.replace(DESTINO_APOS_CADASTRO);
 } else {
   revelarPagina();
 }

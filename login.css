@@ -176,6 +176,10 @@
   border: 1px solid #b8927c;
   background: #fff;
   color: #6a351f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
 }
 
 .login-primario:active,
