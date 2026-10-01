@@ -1,4 +1,4 @@
-import { entrar, cadastrarUsuario } from "./auth.js";
+import { entrar, cadastrarUsuario, revelarPagina } from "./auth.js";
 import { supabase } from "./supabase.js";
 
 const emailInput = document.getElementById("emailLogin");
@@ -93,4 +93,8 @@ senhaInput.addEventListener("keydown", (evento) => {
 });
 
 const { data } = await supabase.auth.getSession();
-if (data.session?.user) window.location.replace(DESTINO_APOS_LOGIN);
+if (data.session?.user) {
+  window.location.replace(DESTINO_APOS_LOGIN);
+} else {
+  revelarPagina();
+}

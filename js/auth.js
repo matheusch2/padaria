@@ -1,5 +1,9 @@
 import { supabase } from "./supabase.js";
 
+export function revelarPagina() {
+  document.documentElement.style.visibility = "visible";
+}
+
 export async function obterUsuario() {
   const { data, error } = await supabase.auth.getUser();
   if (error) return null;
@@ -13,6 +17,7 @@ export async function exigirUsuario() {
     return null;
   }
 
+  revelarPagina();
   return data.session.user;
 }
 
