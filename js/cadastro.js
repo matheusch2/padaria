@@ -3,8 +3,10 @@ import { supabase } from "./supabase.js";
 
 const emailInput = document.getElementById("emailCadastro");
 const senhaInput = document.getElementById("senhaCadastro");
+const confirmarSenhaInput = document.getElementById("confirmarSenhaCadastro");
 const btnCriar = document.getElementById("btnCriar");
 const btnAlternarSenha = document.getElementById("btnAlternarSenha");
+const btnAlternarConfirmarSenha = document.getElementById("btnAlternarConfirmarSenha");
 const aviso = document.getElementById("avisoCadastro");
 
 const DESTINO_APOS_CADASTRO = "index.html";
@@ -19,19 +21,22 @@ function bloquear(estado) {
   btnCriar.disabled = estado;
   emailInput.disabled = estado;
   senhaInput.disabled = estado;
+  confirmarSenhaInput.disabled = estado;
   btnAlternarSenha.disabled = estado;
+  btnAlternarConfirmarSenha.disabled = estado;
 }
 
-function alternarVisibilidadeSenha() {
-  const exibindo = senhaInput.type === "text";
-  senhaInput.type = exibindo ? "password" : "text";
-  btnAlternarSenha.setAttribute("aria-pressed", String(!exibindo));
-  btnAlternarSenha.setAttribute("aria-label", exibindo ? "Mostrar senha" : "Ocultar senha");
+function alternarVisibilidade(campo, botao) {
+  const exibindo = campo.type === "text";
+  campo.type = exibindo ? "password" : "text";
+  botao.setAttribute("aria-pressed", String(!exibindo));
+  botao.setAttribute("aria-label", exibindo ? "Mostrar senha" : "Ocultar senha");
 }
 
 async function validarCampos() {
   const email = emailInput.value.trim();
   const senha = senhaInput.value;
+  const confirmarSenha = confirmarSenhaInput.value;
 
   if (!email || !email.includes("@")) {
     mostrarAviso("Informe um e-mail válido.");
@@ -42,6 +47,12 @@ async function validarCampos() {
   if (senha.length < 6) {
     mostrarAviso("A senha precisa ter pelo menos 6 caracteres.");
     senhaInput.focus();
+    return null;
+  }
+
+  if (senha !== confirmarSenha) {
+    mostrarAviso("As senhas não são iguais.");
+    confirmarSenhaInput.focus();
     return null;
   }
 
@@ -63,6 +74,7 @@ btnCriar.addEventListener("click", async () => {
     mostrarAviso("Conta criada! Confira seu e-mail para confirmar o cadastro e depois entre.", true);
     emailInput.value = "";
     senhaInput.value = "";
+    confirmarSenhaInput.value = "";
   } catch (erro) {
     mostrarAviso(erro?.message || "Não foi possível criar a conta.");
   } finally {
@@ -70,9 +82,10 @@ btnCriar.addEventListener("click", async () => {
   }
 });
 
-btnAlternarSenha.addEventListener("click", alternarVisibilidadeSenha);
+btnAlternarSenha.addEventListener("click", () => alternarVisibilidade(senhaInput, btnAlternarSenha));
+btnAlternarConfirmarSenha.addEventListener("click", () => alternarVisibilidade(confirmarSenhaInput, btnAlternarConfirmarSenha));
 
-senhaInput.addEventListener("keydown", (evento) => {
+confirmarSenhaInput.addEventListener("keydown", (evento) => {
   if (evento.key === "Enter") btnCriar.click();
 });
 

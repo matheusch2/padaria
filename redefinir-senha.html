@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Padaria Gestão" />
     <style>html{visibility:hidden}</style>
-    <title>Criar conta - Padaria Gestão</title>
+    <title>Nova senha - Padaria Gestão</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="login.css?v=20260925-1502" />
   </head>
@@ -20,30 +20,19 @@
       <div class="login-hero">
         <div class="login-marca">
           <img src="imagens/logo.png" alt="Padaria Gestão" />
-          <h1 id="tituloCadastro">Criar conta</h1>
+          <h1 id="tituloRedefinir">Nova senha</h1>
         </div>
 
-        <section class="login-card" aria-labelledby="tituloCadastro">
+        <section class="login-card" aria-labelledby="tituloRedefinir">
           <div class="login-form">
             <div class="login-campo">
-              <label for="emailCadastro">E-mail</label>
-              <div class="login-input-wrap">
-                <svg class="login-input-icone" viewBox="0 0 24 24" aria-hidden="true">
-                  <rect x="3" y="5" width="18" height="14" rx="2" />
-                  <path d="m3 7 9 6 9-6" />
-                </svg>
-                <input id="emailCadastro" type="email" autocomplete="email" placeholder="Digite seu e-mail" />
-              </div>
-            </div>
-
-            <div class="login-campo">
-              <label for="senhaCadastro">Senha</label>
+              <label for="novaSenha">Nova senha</label>
               <div class="login-input-wrap">
                 <svg class="login-input-icone" viewBox="0 0 24 24" aria-hidden="true">
                   <rect x="5" y="10" width="14" height="10" rx="2" />
                   <path d="M8 10V7a4 4 0 0 1 8 0v3" />
                 </svg>
-                <input id="senhaCadastro" type="password" autocomplete="new-password" placeholder="Mínimo 6 caracteres" minlength="6" />
+                <input id="novaSenha" type="password" autocomplete="new-password" placeholder="Mínimo 6 caracteres" minlength="6" />
                 <button id="btnAlternarSenha" class="login-senha-toggle" type="button" aria-label="Mostrar senha" aria-pressed="false">
                   <svg class="icone-olho-aberto" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z" />
@@ -60,13 +49,13 @@
             </div>
 
             <div class="login-campo">
-              <label for="confirmarSenhaCadastro">Confirmar senha</label>
+              <label for="confirmarNovaSenha">Confirmar nova senha</label>
               <div class="login-input-wrap">
                 <svg class="login-input-icone" viewBox="0 0 24 24" aria-hidden="true">
                   <rect x="5" y="10" width="14" height="10" rx="2" />
                   <path d="M8 10V7a4 4 0 0 1 8 0v3" />
                 </svg>
-                <input id="confirmarSenhaCadastro" type="password" autocomplete="new-password" placeholder="Repita a senha" minlength="6" />
+                <input id="confirmarNovaSenha" type="password" autocomplete="new-password" placeholder="Repita a senha" minlength="6" />
                 <button id="btnAlternarConfirmarSenha" class="login-senha-toggle" type="button" aria-label="Mostrar senha" aria-pressed="false">
                   <svg class="icone-olho-aberto" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z" />
@@ -82,9 +71,9 @@
               </div>
             </div>
 
-            <p id="avisoCadastro" class="login-aviso" hidden></p>
+            <p id="avisoRedefinir" class="login-aviso" hidden></p>
 
-            <button id="btnCriar" class="login-primario" type="button">Criar conta</button>
+            <button id="btnSalvar" class="login-primario" type="button">Salvar nova senha</button>
             <a id="btnVoltarLogin" class="login-secundario" href="login.html">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <line x1="19" y1="12" x2="5" y2="12" />
@@ -97,6 +86,6 @@
       </div>
     </main>
 
-    <script type="module" src="js/cadastro.js"></script>
+    <script type="module" src="js/redefinir-senha.js"></script>
   </body>
 </html>

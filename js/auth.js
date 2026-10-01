@@ -39,6 +39,17 @@ export async function cadastrarUsuario(email, senha) {
   return data;
 }
 
+export async function recuperarSenha(email) {
+  const redirectTo = new URL("redefinir-senha.html", window.location.href).href;
+  const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), { redirectTo });
+  if (error) throw error;
+}
+
+export async function redefinirSenha(novaSenha) {
+  const { error } = await supabase.auth.updateUser({ password: novaSenha });
+  if (error) throw error;
+}
+
 export async function sair() {
   const { error } = await supabase.auth.signOut();
   if (error) throw error;
