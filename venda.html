@@ -53,7 +53,7 @@
         </section>
 
         <section class="bloco">
-          <h2 class="bloco-titulo">Carrinho</h2>
+          <h2 class="bloco-titulo">Carrinho<span id="carrinhoContador" class="carrinho-contador" hidden></span></h2>
           <div id="carrinhoItens">
             <p class="carrinho-vazio">Nenhum item adicionado ainda.</p>
           </div>
@@ -107,7 +107,7 @@
               <b id="totalInformado">R$ 0,00</b>
             </div>
             <p id="pagamentoDiferenca" class="pagamento-diferenca">
-              Adicione produtos para calcular o restante.
+              <span id="pagamentoDiferencaTexto" class="pagamento-diferenca-vazio">Adicione produtos para calcular o restante.</span>
             </p>
           </div>
         </section>
@@ -117,9 +117,18 @@
     <div class="rodape">
       <div class="rodape-conteudo">
         <div class="bloco total-row">
-          <div>
-            <span>Total da venda</span>
-            <small>Valor a receber</small>
+          <div class="total-row-principal">
+            <span class="total-row-icone">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="2" y="6" width="20" height="12" rx="2" />
+                <circle cx="12" cy="12" r="3" />
+                <path d="M6 12h.01M18 12h.01" />
+              </svg>
+            </span>
+            <div class="total-row-texto">
+              <span>Total da venda</span>
+              <small>Valor a receber</small>
+            </div>
           </div>
           <b id="totalVenda">R$ 0,00</b>
         </div>
@@ -128,13 +137,6 @@
           <button class="btn-primario" id="btnFinalizar" type="button">
             Finalizar Venda
           </button>
-          <p class="rodape-divisor">ou</p>
-          <a class="btn-voltar-rodape" href="index.html">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M15 18l-6-6 6-6" />
-            </svg>
-            <span>Voltar</span>
-          </a>
         </div>
       </div>
     </div>

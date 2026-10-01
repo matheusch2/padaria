@@ -14,7 +14,7 @@ export function valoresPagamento() {
 export function atualizarResumoPagamento(formatarMoeda, totalVenda = 0) {
   const { total: totalInformado } = valoresPagamento();
   const resumo = document.getElementById("totalInformado");
-  const diferenca = document.getElementById("pagamentoDiferenca");
+  const badge = document.getElementById("pagamentoDiferencaTexto");
 
   resumo.textContent = formatarMoeda(totalInformado);
 
@@ -22,27 +22,30 @@ export function atualizarResumoPagamento(formatarMoeda, totalVenda = 0) {
   const valoresConferem = Math.abs(saldo) < 0.005;
   resumo.classList.toggle("ok", valoresConferem && totalVenda > 0);
 
-  if (!diferenca) return;
+  if (!badge) return;
 
-  diferenca.classList.remove("ok");
+  badge.className = "";
 
   if (totalVenda <= 0) {
-    diferenca.textContent = "Adicione produtos para calcular o restante.";
+    badge.textContent = "Adicione produtos para calcular o restante.";
+    badge.classList.add("pagamento-diferenca-vazio");
     return;
   }
 
   if (valoresConferem) {
-    diferenca.textContent = "Pagamento completo";
-    diferenca.classList.add("ok");
+    badge.textContent = "Pagamento completo";
+    badge.classList.add("badge-sucesso");
     return;
   }
 
   if (saldo > 0) {
-    diferenca.textContent = `Falta ${formatarMoeda(saldo)} para completar a venda`;
+    badge.textContent = `Falta ${formatarMoeda(saldo)}`;
+    badge.classList.add("badge-aviso");
     return;
   }
 
-  diferenca.textContent = `Valor excede a venda em ${formatarMoeda(Math.abs(saldo))}`;
+  badge.textContent = `Excede em ${formatarMoeda(Math.abs(saldo))}`;
+  badge.classList.add("badge-erro");
 }
 
 export function limparCamposPagamento() {

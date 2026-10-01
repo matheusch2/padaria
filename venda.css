@@ -1,3 +1,19 @@
+.carrinho-contador {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  margin-left: 7px;
+  border-radius: 999px;
+  background: rgba(var(--marca), 0.12);
+  color: rgb(var(--marca));
+  font-size: 11px;
+  font-weight: 800;
+  vertical-align: middle;
+}
+
 .lista-produtos {
   max-height: 280px;
   overflow-y: auto;
@@ -18,6 +34,14 @@
 
 .produto-info {
   min-width: 0;
+  flex: 1 1 auto;
+}
+
+.produto-item-acoes {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
 .produto-info b {
@@ -211,44 +235,79 @@
 }
 
 .pagamento-diferenca {
-  margin: 6px 0 0;
-  font-size: 12.5px;
-  color: #8a7a70;
+  margin: 8px 0 0;
   text-align: right;
 }
 
-.pagamento-diferenca.ok {
-  color: #2e7d32;
-  font-weight: 600;
+.pagamento-diferenca-vazio {
+  font-size: 12.5px;
+  color: #8a7a70;
 }
 
 .total-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 14px;
-  background: rgb(var(--marca-escura));
+  gap: 12px;
+  margin-bottom: 10px;
+  background: linear-gradient(
+    135deg,
+    rgb(var(--marca-escura)) 0%,
+    rgb(var(--marca)) 55%,
+    rgb(var(--marca-viva)) 100%
+  );
   color: white;
+  box-shadow: 0 10px 26px rgba(var(--marca-escura), 0.3);
 }
 
-.total-row > div {
+.total-row-principal {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.total-row-icone {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.16);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.total-row-icone svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: white;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.total-row-texto {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  min-width: 0;
 }
 
 .total-row span {
   font-size: 12px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.82);
 }
 
 .total-row small {
   font-size: 11px;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.58);
 }
 
 .total-row b {
+  flex-shrink: 0;
   font-size: 26px;
   font-weight: 800;
   font-variant-numeric: tabular-nums;

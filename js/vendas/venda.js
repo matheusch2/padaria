@@ -60,7 +60,9 @@ function renderizarProdutos() {
           <b>${escaparHTML(produto.nome)}</b>
           <span>${formatarMoeda(produto.preco)} / ${escaparHTML(produto.unidade || "un")}</span>
         </div>
-        <button class="btn-add" data-id="${produto.id}" type="button" ${semEstoque ? "disabled" : ""}>+</button>
+        <div class="produto-item-acoes">
+          <button class="btn-add" data-id="${produto.id}" type="button" ${semEstoque ? "disabled" : ""}>+</button>
+        </div>
       </div>`;
     })
     .join("");
@@ -77,6 +79,10 @@ function renderizarProdutos() {
 function renderizarCarrinho() {
   const container = document.getElementById("carrinhoItens");
   const itens = Object.entries(obterCarrinho());
+
+  const contador = document.getElementById("carrinhoContador");
+  contador.hidden = itens.length === 0;
+  contador.textContent = itens.length;
 
   if (itens.length === 0) {
     container.innerHTML = '<p class="carrinho-vazio">Nenhum item adicionado ainda.</p>';
